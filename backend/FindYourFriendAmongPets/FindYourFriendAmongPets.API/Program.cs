@@ -1,11 +1,18 @@
+using FindYourFriendAmongPets.Application.Services;
+using FindYourFriendAmongPets.Core.Abstractions;
+using FindYourFriendAmongPets.DataAccess;
+using FindYourFriendAmongPets.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddScoped<IToDoItemService, ToDoItemService>();
+builder.Services.AddScoped<IToDoItemsRepository, ToDoItemsRepository>();
 
 var app = builder.Build();
 

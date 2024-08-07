@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FindYourFriendAmongPets.DataAccess.Repositories
 {
-    public class ToDoItemRepository : IToDoItemRepository
+    public class ToDoItemsRepository : IToDoItemsRepository
     {
         private readonly ToDoItemDbContext _context;
 
-        public ToDoItemRepository(ToDoItemDbContext context)
+        public ToDoItemsRepository(ToDoItemDbContext context)
         {
             _context = context;
         }

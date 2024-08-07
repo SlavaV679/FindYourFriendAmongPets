@@ -2,7 +2,7 @@
 
 namespace FindYourFriendAmongPets.Core.Abstractions
 {
-    public interface IToDoItemRepository
+    public interface IToDoItemsRepository
     {
         Task<Guid> Create(ToDoItem toDoItem);
         
