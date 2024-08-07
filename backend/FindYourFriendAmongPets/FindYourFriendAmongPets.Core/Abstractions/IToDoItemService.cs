@@ -12,6 +12,6 @@ namespace FindYourFriendAmongPets.Core.Abstractions
 
         Task<ToDoItem> GetToDoItem(Guid id);
 
-        Task<Guid> UpdateToDoItem(Guid id, string title, string description, DateTime dateCreated);
+        Task<Guid> UpdateToDoItem(Guid id, string title, string description);
     }
 }

@@ -59,14 +59,13 @@ namespace FindYourFriendAmongPets.DataAccess.Repositories
             return toDoItemEntity.Id;
         }
 
-        public async Task<Guid> Update(Guid id, string title, string description, DateTime dateCreated)
+        public async Task<Guid> Update(Guid id, string title, string description)
         {
             await _context.ToDoItems
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
                     .SetProperty(i => i.Title, i => title)
-                    .SetProperty(i => i.Description, i => description)
-                    .SetProperty(i => i.DateCreated, dateCreated)
+                    .SetProperty(i => i.Description, description)
                 );
 
             return id;

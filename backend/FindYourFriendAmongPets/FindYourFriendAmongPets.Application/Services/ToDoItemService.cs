@@ -26,9 +26,9 @@ namespace FindYourFriendAmongPets.Application.Services
             return await _toDoItemsRepository.Create(toDoItem);
         }
 
-        public async Task<Guid> UpdateToDoItem(Guid id, string title, string description, DateTime dateCreated)
+        public async Task<Guid> UpdateToDoItem(Guid id, string title, string description)
         {
-            return await _toDoItemsRepository.Update(id, title, description, dateCreated);
+            return await _toDoItemsRepository.Update(id, title, description);
         }
 
         public async Task<Guid> DeleteToDoItem(Guid id)

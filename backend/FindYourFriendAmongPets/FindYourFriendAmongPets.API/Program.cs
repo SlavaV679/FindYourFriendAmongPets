@@ -10,6 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<ToDoItemDbContext>(
+    options =>
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(ToDoItemDbContext)));
+    });
 
 builder.Services.AddScoped<IToDoItemService, ToDoItemService>();
 builder.Services.AddScoped<IToDoItemsRepository, ToDoItemsRepository>();
