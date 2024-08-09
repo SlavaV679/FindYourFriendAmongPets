@@ -2,9 +2,9 @@
 
 public class Pet
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
     public string Type { get; private set; }
 
@@ -14,7 +14,7 @@ public class Pet
 
     public string Color { get; private set; }
 
-    public string HealphInfo { get; private set; }
+    public string HealthInfo { get; private set; }
 
     public string Location { get; private set; }
 
@@ -24,11 +24,11 @@ public class Pet
 
     public string OwnersPhoneNumber { get; private set; }
 
-    public string Neutered { get; private set; }
+    public bool IsNeutered { get; private set; }
 
     public DateOnly DateOfBirth { get; private set; }
 
-    public bool Vaccinated { get; private set; }
+    public bool IsVaccinated { get; private set; }
 
     public Status HelpStatus { get; private set; }
 
