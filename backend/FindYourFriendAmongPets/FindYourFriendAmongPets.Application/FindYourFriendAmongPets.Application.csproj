@@ -10,4 +10,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FindYourFriendAmongPets.Core\FindYourFriendAmongPets.Core.csproj" />
+  </ItemGroup>
+
 </Project>

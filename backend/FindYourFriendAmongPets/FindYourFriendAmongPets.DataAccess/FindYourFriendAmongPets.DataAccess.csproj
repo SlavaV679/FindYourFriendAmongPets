@@ -12,4 +12,8 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FindYourFriendAmongPets.Application\FindYourFriendAmongPets.Application.csproj" />
+  </ItemGroup>
+
 </Project>
