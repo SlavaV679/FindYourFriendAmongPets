@@ -4,7 +4,7 @@ public class Volunteer
 {
     public Guid Id { get; private set; }
 
-    public string FullName { get; private set; }
+    public FullName FullName { get; private set; }
 
     public string Descriptions { get; private set; }
 
