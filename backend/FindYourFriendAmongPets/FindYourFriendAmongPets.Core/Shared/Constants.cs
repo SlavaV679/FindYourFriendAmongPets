@@ -8,4 +8,5 @@ public class Constants
     
     public const int MAX_PHONENUMBER_LENGHT = 13;
     
+    public const int MAX_PATH_TO_STORAGE_LENGHT = 75;
 }
