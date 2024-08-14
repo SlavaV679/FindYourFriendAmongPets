@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FindYourFriendAmongPets.DataAccess.Configurations;
 
-public class VolunteerConfiguration:IEntityTypeConfiguration<Volunteer>
+public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
-        builder.ToTable("Volunteer");
+        builder.ToTable("Volunteers");
 
         builder.HasKey(v => v.Id);
 
@@ -23,7 +23,7 @@ public class VolunteerConfiguration:IEntityTypeConfiguration<Volunteer>
         builder.HasMany(v => v.SocialNetworks)
             .WithOne()
             .HasForeignKey("social_network_id");
-        
+
         builder.HasMany(v => v.RequisitesForHelp)
             .WithOne()
             .HasForeignKey("requisite_for_help_id");

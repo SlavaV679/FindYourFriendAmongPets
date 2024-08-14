@@ -15,6 +15,7 @@ public class PetFamilyDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new VolunteerConfiguration());
+        modelBuilder.ApplyConfiguration(new PetConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
