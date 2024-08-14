@@ -21,7 +21,7 @@ public class FullName
 
     public string? Patronymic { get; }
 
-    public Result<FullName> Create(string firstName, string lastName, string? patronymic = null)
+    public static Result<FullName> Create(string firstName, string lastName, string? patronymic = null)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > FIRSTNAME_MAX_LENGHT)
             return Result.Failure<FullName>($"{nameof(FirstName)} can not be empty or bigger then {FIRSTNAME_MAX_LENGHT}");
