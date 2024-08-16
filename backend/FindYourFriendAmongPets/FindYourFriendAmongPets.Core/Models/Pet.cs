@@ -10,7 +10,7 @@ public class Pet : Entity<PetId>
 
     public string Name { get; private set; }
 
-    public string Type { get; private set; }
+    public string Species { get; private set; }
 
     public string Description { get; private set; }
 
@@ -20,7 +20,7 @@ public class Pet : Entity<PetId>
 
     public string HealthInfo { get; private set; }
 
-    public string Location { get; private set; }
+    public Address Address { get; private set; }
 
     public double Weight { get; private set; }
 
@@ -35,8 +35,6 @@ public class Pet : Entity<PetId>
     public bool IsVaccinated { get; private set; }
 
     public Status HelpStatus { get; private set; }
-
-    public List<Requisite> Requisites { get; private set; }
 
     public DateTime DateCreated { get; private set; }
 

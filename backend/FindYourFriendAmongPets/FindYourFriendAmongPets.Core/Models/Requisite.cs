@@ -1,10 +1,28 @@
-﻿namespace FindYourFriendAmongPets.Core.Models;
+﻿using CSharpFunctionalExtensions;
+
+namespace FindYourFriendAmongPets.Core.Models;
 
 public class Requisite
 {  
-    public Guid Id { get; private set; }
-    
-    public string Name { get; private set; }
-    
-    public string Description { get; private set; }
+    // ef core
+    private Requisite()
+    {
+        
+    }
+    private Requisite(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
+
+    public string Name { get; }
+    public string Description { get; }
+
+    public static Result<Requisite> Create(string name, string description)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return Result.Failure<Requisite>($"{nameof(Name)} can not be empty.");
+
+        return Result.Success(new Requisite(name, description));
+    }
 }

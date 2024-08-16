@@ -4,12 +4,16 @@ namespace FindYourFriendAmongPets.Core.Models;
 
 public record PetPhoto
 {
+    // ef core
+    private PetPhoto()
+    {
+        
+    }
     private PetPhoto(string pathToStorage, bool isMain)
     {
         PathToStorage = pathToStorage;
         IsMain = isMain;
     }
-
 
     public string PathToStorage { get; }
 
