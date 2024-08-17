@@ -3,7 +3,7 @@
     container_name: postgres
     image: postgres:latest
     environment:
-      POSTGRES_DB: "db10082024"
+      POSTGRES_DB: "PetFamilyDb"
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     volumes:
