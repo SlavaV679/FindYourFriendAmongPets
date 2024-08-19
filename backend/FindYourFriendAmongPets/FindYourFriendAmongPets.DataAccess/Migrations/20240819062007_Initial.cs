@@ -107,6 +107,25 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "pet_photo",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    pet_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    path_to_storage = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_pet_photo", x => new { x.pet_id, x.id });
+                    table.ForeignKey(
+                        name: "fk_pet_photo_pets_pet_id",
+                        column: x => x.pet_id,
+                        principalTable: "pets",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_pets_volunteer_id",
                 table: "pets",
@@ -122,13 +141,16 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "pets");
+                name: "pet_photo");
 
             migrationBuilder.DropTable(
                 name: "requisite_for_help");
 
             migrationBuilder.DropTable(
                 name: "social_network");
+
+            migrationBuilder.DropTable(
+                name: "pets");
 
             migrationBuilder.DropTable(
                 name: "volunteers");

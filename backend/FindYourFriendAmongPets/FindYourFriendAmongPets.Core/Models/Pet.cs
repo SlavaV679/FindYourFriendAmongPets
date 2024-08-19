@@ -37,6 +37,8 @@ public class Pet : Entity<PetId>
     public Status HelpStatus { get; private set; }
 
     public DateTime DateCreated { get; private set; }
+    
+    public List<PetPhoto> PetPhotos { get; }
 
     public PetDetails Details { get; private set; }
 }

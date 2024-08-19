@@ -259,31 +259,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                 .HasForeignKey("PetId")
                                 .HasConstraintName("fk_pets_pets_id");
 
-                            b1.OwnsMany("FindYourFriendAmongPets.Core.Models.PetPhoto", "PetPhotos", b2 =>
-                                {
-                                    b2.Property<Guid>("PetDetailsPetId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("PathToStorage")
-                                        .IsRequired()
-                                        .HasMaxLength(75)
-                                        .HasColumnType("character varying(75)");
-
-                                    b2.HasKey("PetDetailsPetId", "Id");
-
-                                    b2.ToTable("pets");
-
-                                    b2.ToJson("details");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PetDetailsPetId")
-                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
-                                });
-
                             b1.OwnsMany("FindYourFriendAmongPets.Core.Models.Requisite", "Requisites", b2 =>
                                 {
                                     b2.Property<Guid>("PetDetailsPetId")
@@ -314,13 +289,39 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                         .HasConstraintName("fk_pets_pets_pet_details_pet_id");
                                 });
 
-                            b1.Navigation("PetPhotos");
-
                             b1.Navigation("Requisites");
+                        });
+
+                    b.OwnsMany("FindYourFriendAmongPets.Core.Models.PetPhoto", "PetPhotos", b1 =>
+                        {
+                            b1.Property<Guid>("PetId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("pet_id");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("PathToStorage")
+                                .IsRequired()
+                                .HasMaxLength(75)
+                                .HasColumnType("character varying(75)")
+                                .HasColumnName("path_to_storage");
+
+                            b1.HasKey("PetId", "Id")
+                                .HasName("pk_pet_photo");
+
+                            b1.ToTable("pet_photo", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("PetId")
+                                .HasConstraintName("fk_pet_photo_pets_pet_id");
                         });
 
                     b.Navigation("Details")
                         .IsRequired();
+
+                    b.Navigation("PetPhotos");
                 });
 
             modelBuilder.Entity("FindYourFriendAmongPets.Core.Models.RequisiteForHelp", b =>

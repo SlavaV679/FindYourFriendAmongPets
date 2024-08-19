@@ -3,7 +3,7 @@ using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Address
+public record Address
 {
     // ef core
     private Address()

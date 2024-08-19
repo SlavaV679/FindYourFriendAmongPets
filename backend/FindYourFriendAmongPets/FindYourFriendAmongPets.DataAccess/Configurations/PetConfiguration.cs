@@ -20,23 +20,23 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Species)
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
-        
+
         builder.Property(p => p.Description)
             .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
             .IsRequired();
-        
+
         builder.Property(p => p.Breed)
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
-                    .IsRequired();
-        
+            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .IsRequired();
+
         builder.Property(p => p.Color)
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
-                    .IsRequired();
-        
+            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .IsRequired();
+
         builder.Property(p => p.HealthInfo)
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
-                    .IsRequired();
-        
+            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .IsRequired();
+
         builder.ComplexProperty(v => v.Address, address =>
         {
             address.Property(f => f.City)
@@ -57,27 +57,32 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("country");
         });
-        
+
         builder.Property(p => p.OwnersPhoneNumber)
             .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
             .IsRequired();
-        
-        builder.Property(p=>p.HelpStatus)
+
+        builder.Property(p => p.HelpStatus)
             .HasConversion(
                 v => v.ToString(),
                 v => (Status)Enum.Parse(typeof(Status), v));
+        
+        builder.OwnsMany(d => d.PetPhotos, photoBuilder =>
+        {
+            photoBuilder.Property(pp => pp.Id)
+                .HasConversion(
+                    id => id.Value,
+                    value => PetPhotoId.Create(value));
+            
+            photoBuilder.Property(pp => pp.PathToStorage)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
+        });
 
         builder.OwnsOne(p => p.Details, petBuilder =>
         {
             petBuilder.ToJson();
-            
-            petBuilder.OwnsMany(d => d.PetPhotos, photoBuilder =>
-            {
-                photoBuilder.Property(pp => pp.PathToStorage)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
-            });
-            
+
             petBuilder.OwnsMany(d => d.Requisites, requisitesBuilder =>
             {
                 requisitesBuilder.Property(r => r.Name)
