@@ -16,7 +16,7 @@ public class Volunteer
 
     public int CountPetsHealing { get; private set; }
 
-    public string PhoneNumber { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
 
     public List<SocialNetwork> SocialNetworks { get; private set; } = [];
 

@@ -203,12 +203,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("experience_in_years");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)")
-                        .HasColumnName("phone_number");
-
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "FindYourFriendAmongPets.Core.Models.Volunteer.FullName#FullName", b1 =>
                         {
                             b1.IsRequired();
@@ -229,6 +223,17 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("patronymic");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "FindYourFriendAmongPets.Core.Models.Volunteer.PhoneNumber#PhoneNumber", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(13)
+                                .HasColumnType("character varying(13)")
+                                .HasColumnName("phone_number");
                         });
 
                     b.HasKey("Id")
