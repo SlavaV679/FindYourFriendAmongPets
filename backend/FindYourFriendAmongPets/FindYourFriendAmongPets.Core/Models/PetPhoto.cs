@@ -2,22 +2,25 @@
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public record PetPhoto
+public class PetPhoto : Shared.Entity<PetPhotoId>
 {
-    private PetPhoto(PetPhotoId id, string pathToStorage, bool isMain)
+    // ef core
+    private PetPhoto(PetPhotoId id) : base(id)
     {
-        Id = id;
+    }
+
+    private PetPhoto(PetPhotoId id, string pathToStorage, bool isMain)
+        : base(id)
+    {
         PathToStorage = pathToStorage;
         IsMain = isMain;
     }
-
-    public PetPhotoId Id { get; }
 
     public string PathToStorage { get; }
 
     public bool IsMain { get; }
 
-    public static Result<PetPhoto> Create(PetPhotoId id, string pathToStorage, bool isMain)
+    public static Result<PetPhoto> Create(PetPhotoId id, string pathToStorage, bool isMain = false)
     {
         if (string.IsNullOrWhiteSpace(pathToStorage))
             return Result.Failure<PetPhoto>($"{nameof(PathToStorage)} can not be empty.");

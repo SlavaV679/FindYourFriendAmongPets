@@ -1,6 +1,6 @@
 ﻿namespace FindYourFriendAmongPets.Core.Models;
 
-public class SocialMedia
+public class SocialNetwork
 {
     public Guid Id { get; private set; }
     

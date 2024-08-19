@@ -6,7 +6,7 @@ public class Volunteer
 
     public FullName FullName { get; private set; }
 
-    public string Descriptions { get; private set; }
+    public string Description { get; private set; }
 
     public int ExperienceInYears { get; private set; }
 
@@ -18,9 +18,9 @@ public class Volunteer
 
     public string PhoneNumber { get; private set; }
 
-    public List<SocialMedia> SocialMedias { get; private set; } = [];
+    public List<SocialNetwork> SocialNetworks { get; private set; } = [];
 
-    public List<RequisiteForHelp> RequisiteForHelps { get; private set; } = [];
+    public List<RequisiteForHelp> RequisitesForHelp { get; private set; } = [];
 
     public List<Pet> Pets { get; private set; } = [];
 }

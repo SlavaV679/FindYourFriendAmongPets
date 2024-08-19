@@ -1,12 +1,16 @@
-﻿namespace FindYourFriendAmongPets.Core.Models;
+﻿using FindYourFriendAmongPets.Core.Shared;
 
-public class Pet
+namespace FindYourFriendAmongPets.Core.Models;
+
+public class Pet : Entity<PetId>
 {
-    public Guid Id { get; private set; }
+    private Pet(PetId id) : base(id)
+    {
+    }
 
     public string Name { get; private set; }
 
-    public string Type { get; private set; }
+    public string Species { get; private set; }
 
     public string Description { get; private set; }
 
@@ -16,7 +20,7 @@ public class Pet
 
     public string HealthInfo { get; private set; }
 
-    public string Location { get; private set; }
+    public Address Address { get; private set; }
 
     public double Weight { get; private set; }
 
@@ -32,9 +36,9 @@ public class Pet
 
     public Status HelpStatus { get; private set; }
 
-    public List<Requisite> Requisites { get; private set; }
-
     public DateTime DateCreated { get; private set; }
     
-    public List<PetPhoto> PetPhotos { get; private set; }
+    public List<PetPhoto> PetPhotos { get; }
+
+    public PetDetails Details { get; private set; }
 }
