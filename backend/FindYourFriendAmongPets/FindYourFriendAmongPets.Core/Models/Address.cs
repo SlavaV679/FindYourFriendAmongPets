@@ -5,11 +5,6 @@ namespace FindYourFriendAmongPets.Core.Models;
 
 public record Address
 {
-    // ef core
-    private Address()
-    {
-    }
-
     private Address(string city, string street, string? building = null, string? description = null, string? country = null)
     {
         City = city;

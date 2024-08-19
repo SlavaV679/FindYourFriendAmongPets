@@ -4,11 +4,6 @@ namespace FindYourFriendAmongPets.Core.Models;
 
 public class Requisite
 {  
-    // ef core
-    private Requisite()
-    {
-        
-    }
     private Requisite(string name, string description)
     {
         Name = name;

@@ -9,12 +9,6 @@ public record FullName
     public const int LASTNAME_MAX_LENGHT = 50;
     public const int PATRONYMIC_MAX_LENGHT = 50;
 
-    // ef core
-    private FullName()
-    {
-
-    }
-
     private FullName(string firstName, string lastName, string? patronymic = null)
     {
         FirstName = firstName;
