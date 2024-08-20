@@ -10,11 +10,9 @@ public class Pet : Entity<PetId>
 
     public string Name { get; private set; }
 
-    public string Species { get; private set; }
+    public Guid SpeciesId { get; private set; }
 
     public string Description { get; private set; }
-
-    public string Breed { get; private set; }
 
     public string Color { get; private set; }
 

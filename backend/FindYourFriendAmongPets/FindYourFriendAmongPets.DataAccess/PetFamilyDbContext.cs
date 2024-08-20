@@ -1,4 +1,5 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
+using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.DataAccess.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
     //public DbSet<Volunteer> Volunteers { get; set; } // чем отличается эти два вида объявления?
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 
+    public DbSet<Species> Species => Set<Species>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString(PET_FAMILY_DATABASE));
@@ -36,6 +39,7 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
     {
         modelBuilder.ApplyConfiguration(new VolunteerConfiguration());
         modelBuilder.ApplyConfiguration(new PetConfiguration());
+        modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
