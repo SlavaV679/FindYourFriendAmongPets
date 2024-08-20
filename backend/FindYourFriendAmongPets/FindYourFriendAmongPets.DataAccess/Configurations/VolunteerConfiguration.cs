@@ -30,8 +30,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .IsRequired()
             .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT);
 
-        builder.Property(v => v.PhoneNumber)
-            .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT);
+        builder.ComplexProperty(v => v.PhoneNumber, phone =>
+        {
+            phone.Property(p => p.Number)
+                .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                .HasColumnName("phone_number");
+        });
 
         // builder.HasMany(v => v.SocialNetworks)
         //     .WithOne()

@@ -21,10 +21,10 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                     count_pets_realized = table.Column<int>(type: "integer", nullable: false),
                     count_pets_looking_for_home = table.Column<int>(type: "integer", nullable: false),
                     count_pets_healing = table.Column<int>(type: "integer", nullable: false),
-                    phone_number = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
+                    patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    phone_number = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false)
                 },
                 constraints: table =>
                 {

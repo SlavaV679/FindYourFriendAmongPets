@@ -2,7 +2,7 @@
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Requisite
+public record Requisite
 {  
     private Requisite(string name, string description)
     {
