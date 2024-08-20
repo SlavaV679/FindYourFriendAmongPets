@@ -36,13 +36,13 @@ public class Species : Shared.Entity<SpeciesId>
         return Result.Success();
     }
 
-    public static Result<Species> Create(SpeciesId speciesId, string name, List<Breed> breeds)
+    public static Result<Species> Create(SpeciesId id, string name, List<Breed> breeds)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
         {
             return Result.Failure<Species>($"{name} cannot be null or have length more than {Constants.MAX_LOW_TEXT_LENGHT}");
         }
 
-        return Result.Success(new Species(speciesId, name, breeds));
+        return Result.Success(new Species(id, name, breeds));
     }
 }

@@ -11,9 +11,7 @@ public record BreedId
 
     public static BreedId Create(Guid value) => new(value);
     
-
     public static BreedId NewBreedId() => new(Guid.NewGuid());
     
-
     public static BreedId Empty() => new(Guid.Empty);
 }

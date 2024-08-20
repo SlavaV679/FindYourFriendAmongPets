@@ -25,12 +25,12 @@ public class Breed : Shared.Entity<BreedId>
         return Result.Success();
     }
 
-    public static Result<Breed> Create(BreedId breedId, string name)
+    public static Result<Breed> Create(BreedId id, string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
             return Result.Failure<Breed>($"{nameof(name)} cannot be null or length more than {Constants.MAX_LOW_TEXT_LENGHT}");
 
-        var breed = new Breed(breedId, name);
+        var breed = new Breed(id, name);
 
         return Result.Success(breed);
     }
