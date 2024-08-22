@@ -1,8 +1,31 @@
-﻿namespace FindYourFriendAmongPets.Core.Models;
+﻿using FindYourFriendAmongPets.Core.Shared;
 
-public class Volunteer
+namespace FindYourFriendAmongPets.Core.Models;
+
+public class Volunteer : Entity<VolunteerId>
 {
-    public Guid Id { get; private set; }
+    private Volunteer(VolunteerId id) : base(id)
+    {
+    }
+
+    public Volunteer(VolunteerId id,
+        FullName fullName,
+        string description,
+        int experienceInYears,
+        int countPetsRealized,
+        int countPetsLookingForHome,
+        int countPetsHealing,
+        PhoneNumber phoneNumber)
+        : base(id)
+    {
+        FullName = fullName;
+        Description = description;
+        ExperienceInYears = experienceInYears;
+        CountPetsRealized = countPetsRealized;
+        CountPetsLookingForHome = countPetsLookingForHome;
+        CountPetsHealing = countPetsHealing;
+        PhoneNumber = phoneNumber;
+    }
 
     public FullName FullName { get; private set; }
 

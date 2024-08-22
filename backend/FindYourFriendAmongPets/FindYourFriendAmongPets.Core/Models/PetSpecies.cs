@@ -5,6 +5,10 @@ namespace FindYourFriendAmongPets.Core.Models;
 
 public record PetSpecies
 {
+    private PetSpecies()
+    {
+    }
+    
     private PetSpecies(SpeciesId speciesId, Guid breedId)
     {
         SpeciesId = speciesId;

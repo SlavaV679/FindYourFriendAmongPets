@@ -20,7 +20,7 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                 table: "pets");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "species_id",
+                name: "pet_species",
                 table: "pets",
                 type: "uuid",
                 nullable: false,
@@ -68,7 +68,7 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                 name: "species");
 
             migrationBuilder.DropColumn(
-                name: "species_id",
+                name: "pet_species",
                 table: "pets");
 
             migrationBuilder.AddColumn<string>(
