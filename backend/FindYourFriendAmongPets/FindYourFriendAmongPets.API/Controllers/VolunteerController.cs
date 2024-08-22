@@ -1,5 +1,8 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Create;
+﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.API.Extensions;
+using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Core.Models;
+using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindYourFriendAmongPets.API.Controllers;
@@ -16,6 +19,6 @@ public class VolunteerController : ControllerBase
     {
         var response = await handler.Handle(request, cancellationToken);
 
-        return Ok(response.Value);
+        return response.ToResponse();
     }
 }

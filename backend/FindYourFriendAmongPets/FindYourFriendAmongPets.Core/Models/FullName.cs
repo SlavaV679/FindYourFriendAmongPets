@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -22,18 +23,18 @@ public record FullName
 
     public string? Patronymic { get; }
 
-    public static Result<FullName> Create(string firstName, string lastName, string? patronymic = null)
+    public static Result<FullName, Error> Create(string firstName, string lastName, string? patronymic = null)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > FIRSTNAME_MAX_LENGHT)
-            return Result.Failure<FullName>($"{nameof(FirstName)} can not be empty or bigger then {FIRSTNAME_MAX_LENGHT}");
+            return Errors.General.ValueIsInvalid($"{nameof(FirstName)} can not be empty or bigger then {FIRSTNAME_MAX_LENGHT}");
 
         if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > LASTNAME_MAX_LENGHT)
-            return Result.Failure<FullName>($"{nameof(LastName)} can not be empty or bigger then {LASTNAME_MAX_LENGHT}");
+            return Errors.General.ValueIsInvalid($"{nameof(LastName)} can not be empty or bigger then {LASTNAME_MAX_LENGHT}");
 
-        if (patronymic?.Length == 0 || patronymic?.Length > PATRONYMIC_MAX_LENGHT)
-            return Result.Failure<FullName>($"{nameof(Patronymic)} can not be empty or bigger then {PATRONYMIC_MAX_LENGHT}");
+        if (patronymic?.Length is 0 or > PATRONYMIC_MAX_LENGHT)
+            return Errors.General.ValueIsInvalid($"{nameof(Patronymic)} can not be empty or bigger then {PATRONYMIC_MAX_LENGHT}");
 
-        return Result.Success(new FullName(firstName, lastName, patronymic));
+        return new FullName(firstName, lastName, patronymic);
     }
 }
 

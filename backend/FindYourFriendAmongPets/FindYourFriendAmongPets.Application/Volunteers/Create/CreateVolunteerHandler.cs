@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Core.Models;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Create;
 
@@ -11,7 +12,7 @@ public class CreateVolunteerHandler
     {
         _repository = repository;
     }
-    public async Task<Result<VolunteerId>> Handle(VolunteerDto volunteerDto, CancellationToken token)
+    public async Task<Result<Guid, Error>> Handle(VolunteerDto volunteerDto, CancellationToken token)
     {
         var fullName = FullName.Create(
             volunteerDto.FirstName,
@@ -19,12 +20,12 @@ public class CreateVolunteerHandler
             volunteerDto.Patronymic);
 
         if (fullName.IsFailure)
-            return Result.Failure<VolunteerId>(fullName.Error);
+            return fullName.Error;
 
         var phoneNumber = PhoneNumber.Create(volunteerDto.PhoneNumber);
         
         if (phoneNumber.IsFailure)
-            return Result.Failure<VolunteerId>(phoneNumber.Error);
+            return phoneNumber.Error;
 
         var volunteer = new Volunteer(VolunteerId.NewVolunteerId(),
             fullName.Value,
@@ -36,8 +37,8 @@ public class CreateVolunteerHandler
             phoneNumber.Value
         );
         
-        var volunteerId = await _repository.Add(volunteer, token);
+        var result = await _repository.Add(volunteer, token);
         
-        return Result.Success(volunteerId);
+        return (Guid)result.Value;
     }
 }

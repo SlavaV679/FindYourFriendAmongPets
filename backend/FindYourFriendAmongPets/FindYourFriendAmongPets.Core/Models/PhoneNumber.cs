@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -13,12 +14,12 @@ public record PhoneNumber
     
     public string Number { get; }
     
-    public static Result<PhoneNumber> Create(string number)
+    public static Result<PhoneNumber, Error> Create(string number)
     {
         if (string.IsNullOrWhiteSpace(number) || !ValidationRegex.IsMatch(number))
-            return Result.Failure<PhoneNumber>($"{nameof(number)} incorrect format");
+            return Errors.General.ValueIsInvalid($"{nameof(number)} incorrect format");
 
-        return Result.Success(new PhoneNumber(number));
+        return new PhoneNumber(number);
     }
     
     public static readonly Regex ValidationRegex = new Regex(
