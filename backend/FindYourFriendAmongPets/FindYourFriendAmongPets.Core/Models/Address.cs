@@ -24,20 +24,20 @@ public record Address
 
     public string? Description { get; }
 
-    public static Result<Address> Create(string city, string street, string? building = null, string? description = null, string? country = null)
+    public static Result<Address, Error> Create(string city, string street, string? building = null, string? description = null, string? country = null)
     {
         if (string.IsNullOrWhiteSpace(city) || city.Length > Constants.MAX_LOW_TEXT_LENGHT)
-            return Result.Failure<Address>($"{nameof(City)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(City), $"{nameof(City)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
 
         if (string.IsNullOrWhiteSpace(street) || street.Length > Constants.MAX_LOW_TEXT_LENGHT)
-            return Result.Failure<Address>($"{nameof(Street)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(Street), $"{nameof(Street)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
 
         if (building?.Length == 0 || building?.Length > Constants.MAX_LOW_TEXT_LENGHT)
-            return Result.Failure<Address>($"{nameof(Building)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(Building), $"{nameof(Building)} can not be empty or bigger then {Constants.MAX_LOW_TEXT_LENGHT}");
 
         if (string.IsNullOrWhiteSpace(country))
             country = "Russia";
 
-        return Result.Success(new Address(city, street, building, description, country));
+        return new Address(city, street, building, description, country);
     }
 }

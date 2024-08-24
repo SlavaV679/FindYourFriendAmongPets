@@ -14,7 +14,7 @@ public class Volunteer : Entity<VolunteerId>
 
     public Volunteer(VolunteerId id,
         FullName fullName,
-        string description,
+        Description description,
         int experienceInYears,
         int countPetsRealized,
         int countPetsLookingForHome,
@@ -33,7 +33,7 @@ public class Volunteer : Entity<VolunteerId>
 
     public FullName FullName { get; private set; }
 
-    public string Description { get; private set; }
+    public Description Description { get; private set; }
 
     public int ExperienceInYears { get; private set; }
 

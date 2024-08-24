@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -20,11 +21,11 @@ public class PetPhoto : Shared.Entity<PetPhotoId>
 
     public bool IsMain { get; }
 
-    public static Result<PetPhoto> Create(PetPhotoId id, string pathToStorage, bool isMain = false)
+    public static Result<PetPhoto, Error> Create(PetPhotoId id, string pathToStorage, bool isMain = false)
     {
         if (string.IsNullOrWhiteSpace(pathToStorage))
-            return Result.Failure<PetPhoto>($"{nameof(PathToStorage)} can not be empty.");
+            return Errors.General.ValueIsInvalid(nameof(PathToStorage), $"{nameof(PathToStorage)} can not be empty.");
 
-        return Result.Success(new PetPhoto(id, pathToStorage, isMain));
+        return new PetPhoto(id, pathToStorage, isMain);
     }
 }

@@ -26,13 +26,13 @@ public record FullName
     public static Result<FullName, Error> Create(string firstName, string lastName, string? patronymic = null)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > FIRSTNAME_MAX_LENGHT)
-            return Errors.General.ValueIsInvalid(nameof(FirstName),$"{nameof(FirstName)} can not be empty or bigger then {FIRSTNAME_MAX_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(FirstName), $"{nameof(FirstName)} can not be empty or bigger then {FIRSTNAME_MAX_LENGHT}");
 
         if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > LASTNAME_MAX_LENGHT)
-            return Errors.General.ValueIsInvalid(nameof(LastName),$"{nameof(LastName)} can not be empty or bigger then {LASTNAME_MAX_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(LastName), $"{nameof(LastName)} can not be empty or bigger then {LASTNAME_MAX_LENGHT}");
 
         if (patronymic?.Length is 0 or > PATRONYMIC_MAX_LENGHT)
-            return Errors.General.ValueIsInvalid(nameof(Patronymic),$"{nameof(Patronymic)} can not be empty or bigger then {PATRONYMIC_MAX_LENGHT}");
+            return Errors.General.ValueIsInvalid(nameof(Patronymic), $"{nameof(Patronymic)} can not be empty or bigger then {PATRONYMIC_MAX_LENGHT}");
 
         return new FullName(firstName, lastName, patronymic);
     }
@@ -42,23 +42,23 @@ public record FullName
 // В случае record эти методы уже переопределены!!!
 
 // public override bool Equals(object? obj)
-    // {
-    //     if (obj is FullName fullName
-    //         && this.FirstName.Equals(fullName.FirstName)
-    //         && this.LastName.Equals(fullName.LastName))
-    //     {
-    //         return true;
-    //     }
-    //
-    //     return false;
-    // }
+// {
+//     if (obj is FullName fullName
+//         && this.FirstName.Equals(fullName.FirstName)
+//         && this.LastName.Equals(fullName.LastName))
+//     {
+//         return true;
+//     }
+//
+//     return false;
+// }
 
-    // public override int GetHashCode()
-    // {
-    //     return StringComparer.Ordinal.GetHashCode($"{FirstName}{LastName}");
-    // }
-    //
-    // public override string ToString()
-    // {
-    //     return $"{LastName} {FirstName} {Patronymic ?? string.Empty}";
-    // }
+// public override int GetHashCode()
+// {
+//     return StringComparer.Ordinal.GetHashCode($"{FirstName}{LastName}");
+// }
+//
+// public override string ToString()
+// {
+//     return $"{LastName} {FirstName} {Patronymic ?? string.Empty}";
+// }

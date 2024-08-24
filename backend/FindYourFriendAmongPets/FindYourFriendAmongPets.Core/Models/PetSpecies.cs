@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -19,9 +20,10 @@ public record PetSpecies
     
     public Guid BreedId { get; }
 
-    public static Result<PetSpecies> Create(SpeciesId speciesId, Guid breedId)
+    public static Result<PetSpecies, Error> Create(SpeciesId speciesId, Guid breedId)
     {
         var speciesBreed = new PetSpecies(speciesId, breedId);
-        return Result.Success(speciesBreed);
+        
+        return speciesBreed;
     }
 }
