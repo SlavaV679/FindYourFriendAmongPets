@@ -17,7 +17,7 @@ public record PhoneNumber
     public static Result<PhoneNumber, Error> Create(string number)
     {
         if (string.IsNullOrWhiteSpace(number) || !ValidationRegex.IsMatch(number))
-            return Errors.General.ValueIsInvalid($"{nameof(number)} incorrect format");
+            return Errors.General.ValueIsInvalid("PhoneNumber");
 
         return new PhoneNumber(number);
     }

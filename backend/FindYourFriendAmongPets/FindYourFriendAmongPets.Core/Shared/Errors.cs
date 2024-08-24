@@ -4,10 +4,13 @@ public static class Errors
 {
     public static class General
     {
-        public static Error ValueIsInvalid(string? name = null)
+        public static Error ValueIsInvalid(string? name = null, string? messageContent = null)
         {
             var label = name ?? "value";
-            return Error.Validation("value.is.invalid", $"{label} is invalid");
+
+            var message = messageContent == null ? string.Empty : $": {messageContent}";
+            
+            return Error.Validation("value.is.invalid", $"{label} is invalid{message}");
         }
 
         public static Error NotFound(Guid? id = null)
