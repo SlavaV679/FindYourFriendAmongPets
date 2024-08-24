@@ -14,7 +14,7 @@ public class VolunteerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] VolunteerDto request,
+        [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
         var response = await handler.Handle(request, cancellationToken);

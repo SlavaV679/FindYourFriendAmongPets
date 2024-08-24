@@ -12,30 +12,40 @@ public class CreateVolunteerHandler
     {
         _repository = repository;
     }
-    public async Task<Result<Guid, Error>> Handle(VolunteerDto volunteerDto, CancellationToken token)
+    public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest createVolunteerRequest, CancellationToken token)
     {
         var fullName = FullName.Create(
-            volunteerDto.FirstName,
-            volunteerDto.LastName,
-            volunteerDto.Patronymic);
+            createVolunteerRequest.FirstName,
+            createVolunteerRequest.LastName,
+            createVolunteerRequest.Patronymic);
 
         if (fullName.IsFailure)
             return fullName.Error;
 
-        var phoneNumber = PhoneNumber.Create(volunteerDto.PhoneNumber);
+        var phoneNumber = PhoneNumber.Create(createVolunteerRequest.PhoneNumber);
         
         if (phoneNumber.IsFailure)
             return phoneNumber.Error;
 
         var volunteer = new Volunteer(VolunteerId.NewVolunteerId(),
             fullName.Value,
-            volunteerDto.Description,
-            volunteerDto.ExperienceInYears,
-            volunteerDto.CountPetsRealized,
-            volunteerDto.CountPetsLookingForHome,
-            volunteerDto.CountPetsHealing,
+            createVolunteerRequest.Description,
+            createVolunteerRequest.ExperienceInYears,
+            createVolunteerRequest.CountPetsRealized,
+            createVolunteerRequest.CountPetsLookingForHome,
+            createVolunteerRequest.CountPetsHealing,
             phoneNumber.Value
         );
+
+        var requisitesForHelp = createVolunteerRequest.RequisitesForHelpDto?
+            .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description));
+
+        var socialNetworks = createVolunteerRequest.SocialNetworksDto?
+            .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link));
+        
+        volunteer.AddRequisitesForHelp(requisitesForHelp);
+        
+        volunteer.AddSocialNetwork(socialNetworks);
         
         var result = await _repository.Add(volunteer, token);
         

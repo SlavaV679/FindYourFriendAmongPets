@@ -4,6 +4,10 @@ namespace FindYourFriendAmongPets.Core.Models;
 
 public class Volunteer : Entity<VolunteerId>
 {
+    private readonly List<RequisiteForHelp> _requisitesForHelp = [];
+
+    private readonly List<SocialNetwork> _socialNetworks = [];
+
     private Volunteer(VolunteerId id) : base(id)
     {
     }
@@ -41,9 +45,21 @@ public class Volunteer : Entity<VolunteerId>
 
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public List<SocialNetwork> SocialNetworks { get; private set; } = [];
+    public IReadOnlyList<RequisiteForHelp> RequisitesForHelp => _requisitesForHelp;
 
-    public List<RequisiteForHelp> RequisitesForHelp { get; private set; } = [];
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 
     public List<Pet> Pets { get; private set; } = [];
+
+    public void AddRequisitesForHelp(IEnumerable<RequisiteForHelp>? requisitesForHelp)
+    {
+        if (requisitesForHelp != null)
+            _requisitesForHelp.AddRange(requisitesForHelp);
+    }
+
+    public void AddSocialNetwork(IEnumerable<SocialNetwork>? socialNetworks)
+    {
+        if (socialNetworks != null)
+            _socialNetworks.AddRange(socialNetworks);
+    }
 }
