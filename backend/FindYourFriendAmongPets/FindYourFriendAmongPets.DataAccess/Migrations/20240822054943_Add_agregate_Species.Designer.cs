@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourFriendAmongPets.DataAccess.Migrations
 {
     [DbContext(typeof(PetFamilyDbContext))]
-    [Migration("20240820065732_Add_agregate_Species")]
+    [Migration("20240822054943_Add_agregate_Species")]
     partial class Add_agregate_Species
     {
         /// <inheritdoc />
@@ -86,10 +86,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .HasColumnType("character varying(13)")
                         .HasColumnName("owners_phone_number");
 
-                    b.Property<Guid>("SpeciesId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("species_id");
-
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
@@ -128,6 +124,15 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("street");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PetSpecies", "FindYourFriendAmongPets.Core.Models.Pet.PetSpecies#PetSpecies", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<Guid>("SpeciesId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("pet_species");
                         });
 
                     b.HasKey("Id")
@@ -190,7 +195,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
             modelBuilder.Entity("FindYourFriendAmongPets.Core.Models.Volunteer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 

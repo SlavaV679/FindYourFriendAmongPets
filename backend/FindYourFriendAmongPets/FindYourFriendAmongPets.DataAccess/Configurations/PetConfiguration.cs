@@ -1,4 +1,5 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
+using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,6 +26,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
 
+        builder.ComplexProperty(p => p.PetSpecies, ps =>
+        {
+            ps.Property(p => p.SpeciesId)
+                .HasConversion(id => id.Value,
+                    value => SpeciesId.Create(value))
+                .HasColumnName("pet_species");
+        });
+        
         builder.Property(p => p.HealthInfo)
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();

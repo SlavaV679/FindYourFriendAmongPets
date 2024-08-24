@@ -1,8 +1,35 @@
-﻿namespace FindYourFriendAmongPets.Core.Models;
+﻿using FindYourFriendAmongPets.Core.Shared;
 
-public class Volunteer
+namespace FindYourFriendAmongPets.Core.Models;
+
+public class Volunteer : Entity<VolunteerId>
 {
-    public Guid Id { get; private set; }
+    private readonly List<RequisiteForHelp> _requisitesForHelp = [];
+
+    private readonly List<SocialNetwork> _socialNetworks = [];
+
+    private Volunteer(VolunteerId id) : base(id)
+    {
+    }
+
+    public Volunteer(VolunteerId id,
+        FullName fullName,
+        string description,
+        int experienceInYears,
+        int countPetsRealized,
+        int countPetsLookingForHome,
+        int countPetsHealing,
+        PhoneNumber phoneNumber)
+        : base(id)
+    {
+        FullName = fullName;
+        Description = description;
+        ExperienceInYears = experienceInYears;
+        CountPetsRealized = countPetsRealized;
+        CountPetsLookingForHome = countPetsLookingForHome;
+        CountPetsHealing = countPetsHealing;
+        PhoneNumber = phoneNumber;
+    }
 
     public FullName FullName { get; private set; }
 
@@ -18,9 +45,21 @@ public class Volunteer
 
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public List<SocialNetwork> SocialNetworks { get; private set; } = [];
+    public IReadOnlyList<RequisiteForHelp> RequisitesForHelp => _requisitesForHelp;
 
-    public List<RequisiteForHelp> RequisitesForHelp { get; private set; } = [];
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 
     public List<Pet> Pets { get; private set; } = [];
+
+    public void AddRequisitesForHelp(IEnumerable<RequisiteForHelp>? requisitesForHelp)
+    {
+        if (requisitesForHelp != null)
+            _requisitesForHelp.AddRange(requisitesForHelp);
+    }
+
+    public void AddSocialNetwork(IEnumerable<SocialNetwork>? socialNetworks)
+    {
+        if (socialNetworks != null)
+            _socialNetworks.AddRange(socialNetworks);
+    }
 }

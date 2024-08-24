@@ -83,10 +83,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .HasColumnType("character varying(13)")
                         .HasColumnName("owners_phone_number");
 
-                    b.Property<Guid>("SpeciesId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("species_id");
-
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
@@ -125,6 +121,15 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("street");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PetSpecies", "FindYourFriendAmongPets.Core.Models.Pet.PetSpecies#PetSpecies", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<Guid>("SpeciesId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("pet_species");
                         });
 
                     b.HasKey("Id")
@@ -187,7 +192,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
             modelBuilder.Entity("FindYourFriendAmongPets.Core.Models.Volunteer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
