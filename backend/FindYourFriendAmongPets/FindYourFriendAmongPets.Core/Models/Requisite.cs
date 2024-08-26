@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -13,11 +14,11 @@ public record Requisite
     public string Name { get; }
     public string Description { get; }
 
-    public static Result<Requisite> Create(string name, string description)
+    public static Result<Requisite, Error> Create(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return Result.Failure<Requisite>($"{nameof(Name)} can not be empty.");
+            return Errors.General.ValueIsInvalid(nameof(Name));
 
-        return Result.Success(new Requisite(name, description));
+        return new Requisite(name, description);
     }
 }

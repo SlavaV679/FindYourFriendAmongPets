@@ -16,7 +16,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(p => p.Id)
             .HasConversion(id => id.Value,
                 value => VolunteerId.Create(value));
-        
+
         builder.ComplexProperty(v => v.FullName, fullName =>
         {
             fullName.Property(f => f.FirstName)
@@ -29,10 +29,14 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("patronymic");
         });
-        
-        builder.Property(v => v.Description)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT);
+
+        builder.ComplexProperty(v => v.Description, d =>
+        {
+            d.Property(v => v.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
+                .HasColumnName("description");
+        });
 
         builder.ComplexProperty(v => v.PhoneNumber, phone =>
         {
@@ -44,7 +48,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         // builder.HasMany(v => v.SocialNetworks)
         //     .WithOne()
         //     .HasForeignKey("volunteer_id");//такой способ более понятный чем OwnsMany, однако
-            // здесь не смог настроить длину внутренних полей, например SocialNetworks.Link
+        // здесь не смог настроить длину внутренних полей, например SocialNetworks.Link
 
         builder.OwnsMany(
             v => v.SocialNetworks,
@@ -53,7 +57,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 s.Property(x => x.Link).HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
                 s.Property(x => x.Title).HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
             }); //TODO научиться управлять onDelete: ReferentialAction.Cascade
-        
+
         builder.HasMany(v => v.RequisitesForHelp)
             .WithOne()
             .HasForeignKey("volunteer_id");
