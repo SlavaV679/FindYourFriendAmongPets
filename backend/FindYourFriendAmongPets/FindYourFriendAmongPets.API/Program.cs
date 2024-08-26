@@ -1,3 +1,4 @@
+using FindYourFriendAmongPets.Application;
 using FindYourFriendAmongPets.Application.Volunteers;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.DataAccess;
@@ -12,9 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<PetFamilyDbContext>();
-builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
-builder.Services.AddScoped<CreateVolunteerHandler>();
+builder.Services
+    .AddInfrastructure()
+    .AddApplication();
 
 var app = builder.Build();
 
