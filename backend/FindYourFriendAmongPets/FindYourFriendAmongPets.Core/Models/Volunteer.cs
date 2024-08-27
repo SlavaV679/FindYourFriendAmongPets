@@ -15,7 +15,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     {
     }
 
-    public Volunteer(VolunteerId id,
+    private Volunteer(VolunteerId id,
         FullName fullName,
         Description description,
         PhoneNumber phoneNumber,
