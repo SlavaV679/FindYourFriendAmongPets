@@ -79,7 +79,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
         });
 
-        builder.OwnsOne(p => p.Details, petBuilder =>
+        builder.OwnsOne(p => p.RequisiteDetails, petBuilder =>
         {
             petBuilder.ToJson();
 

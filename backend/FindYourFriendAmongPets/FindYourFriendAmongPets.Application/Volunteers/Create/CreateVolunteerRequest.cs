@@ -5,10 +5,7 @@ public record CreateVolunteerRequest(
     string LastName,
     string? Patronymic,
     string Description,
-    int ExperienceInYears,
-    int CountPetsRealized,
-    int CountPetsLookingForHome,
-    int CountPetsHealing,
     string PhoneNumber,
+    int ExperienceInYears,
     IEnumerable<RequisiteForHelpDto>? RequisitesForHelpDto,
     IEnumerable<SocialNetworkDto>? SocialNetworksDto);

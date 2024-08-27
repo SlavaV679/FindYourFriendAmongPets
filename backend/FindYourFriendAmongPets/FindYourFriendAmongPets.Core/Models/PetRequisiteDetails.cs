@@ -1,6 +1,6 @@
 ﻿namespace FindYourFriendAmongPets.Core.Models;
 
-public record PetDetails
+public record PetRequisiteDetails
 {
     public List<Requisite> Requisites { get; }
 }
