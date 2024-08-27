@@ -3,6 +3,7 @@ using FindYourFriendAmongPets.API.Response;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindYourFriendAmongPets.API.Controllers;
@@ -19,21 +20,10 @@ public class VolunteerController : ControllerBase
         CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
-        
+
         if (validationResult.IsValid == false)
-        {
-            var validationErrors = validationResult.Errors;
+            return validationResult.ValidateBadRequest();
 
-            var errors = from validationError in validationErrors
-                let error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
-                select new ResponseError(error.Code, error.Message, validationError.PropertyName);
-
-            var envelope = Envelope.Error(errors);
-
-            return BadRequest(envelope);
-        }
-        
         var response = await handler.Handle(request, cancellationToken);
 
         return response.ToResponse();

@@ -15,9 +15,9 @@ public class CreateVolunteerHandler
     public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request, CancellationToken token)
     {
         var fullName = FullName.Create(
-            request.FirstName,
-            request.LastName,
-            request.Patronymic).Value;
+            request.FullName.FirstName,
+            request.FullName.LastName,
+            request.FullName.Patronymic).Value;
 
         var description = Description.Create(request.Description).Value;
         
