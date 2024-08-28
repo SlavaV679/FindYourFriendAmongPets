@@ -15,31 +15,22 @@ public class CreateVolunteerHandler
     public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request, CancellationToken token)
     {
         var fullName = FullName.Create(
-            request.FirstName,
-            request.LastName,
-            request.Patronymic);
+            request.FullName.FirstName,
+            request.FullName.LastName,
+            request.FullName.Patronymic).Value;
 
-        if (fullName.IsFailure)
-            return fullName.Error;
-
-        var description = Description.Create(request.Description);
+        var description = Description.Create(request.Description).Value;
         
-        if (description.IsFailure)
-            return description.Error;
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
         
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
-        
-        if (phoneNumber.IsFailure)
-            return phoneNumber.Error;
-
         var volunteer = new Volunteer(VolunteerId.NewVolunteerId(),
-            fullName.Value,
-            description.Value,
+            fullName,
+            description,
             request.ExperienceInYears,
             request.CountPetsRealized,
             request.CountPetsLookingForHome,
             request.CountPetsHealing,
-            phoneNumber.Value
+            phoneNumber
         );
 
         var requisitesForHelp = request.RequisitesForHelpDto?

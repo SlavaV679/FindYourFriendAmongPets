@@ -1,9 +1,7 @@
 ﻿namespace FindYourFriendAmongPets.Application.Volunteers.Create;
 
 public record CreateVolunteerRequest(
-    string FirstName,
-    string LastName,
-    string? Patronymic,
+    FullNameDto FullName,
     string Description,
     int ExperienceInYears,
     int CountPetsRealized,
