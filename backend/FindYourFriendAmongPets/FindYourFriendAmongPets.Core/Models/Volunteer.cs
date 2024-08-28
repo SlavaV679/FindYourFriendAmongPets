@@ -19,13 +19,17 @@ public class Volunteer : Shared.Entity<VolunteerId>
         FullName fullName,
         Description description,
         PhoneNumber phoneNumber,
-        int experienceInYears)
+        int experienceInYears,
+        IEnumerable<RequisiteForHelp> requisitesForHelp,
+        IEnumerable<SocialNetwork> socialNetworks)
         : base(id)
     {
         FullName = fullName;
         Description = description;
         ExperienceInYears = experienceInYears;
         PhoneNumber = phoneNumber;
+        _requisitesForHelp = requisitesForHelp.ToList();
+        _socialNetworks = socialNetworks.ToList();
     }
 
     public FullName FullName { get; private set; }
@@ -46,6 +50,8 @@ public class Volunteer : Shared.Entity<VolunteerId>
         FullName fullName,
         Description description,
         PhoneNumber phoneNumber,
+        IEnumerable<RequisiteForHelp> requisitesForHelp,
+        IEnumerable<SocialNetwork> socialNetworks,
         int experienceInYears = 0,
         int countPetsRealized = 0,
         int countPetsLookingForHome = 0,
@@ -59,7 +65,9 @@ public class Volunteer : Shared.Entity<VolunteerId>
             fullName,
             description,
             phoneNumber,
-            experienceInYears);
+            experienceInYears,
+            requisitesForHelp,
+            socialNetworks);
     }
 
     public int RealizedPetsCount() => _pets.Count(x => x.HelpStatus == Status.FoundHome);

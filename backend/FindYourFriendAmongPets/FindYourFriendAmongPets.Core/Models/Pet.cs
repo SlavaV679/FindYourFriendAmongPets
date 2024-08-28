@@ -125,9 +125,8 @@ public class Pet : Shared.Entity<PetId>
             requisiteDetails);
     }
     
-    public void AddPetPhotos(IEnumerable<PetPhoto>? petPhotos)
+    public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos)
     {
-        if (petPhotos != null)
             _petPhotos.AddRange(petPhotos);
     }
 }

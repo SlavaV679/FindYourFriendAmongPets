@@ -33,22 +33,20 @@ public class CreateVolunteerHandler
         if (phoneNumber.IsFailure)
             return phoneNumber.Error;
 
+        var requisitesForHelp = request.RequisitesForHelpDto?
+            .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description)) ?? [];
+
+        var socialNetworks = request.SocialNetworksDto?
+            .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link)) ?? [];
+
         var volunteer = Volunteer.Create(VolunteerId.NewVolunteerId(),
             fullName.Value,
             description.Value,
             phoneNumber.Value,
+            requisitesForHelp,
+            socialNetworks,
             request.ExperienceInYears
         );
-
-        var requisitesForHelp = request.RequisitesForHelpDto?
-            .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description));
-
-        var socialNetworks = request.SocialNetworksDto?
-            .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link));
-
-        volunteer.Value.AddRequisitesForHelp(requisitesForHelp);
-
-        volunteer.Value.AddSocialNetwork(socialNetworks);
 
         var result = await _repository.Add(volunteer.Value, token);
 
