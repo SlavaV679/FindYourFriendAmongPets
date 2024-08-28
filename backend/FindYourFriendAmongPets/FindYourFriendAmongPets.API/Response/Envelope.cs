@@ -1,6 +1,4 @@
-﻿using FindYourFriendAmongPets.Core.Shared;
-
-namespace FindYourFriendAmongPets.API.Response;
+﻿namespace FindYourFriendAmongPets.API.Response;
 
 public record Envelope
 {

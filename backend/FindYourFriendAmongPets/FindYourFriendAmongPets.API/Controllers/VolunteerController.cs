@@ -15,15 +15,9 @@ public class VolunteerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromServices] IValidator<CreateVolunteerRequest> validator,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (validationResult.IsValid == false)
-            return validationResult.ValidateBadRequest();
-
         var response = await handler.Handle(request, cancellationToken);
 
         return response.ToResponse();

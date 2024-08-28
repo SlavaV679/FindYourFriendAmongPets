@@ -1,8 +1,7 @@
+using FindYourFriendAmongPets.API.Validation;
 using FindYourFriendAmongPets.Application;
-using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.DataAccess;
-using FindYourFriendAmongPets.DataAccess.Repositories;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddFluentValidationAutoValidation(configuration =>
+{
+    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+});
 
 builder.Services
     .AddInfrastructure()
