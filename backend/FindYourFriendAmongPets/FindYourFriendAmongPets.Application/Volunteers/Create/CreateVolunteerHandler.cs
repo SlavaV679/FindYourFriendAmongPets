@@ -18,20 +18,11 @@ public class CreateVolunteerHandler
         var fullName = FullName.Create(
             request.FirstName,
             request.LastName,
-            request.Patronymic);
+            request.Patronymic).Value;
 
-        if (fullName.IsFailure)
-            return fullName.Error;
+        var description = Description.Create(request.Description).Value;
 
-        var description = Description.Create(request.Description);
-
-        if (description.IsFailure)
-            return description.Error;
-
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
-
-        if (phoneNumber.IsFailure)
-            return phoneNumber.Error;
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
 
         var requisitesForHelp = request.RequisitesForHelpDto?
             .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description)) ?? [];
@@ -40,9 +31,9 @@ public class CreateVolunteerHandler
             .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link)) ?? [];
 
         var volunteer = Volunteer.Create(VolunteerId.NewVolunteerId(),
-            fullName.Value,
-            description.Value,
-            phoneNumber.Value,
+            fullName,
+            description,
+            phoneNumber,
             requisitesForHelp,
             socialNetworks,
             request.ExperienceInYears
