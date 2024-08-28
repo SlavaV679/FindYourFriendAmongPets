@@ -1,12 +1,29 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.API.Response;
 using FindYourFriendAmongPets.Core.Shared;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindYourFriendAmongPets.API.Extensions;
 
 public static class ResponseExtensions
 {
+    public static ActionResult ValidateBadRequest(this ValidationResult validationResult)
+    {
+        var validationErrors = validationResult.Errors;
+
+        var errors = from validationError in validationErrors
+            let error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
+            select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+        var envelope = Envelope.Error(errors);
+
+        return new ObjectResult(envelope)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
+        };
+    }
+    
     public static ActionResult<T> ToResponse<T>(this Result<T, Error> result)
     {
         if (result.IsSuccess)

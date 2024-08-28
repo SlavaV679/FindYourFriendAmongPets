@@ -22,17 +22,7 @@ public class VolunteerController : ControllerBase
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (validationResult.IsValid == false)
-        {
-            var validationErrors = validationResult.Errors;
-
-            var errors = from validationError in validationErrors
-                let error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
-                select new ResponseError(error.Code, error.Message, validationError.PropertyName);
-
-            var envelope = Envelope.Error(errors);
-
-            return BadRequest(envelope);
-        }
+            return validationResult.ValidateBadRequest();
 
         var response = await handler.Handle(request, cancellationToken);
 
