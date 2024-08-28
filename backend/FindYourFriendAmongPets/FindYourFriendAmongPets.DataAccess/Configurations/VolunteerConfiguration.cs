@@ -75,7 +75,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 // внутренние свойства, т.е. например длину RequisitesForHelp.Name. Для решения этой проблемы использовал реализацию
 // OwnsMany для свойства SocialNetworks. RequisitesForHelp реализована через HasMany().WithOne()
 // 3. SocialNetworks (OwnsMany) - реализация через OwnsMany.
-// В PetConfiguration.Details реализован 4-ый вид подобного свойства через ToJson()!!!
+// В PetConfiguration.RequisiteDetails реализован 4-ый вид подобного свойства через ToJson()!!!
 // Этот вид проектирования создает колонку, в которой данные будут храниться в виде json.
 
 // Нужно иметь ввиду что при проектировании микросервисной архитектуры агрегаты из разных доменов

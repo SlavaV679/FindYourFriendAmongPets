@@ -4,11 +4,11 @@ public static class Errors
 {
     public static class General
     {
-        public static Error ValueIsInvalid(string? propertyName = null, string? detailedMessage = null)
+        public static Error ValueIsInvalid(string? name = null, string? messageContent = null)
         {
-            var label = propertyName ?? "value";
+            var label = name ?? "value";
 
-            var message = detailedMessage == null ? string.Empty : $": {detailedMessage}";
+            var message = messageContent == null ? string.Empty : $": {messageContent}";
             
             return Error.Validation("value.is.invalid", $"{label} is invalid{message}");
         }

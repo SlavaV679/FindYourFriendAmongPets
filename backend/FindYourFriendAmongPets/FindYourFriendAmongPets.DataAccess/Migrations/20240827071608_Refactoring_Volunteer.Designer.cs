@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FindYourFriendAmongPets.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourFriendAmongPets.DataAccess.Migrations
 {
     [DbContext(typeof(PetFamilyDbContext))]
-    partial class PetFamilyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240827071608_Refactoring_Volunteer")]
+    partial class Refactoring_Volunteer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,6 +46,12 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .HasColumnType("date")
                         .HasColumnName("date_of_birth");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("description");
+
                     b.Property<string>("HealthInfo")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -70,6 +79,12 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<string>("OwnersPhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)")
+                        .HasColumnName("owners_phone_number");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
@@ -109,28 +124,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("street");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("Description", "FindYourFriendAmongPets.Core.Models.Pet.Description#Description", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(2000)
-                                .HasColumnType("character varying(2000)")
-                                .HasColumnName("description");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("OwnersPhoneNumber", "FindYourFriendAmongPets.Core.Models.Pet.OwnersPhoneNumber#PhoneNumber", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Number")
-                                .IsRequired()
-                                .HasMaxLength(13)
-                                .HasColumnType("character varying(13)")
-                                .HasColumnName("owners_phone_number");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PetSpecies", "FindYourFriendAmongPets.Core.Models.Pet.PetSpecies#PetSpecies", b1 =>

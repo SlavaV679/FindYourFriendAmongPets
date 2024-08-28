@@ -6,22 +6,23 @@ public record Envelope
 {
     public object? Result { get; }
 
-    public List<ResponseError> Errors { get; }
+    public string? ErrorCode { get; }
+
+    public string? ErrorMessage { get; }
 
     public DateTime TimeGenerated { get; }
 
-    private Envelope(object? result, IEnumerable<ResponseError> errors)
+    private Envelope(object? result, Error? error)
     {
         Result = result;
-        Errors = errors.ToList();
+        ErrorCode = error?.Code;
+        ErrorMessage = error?.Message;
         TimeGenerated = DateTime.Now;
     }
 
     public static Envelope Ok(object? result = null) =>
-        new(result, []);
+        new(result, null);
 
-    public static Envelope Error(IEnumerable<ResponseError> errors) =>
-        new(null, errors);
+    public static Envelope Error(Error error) =>
+        new(null, error);
 }
-
-public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
