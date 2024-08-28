@@ -1,9 +1,12 @@
-﻿using FindYourFriendAmongPets.Core.Shared;
+﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Volunteer : Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId>
 {
+    private readonly List<Pet> _pets = [];
+
     private readonly List<RequisiteForHelp> _requisitesForHelp = [];
 
     private readonly List<SocialNetwork> _socialNetworks = [];
@@ -12,23 +15,21 @@ public class Volunteer : Entity<VolunteerId>
     {
     }
 
-    public Volunteer(VolunteerId id,
+    private Volunteer(VolunteerId id,
         FullName fullName,
         Description description,
+        PhoneNumber phoneNumber,
         int experienceInYears,
-        int countPetsRealized,
-        int countPetsLookingForHome,
-        int countPetsHealing,
-        PhoneNumber phoneNumber)
+        IEnumerable<RequisiteForHelp> requisitesForHelp,
+        IEnumerable<SocialNetwork> socialNetworks)
         : base(id)
     {
         FullName = fullName;
         Description = description;
         ExperienceInYears = experienceInYears;
-        CountPetsRealized = countPetsRealized;
-        CountPetsLookingForHome = countPetsLookingForHome;
-        CountPetsHealing = countPetsHealing;
         PhoneNumber = phoneNumber;
+        _requisitesForHelp = requisitesForHelp.ToList();
+        _socialNetworks = socialNetworks.ToList();
     }
 
     public FullName FullName { get; private set; }
@@ -37,19 +38,43 @@ public class Volunteer : Entity<VolunteerId>
 
     public int ExperienceInYears { get; private set; }
 
-    public int CountPetsRealized { get; private set; }
-
-    public int CountPetsLookingForHome { get; private set; }
-
-    public int CountPetsHealing { get; private set; }
-
     public PhoneNumber PhoneNumber { get; private set; }
 
     public IReadOnlyList<RequisiteForHelp> RequisitesForHelp => _requisitesForHelp;
 
     public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 
-    public List<Pet> Pets { get; private set; } = [];
+    public IReadOnlyList<Pet> Pets => _pets;
+
+    public static Result<Volunteer, Error> Create(VolunteerId id,
+        FullName fullName,
+        Description description,
+        PhoneNumber phoneNumber,
+        IEnumerable<RequisiteForHelp> requisitesForHelp,
+        IEnumerable<SocialNetwork> socialNetworks,
+        int experienceInYears = 0,
+        int countPetsRealized = 0,
+        int countPetsLookingForHome = 0,
+        int countPetsHealing = 0)
+    {
+        if (experienceInYears < 0 || experienceInYears > Constants.MAX_YEARS_FOR_PERSON)
+            return Errors.General.ValueIsInvalid(nameof(ExperienceInYears),
+                $"{nameof(ExperienceInYears)} can not be less '0' ro bigger then '{Constants.MAX_YEARS_FOR_PERSON}'");
+
+        return new Volunteer(id,
+            fullName,
+            description,
+            phoneNumber,
+            experienceInYears,
+            requisitesForHelp,
+            socialNetworks);
+    }
+
+    public int RealizedPetsCount() => _pets.Count(x => x.HelpStatus == Status.FoundHome);
+
+    public int LookingForHomePetsCount() => _pets.Count(x => x.HelpStatus == Status.LookingForHome);
+
+    public int HealingPetsCount() => _pets.Count(x => x.HelpStatus == Status.NeedsHelp);
 
     public void AddRequisitesForHelp(IEnumerable<RequisiteForHelp>? requisitesForHelp)
     {

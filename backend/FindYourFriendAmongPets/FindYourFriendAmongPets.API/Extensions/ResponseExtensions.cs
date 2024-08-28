@@ -23,7 +23,7 @@ public static class ResponseExtensions
             StatusCode = StatusCodes.Status400BadRequest
         };
     }
-
+    
     public static ActionResult<T> ToResponse<T>(this Result<T, Error> result)
     {
         if (result.IsSuccess)
@@ -39,7 +39,7 @@ public static class ResponseExtensions
         };
 
         var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
-
+        
         var envelope = Envelope.Error([responseError]);
 
         return new ObjectResult(envelope)
@@ -47,7 +47,7 @@ public static class ResponseExtensions
             StatusCode = statusCode
         };
     }
-
+    
     public static ActionResult ToResponse(this Error error)
     {
         var statusCode = error.Type switch
@@ -58,9 +58,9 @@ public static class ResponseExtensions
             ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-
+        
         var responseError = new ResponseError(error.Code, error.Message, null);
-
+        
         var envelope = Envelope.Error([responseError]);
 
         return new ObjectResult(envelope)

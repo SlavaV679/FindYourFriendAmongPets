@@ -12,6 +12,7 @@ public class CreateVolunteerHandler
     {
         _repository = repository;
     }
+
     public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request, CancellationToken token)
     {
         var fullName = FullName.Create(
@@ -20,31 +21,26 @@ public class CreateVolunteerHandler
             request.FullName.Patronymic).Value;
 
         var description = Description.Create(request.Description).Value;
-        
+
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
-        
-        var volunteer = new Volunteer(VolunteerId.NewVolunteerId(),
-            fullName,
-            description,
-            request.ExperienceInYears,
-            request.CountPetsRealized,
-            request.CountPetsLookingForHome,
-            request.CountPetsHealing,
-            phoneNumber
-        );
 
         var requisitesForHelp = request.RequisitesForHelpDto?
-            .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description));
+            .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description)) ?? [];
 
         var socialNetworks = request.SocialNetworksDto?
-            .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link));
-        
-        volunteer.AddRequisitesForHelp(requisitesForHelp);
-        
-        volunteer.AddSocialNetwork(socialNetworks);
-        
-        var result = await _repository.Add(volunteer, token);
-        
+            .Select(s => new SocialNetwork(Guid.NewGuid(), s.Title, s.Link)) ?? [];
+
+        var volunteer = Volunteer.Create(VolunteerId.NewVolunteerId(),
+            fullName,
+            description,
+            phoneNumber,
+            requisitesForHelp,
+            socialNetworks,
+            request.ExperienceInYears
+        );
+
+        var result = await _repository.Add(volunteer.Value, token);
+
         return (Guid)result.Value;
     }
 }

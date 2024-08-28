@@ -18,9 +18,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasConversion(id => id.Value,
                 value => PetId.Create(value));
 
-        builder.Property(p => p.Description)
-            .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Description, val =>
+        {
+            val.Property(v => v.Value)
+                .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
+                .IsRequired()
+                .HasColumnName("description");
+        });
 
         builder.Property(p => p.Color)
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
@@ -59,9 +63,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("country");
         });
 
-        builder.Property(p => p.OwnersPhoneNumber)
-            .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
-            .IsRequired();
+        builder.ComplexProperty(p => p.OwnersPhoneNumber, phone =>
+        {
+            phone.Property(p => p.Number)
+                .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                .HasColumnName("owners_phone_number");
+        });
 
         builder.Property(p => p.HelpStatus)
             .HasConversion(
@@ -79,7 +86,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
         });
 
-        builder.OwnsOne(p => p.Details, petBuilder =>
+        builder.OwnsOne(p => p.RequisiteDetails, petBuilder =>
         {
             petBuilder.ToJson();
 

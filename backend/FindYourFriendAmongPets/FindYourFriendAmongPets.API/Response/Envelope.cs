@@ -21,5 +21,3 @@ public record Envelope
     public static Envelope Error(IEnumerable<ResponseError> errors) =>
         new(null, errors);
 }
-
-public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
