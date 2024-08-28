@@ -15,7 +15,7 @@ public static class CustomValidators
             Result<TValueObject, Error> result = factoryMethod(value);
             if (result.IsSuccess)
                 return;
-            context.AddFailure(result.Error.Message);
+            context.AddFailure(result.Error.Serialize());
         });
     }
 }
