@@ -1,3 +1,4 @@
+using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Validation;
 using FindYourFriendAmongPets.Application;
 using FindYourFriendAmongPets.DataAccess;
@@ -22,6 +23,8 @@ builder.Services
     .AddApplication();
 
 var app = builder.Build();
+
+app.UseExceptionMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
