@@ -1,3 +1,4 @@
+using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Validation;
 using FindYourFriendAmongPets.Application;
 using FindYourFriendAmongPets.DataAccess;
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    await app.ApplyMigration();
 }
 
 app.UseHttpsRedirection();
