@@ -44,9 +44,10 @@ public class CreateVolunteerHandler
 
         var result = await _repository.Add(volunteer.Value, token);
 
-        var fullNameString = volunteer.Value.FullName.ToString();
+        var fullNameString = $"{volunteer.Value.FullName.FirstName} {volunteer.Value.FullName.LastName}";
+        var id = volunteer.Value.Id.Value;
         
-        _logger.LogInformation("Created volunteer '{fullNameString}' with id '{volunteer.Value.Id}'", fullNameString, volunteer.Value.Id);
+        _logger.LogInformation("Created volunteer '{fullNameString}' with id '{id}'", fullNameString, id);
 
         return (Guid)result.Value;
     }
