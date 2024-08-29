@@ -1,16 +1,19 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Create;
 
 public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _repository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
-    public CreateVolunteerHandler(IVolunteerRepository repository)
+    public CreateVolunteerHandler(IVolunteerRepository repository, ILogger<CreateVolunteerHandler> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request, CancellationToken token)
@@ -40,6 +43,10 @@ public class CreateVolunteerHandler
         );
 
         var result = await _repository.Add(volunteer.Value, token);
+
+        var fullNameString = volunteer.Value.FullName.ToString();
+        
+        _logger.LogInformation("Created volunteer '{fullNameString}' with id '{volunteer.Value.Id}'", fullNameString, volunteer.Value.Id);
 
         return (Guid)result.Value;
     }
