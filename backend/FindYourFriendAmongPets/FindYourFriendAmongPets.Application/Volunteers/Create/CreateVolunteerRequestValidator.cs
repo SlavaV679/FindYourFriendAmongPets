@@ -1,5 +1,6 @@
 ﻿using FindYourFriendAmongPets.Application.Validation;
 using FindYourFriendAmongPets.Core.Models;
+using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Create;
@@ -16,5 +17,9 @@ public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteer
         
         RuleFor(c => c.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);
+        
+        RuleFor(c => c.ExperienceInYears)
+            .GreaterThan(0)
+            .WithError(Errors.General.ValueIsInvalid("ExperienceInYears", "ExperienceInYears cannot be less than 0"));
     }
 }
