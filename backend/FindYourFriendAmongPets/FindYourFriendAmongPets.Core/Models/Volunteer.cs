@@ -87,4 +87,9 @@ public class Volunteer : Shared.Entity<VolunteerId>
         if (socialNetworks != null)
             _socialNetworks.AddRange(socialNetworks);
     }
+
+    public override string ToString()
+    {
+        return $"{FullName.FirstName} {FullName.LastName} {FullName.Patronymic}";
+    }
 }
