@@ -37,6 +37,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseExceptionMiddleware();
+
 app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
