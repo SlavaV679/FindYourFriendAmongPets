@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FindYourFriendAmongPets.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourFriendAmongPets.DataAccess.Migrations
 {
     [DbContext(typeof(PetFamilyDbContext))]
-    partial class PetFamilyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902121853_Add-Column-Is-Deleted")]
+    partial class AddColumnIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -360,7 +363,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                     b.HasOne("FindYourFriendAmongPets.Core.Models.Volunteer", null)
                         .WithMany("RequisitesForHelp")
                         .HasForeignKey("volunteer_id")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_requisite_for_help_volunteers_volunteer_id");
                 });
 

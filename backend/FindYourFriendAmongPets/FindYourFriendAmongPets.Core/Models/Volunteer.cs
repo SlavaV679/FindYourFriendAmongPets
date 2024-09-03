@@ -1,10 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Abstractions;
 using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {
+    private bool _isDeleted = false;
+
     private readonly List<Pet> _pets = [];
 
     private readonly List<RequisiteForHelp> _requisitesForHelp = [];
@@ -91,5 +94,17 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public override string ToString()
     {
         return $"{FullName.FirstName} {FullName.LastName} {FullName.Patronymic}";
+    }
+
+    public void Delete()
+    {
+        if (_isDeleted == false)
+            _isDeleted = true;
+    }
+
+    public void Restore()
+    {
+        if (_isDeleted)
+            _isDeleted = false;
     }
 }
