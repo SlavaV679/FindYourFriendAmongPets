@@ -24,14 +24,16 @@ public class DeleteVolunteerHandler
     {
         var id = VolunteerId.Create(request.VolunteerId);
 
-        var moduleResult = await _volunteerRepository.GetById(id, cancellationToken);
-        if (moduleResult.IsFailure)
-            return moduleResult.Error;
+        var volunteerResult = await _volunteerRepository.GetById(id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error;
 
-        var result = await _volunteerRepository.Delete(moduleResult.Value, cancellationToken);
+        volunteerResult.Value.Delete();
+        
+        var result = await _volunteerRepository.Save(volunteerResult.Value, cancellationToken);
 
         _logger.LogInformation("Updated deleted with id {volunteerId}", request.VolunteerId);
 
-        return result.Value;
+        return result;
     }
 }

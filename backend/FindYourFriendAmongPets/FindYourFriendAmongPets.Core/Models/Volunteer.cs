@@ -110,13 +110,19 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
     public void Delete()
     {
-        if (_isDeleted == false)
-            _isDeleted = true;
+        if (_isDeleted) return;
+
+        _isDeleted = true;
+        foreach (var pet in _pets)
+            pet.Delete();
     }
 
     public void Restore()
     {
-        if (_isDeleted)
-            _isDeleted = false;
+        if (!_isDeleted) return;
+
+        _isDeleted = false;
+        foreach (var pet in _pets)
+            pet.Restore();
     }
 }

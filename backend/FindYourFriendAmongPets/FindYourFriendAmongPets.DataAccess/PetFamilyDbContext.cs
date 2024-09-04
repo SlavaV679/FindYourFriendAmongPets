@@ -31,7 +31,7 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
-        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
+        //optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
         base.OnConfiguring(optionsBuilder);
     }
 
