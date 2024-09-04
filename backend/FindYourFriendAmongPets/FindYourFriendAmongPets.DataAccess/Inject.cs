@@ -6,7 +6,7 @@ namespace FindYourFriendAmongPets.DataAccess;
 
 public static class Inject
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddDataAccess(this IServiceCollection services)
     {
         services.AddScoped<PetFamilyDbContext>();
 

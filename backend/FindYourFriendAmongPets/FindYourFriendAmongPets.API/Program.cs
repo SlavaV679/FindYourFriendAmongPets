@@ -2,6 +2,7 @@ using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Validation;
 using FindYourFriendAmongPets.Application;
 using FindYourFriendAmongPets.DataAccess;
+using FindYourFriendAmongPets.Infrastructure;
 using Serilog;
 using Serilog.Events;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
@@ -32,7 +33,8 @@ builder.Services.AddFluentValidationAutoValidation(configuration =>
 builder.Services.AddSerilog();
 
 builder.Services
-    .AddInfrastructure()
+    .AddDataAccess()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 var app = builder.Build();
