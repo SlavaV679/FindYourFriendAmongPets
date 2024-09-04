@@ -1,5 +1,6 @@
 ﻿using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+using FindYourFriendAmongPets.Application.Volunteers.Delete;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,8 @@ public static class Inject
 
         services.AddScoped<UpdateMainInfoHandler>();
         
+        services.AddScoped<DeleteVolunteerHandler>();
+
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         
         return services;

@@ -1,10 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Core.Abstractions;
 using FindYourFriendAmongPets.Core.Shared;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Pet : Shared.Entity<PetId>
+public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
+    private bool _isDeleted = false;
+
     private readonly List<PetPhoto> _petPhotos = [];
 
     private Pet(PetId id) : base(id)
@@ -91,7 +94,7 @@ public class Pet : Shared.Entity<PetId>
         bool isNeutered,
         DateOnly dateOfBirth,
         bool isVaccinated,
-        Status helpStatus ,
+        Status helpStatus,
         PetRequisiteDetails requisiteDetails
     )
     {
@@ -124,9 +127,22 @@ public class Pet : Shared.Entity<PetId>
             DateTime.Now,
             requisiteDetails);
     }
-    
+
     public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos)
     {
-            _petPhotos.AddRange(petPhotos);
+        _petPhotos.AddRange(petPhotos);
+    }
+
+
+    public void Delete()
+    {
+        if (_isDeleted == false)
+            _isDeleted = true;
+    }
+
+    public void Restore()
+    {
+        if (_isDeleted)
+            _isDeleted = false;
     }
 }

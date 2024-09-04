@@ -1,6 +1,7 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.DataAccess.Configurations;
+using FindYourFriendAmongPets.DataAccess.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,9 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
     {
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString(PET_FAMILY_DATABASE));
         optionsBuilder.UseSnakeCaseNamingConvention();
+        optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
         base.OnConfiguring(optionsBuilder);
     }
 
