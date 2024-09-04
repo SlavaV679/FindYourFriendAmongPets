@@ -1,4 +1,6 @@
-﻿namespace FindYourFriendAmongPets.Application.Volunteers.Create;
+﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
+
+namespace FindYourFriendAmongPets.Application.Volunteers.Create;
 
 public record CreateVolunteerRequest(
     FullNameDto FullName,

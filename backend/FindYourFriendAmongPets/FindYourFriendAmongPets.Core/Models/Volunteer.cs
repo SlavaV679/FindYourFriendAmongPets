@@ -95,6 +95,18 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     {
         return $"{FullName.FirstName} {FullName.LastName} {FullName.Patronymic}";
     }
+    
+    public void UpdateMainInfo(
+        FullName fullName,
+        Description description,
+        PhoneNumber phoneNumber,
+        int experienceInYears = 0)
+    {
+        FullName = fullName;
+        Description = description;
+        PhoneNumber = phoneNumber;
+        ExperienceInYears = experienceInYears;
+    }
 
     public void Delete()
     {

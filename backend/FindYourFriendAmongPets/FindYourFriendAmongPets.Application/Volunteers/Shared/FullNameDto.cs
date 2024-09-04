@@ -1,4 +1,4 @@
-﻿namespace FindYourFriendAmongPets.Application.Volunteers.Create;
+﻿namespace FindYourFriendAmongPets.Application.Volunteers.Shared;
 
 public record FullNameDto(
     string FirstName,
