@@ -28,6 +28,7 @@
     <ProjectReference Include="..\FindYourFriendAmongPets.Application\FindYourFriendAmongPets.Application.csproj" />
     <ProjectReference Include="..\FindYourFriendAmongPets.Core\FindYourFriendAmongPets.Core.csproj" />
     <ProjectReference Include="..\FindYourFriendAmongPets.DataAccess\FindYourFriendAmongPets.DataAccess.csproj" />
+    <ProjectReference Include="..\FindYourFriendAmongPets.Infrastructure\FindYourFriendAmongPets.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

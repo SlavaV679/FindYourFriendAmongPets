@@ -1,12 +1,16 @@
 ﻿using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Response;
+using FindYourFriendAmongPets.Application.FileProvider;
+using FindYourFriendAmongPets.Application.Volunteers.AddPet;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Delete;
 using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
 using FindYourFriendAmongPets.Core.Shared;
+using FindYourFriendAmongPets.Infrastructure.Options;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace FindYourFriendAmongPets.API.Controllers;
 
@@ -17,9 +21,11 @@ public class VolunteerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
+        [FromServices] IOptions<MinioOptions> options,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
+        var v = options.Value.Endpoint;
         var response = await handler.Handle(request, cancellationToken);
 
         return response.ToResponse();
@@ -63,6 +69,25 @@ public class VolunteerController : ControllerBase
 
         var result = await handler.Handle(request, cancellationToken);
 
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Ok(result.Value);
+    }
+    
+    [HttpPost("pet")]
+    public async Task<ActionResult> AddPet(
+        IFormFile file,
+        [FromServices] AddPetHandler handler,
+        CancellationToken cancellationToken)
+    {
+        await using var stream = file.OpenReadStream();
+
+        var path = Guid.NewGuid().ToString();
+
+        var fileData = new FileData(stream, "photos",".jpg", path);
+
+        var result = await handler.Handle(fileData, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
 
