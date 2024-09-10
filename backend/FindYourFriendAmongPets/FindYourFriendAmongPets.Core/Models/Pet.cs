@@ -25,11 +25,12 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         double height,
         PhoneNumber ownersPhoneNumber,
         bool isNeutered,
-        DateOnly dateOfBirth,
+        DateTime dateOfBirth,
         bool isVaccinated,
         Status helpStatus,
         DateTime dateCreated,
-        PetRequisiteDetails requisiteDetails)
+        PetRequisiteDetails requisiteDetails,
+        PetPhotosList petPhotos)
         : base(id)
     {
         Name = name;
@@ -47,6 +48,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         HelpStatus = helpStatus;
         DateCreated = dateCreated;
         RequisiteDetails = requisiteDetails;
+        PetPhotos = petPhotos;
     }
 
     public string Name { get; private set; }
@@ -69,7 +71,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public bool IsNeutered { get; private set; }
 
-    public DateOnly DateOfBirth { get; private set; }
+    public DateTime DateOfBirth { get; private set; }
 
     public bool IsVaccinated { get; private set; }
 
@@ -77,7 +79,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public DateTime DateCreated { get; private set; }
 
-    public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
+    public PetPhotosList PetPhotos { get; private set; }
 
     public PetRequisiteDetails RequisiteDetails { get; private set; }
 
@@ -92,10 +94,11 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         double height,
         PhoneNumber ownersPhoneNumber,
         bool isNeutered,
-        DateOnly dateOfBirth,
+        DateTime dateOfBirth,
         bool isVaccinated,
         Status helpStatus,
-        PetRequisiteDetails requisiteDetails
+        PetRequisiteDetails requisiteDetails,
+        PetPhotosList petPhotos
     )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
@@ -124,8 +127,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             dateOfBirth,
             isVaccinated,
             helpStatus,
-            DateTime.Now,
-            requisiteDetails);
+            DateTime.Now.ToUniversalTime(),
+            requisiteDetails,
+            petPhotos);
     }
 
     public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos)
