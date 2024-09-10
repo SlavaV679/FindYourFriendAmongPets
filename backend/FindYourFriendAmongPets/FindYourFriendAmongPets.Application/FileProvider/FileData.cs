@@ -1,3 +1,3 @@
 ﻿namespace FindYourFriendAmongPets.Application.FileProvider;
 
-public record FileData(Stream Stream, string BucketName, string Extension, string ObjectName);
+public record FileData(IEnumerable<FileContent> Files, string BucketName);

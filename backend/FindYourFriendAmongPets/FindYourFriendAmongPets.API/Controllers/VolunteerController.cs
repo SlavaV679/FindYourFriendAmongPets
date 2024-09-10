@@ -1,14 +1,11 @@
-﻿using FindYourFriendAmongPets.API.Extensions;
-using FindYourFriendAmongPets.API.Response;
-using FindYourFriendAmongPets.Application.FileProvider;
+﻿using FindYourFriendAmongPets.API.Contracts;
+using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.Application.Volunteers.AddPet;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Delete;
 using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
-using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.Infrastructure.Options;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -50,7 +47,7 @@ public class VolunteerController : ControllerBase
 
         return response.ToResponse();
     }
-    
+
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
@@ -74,23 +71,58 @@ public class VolunteerController : ControllerBase
 
         return Ok(result.Value);
     }
-    
-    [HttpPost("pet")]
+
+    [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult> AddPet(
-        IFormFile file,
+        [FromRoute] Guid id,
+        [FromForm] AddPetRequest request,
         [FromServices] AddPetHandler handler,
+        //нужен валидатор, который вручную проверит входные данные, так как автовалидатор не работает
+        // с атрибутом [FromForm]
+        [FromServices] IValidator<AddPetRequest> validator,
         CancellationToken cancellationToken)
     {
-        await using var stream = file.OpenReadStream();
+        
+        List<FileDto> filesDto = [];
+        try
+        {
+            foreach (var file in request.Files)
+            {
+                var stream = file.OpenReadStream();
+                filesDto.Add(new FileDto(stream, file.FileName, file.ContentType));
+            }
 
-        var path = Guid.NewGuid().ToString();
+            var command = new AddPetCommand(
+                id,
+                request.Name,
+                request.PetSpecies,
+                request.Description,
+                request.Color,
+                request.HealthInfo,
+                request.Address,
+                request.Weight,
+                request.Height,
+                request.OwnersPhoneNumber,
+                request.IsNeutered,
+                request.DateOfBirth,
+                request.IsVaccinated,
+                request.HelpStatus,
+                //request.RequisiteDetails,
+                filesDto);
 
-        var fileData = new FileData(stream, "photos",".jpg", path);
+            var result = await handler.Handle(command, cancellationToken);
 
-        var result = await handler.Handle(fileData, cancellationToken);
-        if (result.IsFailure)
-            return result.Error.ToResponse();
+            if (result.IsFailure)
+                return result.Error.ToResponse();
 
-        return Ok(result.Value);
+            return Ok(result.Value);
+        }
+        finally
+        {
+            foreach (var fileDto in filesDto)
+            {
+                await fileDto.Content.DisposeAsync();
+            }
+        }
     }
 }

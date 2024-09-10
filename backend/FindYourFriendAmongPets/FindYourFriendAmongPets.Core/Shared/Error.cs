@@ -40,7 +40,13 @@ public record Error
 
         if (parts.Length < 3)
         {
-            throw new ArgumentException("Invalid serialized format");
+            // throw new ArgumentException("Invalid serialized format");
+            // пока этот метод может работать только со своими ошибками.
+            // Но чтобы приложение не падало временно сделал обработку ошибок из неизвестных источников следующим образом.
+            parts = new string[3];
+            parts[0] = "unknown.source.of.error";
+            parts[1] = serialized;
+            parts[2] = ErrorType.Failure.ToString();
         }
 
         if (Enum.TryParse<ErrorType>(parts[2], out var type) == false)
