@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Core.Abstractions;
 using FindYourFriendAmongPets.Core.Shared;
+using FindYourFriendAmongPets.Core.Shared.ValueObject;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -30,7 +31,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         Status helpStatus,
         DateTime dateCreated,
         PetRequisiteDetails requisiteDetails,
-        PetPhotosList petPhotos)
+        ValueObjectList<PetPhoto> petPhotos)
         : base(id)
     {
         Name = name;
@@ -79,7 +80,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public DateTime DateCreated { get; private set; }
 
-    public PetPhotosList PetPhotos { get; private set; }
+    public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
 
     public PetRequisiteDetails RequisiteDetails { get; private set; }
 
@@ -98,7 +99,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         bool isVaccinated,
         Status helpStatus,
         PetRequisiteDetails requisiteDetails,
-        PetPhotosList petPhotos
+        ValueObjectList<PetPhoto> petPhotos
     )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
@@ -136,7 +137,8 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _petPhotos.AddRange(petPhotos);
     }
-
+    
+    public void UpdateFilesList(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
 
     public void Delete()
     {
