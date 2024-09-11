@@ -1,3 +1,5 @@
-﻿namespace FindYourFriendAmongPets.Application.FileProvider;
+﻿using FindYourFriendAmongPets.Core.Models;
 
-public record FileData(IEnumerable<FileContent> Files, string BucketName);
+namespace FindYourFriendAmongPets.Application.FileProvider;
+
+public record FileData(Stream Stream, FilePath FilePath, string BucketName);

@@ -77,9 +77,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.OwnsOne(d => d.PetPhotos, photoBuilder =>
         {
-            photoBuilder.ToJson();
+            photoBuilder.ToJson("pet_photos");
 
-            photoBuilder.OwnsMany(phl => phl.PetPhotos, photoListBuilder =>
+            photoBuilder.OwnsMany(phl => phl.Values, photoListBuilder =>
             {
                 photoListBuilder.Property(pp => pp.PathToStorage)
                     .HasConversion(

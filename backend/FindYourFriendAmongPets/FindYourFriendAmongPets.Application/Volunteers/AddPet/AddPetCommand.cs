@@ -18,4 +18,4 @@ public record AddPetCommand(
     bool IsVaccinated,
     Status HelpStatus,
     //PetRequisiteDetails RequisiteDetails,
-    IEnumerable<FileDto> Files);
+    IEnumerable<CreateFileDto> Files);

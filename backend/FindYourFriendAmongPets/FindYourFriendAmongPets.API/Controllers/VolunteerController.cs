@@ -1,5 +1,6 @@
 ﻿using FindYourFriendAmongPets.API.Contracts;
 using FindYourFriendAmongPets.API.Extensions;
+using FindYourFriendAmongPets.API.Processors;
 using FindYourFriendAmongPets.Application.Volunteers.AddPet;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Delete;
@@ -79,18 +80,12 @@ public class VolunteerController : ControllerBase
         [FromServices] AddPetHandler handler,
         //нужен валидатор, который вручную проверит входные данные, так как автовалидатор не работает
         // с атрибутом [FromForm]
-        [FromServices] IValidator<AddPetRequest> validator,
+        // [FromServices] IValidator<AddPetRequest> validator,
         CancellationToken cancellationToken)
     {
         
-        List<FileDto> filesDto = [];
-        try
-        {
-            foreach (var file in request.Files)
-            {
-                var stream = file.OpenReadStream();
-                filesDto.Add(new FileDto(stream, file.FileName, file.ContentType));
-            }
+        await using var fileProcessor = new FormFileProcessor();
+        var fileDtos = fileProcessor.Process(request.Files);
 
             var command = new AddPetCommand(
                 id,
@@ -108,7 +103,7 @@ public class VolunteerController : ControllerBase
                 request.IsVaccinated,
                 request.HelpStatus,
                 //request.RequisiteDetails,
-                filesDto);
+                fileDtos);
 
             var result = await handler.Handle(command, cancellationToken);
 
@@ -116,13 +111,5 @@ public class VolunteerController : ControllerBase
                 return result.Error.ToResponse();
 
             return Ok(result.Value);
-        }
-        finally
-        {
-            foreach (var fileDto in filesDto)
-            {
-                await fileDto.Content.DisposeAsync();
-            }
-        }
     }
 }

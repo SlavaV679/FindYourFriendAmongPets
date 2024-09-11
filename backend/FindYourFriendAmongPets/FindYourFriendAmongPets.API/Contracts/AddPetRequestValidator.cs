@@ -9,7 +9,7 @@ public class AddPetRequestValidator : AbstractValidator<AddPetRequest>
 {
     public AddPetRequestValidator()
     {
-        //RuleFor(r => r.Name).MinimumLength(30).WithMessage("more then 2");
+        RuleFor(r => r.Name).MinimumLength(2).WithMessage("more then 2");
 
         RuleFor(r => r.Description).MustBeValueObject(Description.Create);
 
