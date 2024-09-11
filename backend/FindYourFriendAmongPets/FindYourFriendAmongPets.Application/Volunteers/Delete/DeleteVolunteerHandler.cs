@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.Extensions.Logging;
@@ -8,13 +9,16 @@ namespace FindYourFriendAmongPets.Application.Volunteers.Delete;
 public class DeleteVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteVolunteerHandler> _logger;
 
     public DeleteVolunteerHandler(
         IVolunteerRepository volunteerRepository,
+        IUnitOfWork unitOfWork,
         ILogger<DeleteVolunteerHandler> logger)
     {
         _volunteerRepository = volunteerRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -28,10 +32,10 @@ public class DeleteVolunteerHandler
         if (moduleResult.IsFailure)
             return moduleResult.Error;
 
-        var result = await _volunteerRepository.Delete(moduleResult.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation("Updated deleted with id {volunteerId}", request.VolunteerId);
 
-        return result.Value;
+        return moduleResult.Value.Id.Value;
     }
 }

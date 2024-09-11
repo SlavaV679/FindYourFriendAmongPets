@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers;
+﻿using FindYourFriendAmongPets.Application.Database;
+using FindYourFriendAmongPets.Application.Volunteers;
 using FindYourFriendAmongPets.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,8 @@ public static class Inject
         services.AddScoped<PetFamilyDbContext>();
 
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
