@@ -1,4 +1,4 @@
-﻿using FindYourFriendAmongPets.API.Contracts;
+﻿using FindYourFriendAmongPets.API.Controllers.Requests;
 using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Processors;
 using FindYourFriendAmongPets.Application.Volunteers.AddPet;
@@ -23,48 +23,37 @@ public class VolunteerController : ControllerBase
         CancellationToken cancellationToken)
     {
         var v = options.Value.Endpoint;
-        var response = await handler.Handle(request, cancellationToken);
+        var response = await handler.Handle(request.ToCommand(), cancellationToken);
 
-        return response.ToResponse();
+        return response.Error.ToResponse();
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> Delete(
         [FromRoute] Guid id,
         [FromServices] DeleteVolunteerHandler handler,
-        [FromServices] IValidator<DeleteVolunteerRequest> validator,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerRequest(id);
+        var command = new DeleteVolunteerCommand(id);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (validationResult.IsValid == false)
-        {
-            return validationResult.ToValidationErrorResponse();
-        }
+        var result = await handler.Handle(command, cancellationToken);
 
-        var response = await handler.Handle(request, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
 
-        return response.ToResponse();
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
-        [FromBody] UpdateMainInfoDto dto,
+        [FromBody] UpdateMainInfoRequest request,
         [FromServices] UpdateMainInfoHandler handler,
-        [FromServices] IValidator<UpdateMainInfoRequest> validator,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateMainInfoRequest(id, dto);
+        var command = request.ToCommand(id);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (validationResult.IsValid == false)
-        {
-            return validationResult.ToValidationErrorResponse();
-        }
-
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -82,33 +71,17 @@ public class VolunteerController : ControllerBase
         // [FromServices] IValidator<AddPetRequest> validator,
         CancellationToken cancellationToken)
     {
-        
         await using var fileProcessor = new FormFileProcessor();
-        var fileDtos = fileProcessor.Process(request.Files);
 
-            var command = new AddPetCommand(
-                id,
-                request.Name,
-                request.PetSpecies,
-                request.Description,
-                request.Color,
-                request.HealthInfo,
-                request.Address,
-                request.Weight,
-                request.Height,
-                request.OwnersPhoneNumber,
-                request.IsNeutered,
-                request.DateOfBirth,
-                request.IsVaccinated,
-                request.HelpStatus,
-                //request.RequisiteDetails,
-                fileDtos);
+        var fileCommands = fileProcessor.Process(request.Files);
 
-            var result = await handler.Handle(command, cancellationToken);
+        var command = request.ToCommand(id, fileCommands);
 
-            if (result.IsFailure)
-                return result.Error.ToResponse();
+        var result = await handler.Handle(command, cancellationToken);
 
-            return Ok(result.Value);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Ok(result.Value);
     }
 }

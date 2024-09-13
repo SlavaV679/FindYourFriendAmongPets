@@ -1,11 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
+using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Application.FileProvider;
 using FindYourFriendAmongPets.Application.Providers;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.Core.Shared.ValueObject;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
@@ -17,33 +19,42 @@ public class AddPetHandler
     private readonly IFileProvider _fileProvider;
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
 
     public AddPetHandler(
         IFileProvider fileProvider,
         IVolunteerRepository volunteerRepository,
         IUnitOfWork unitOfWork,
+        IValidator<AddPetCommand> validator,
         ILogger<AddPetHandler> logger)
     {
         _fileProvider = fileProvider;
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         AddPetCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+        if (validationResult.IsValid == false)
+        {
+            return validationResult.ToList();
+        }
+        
         var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
         try
         {
             var volunteerResult = await _volunteerRepository
-                .GetById(VolunteerId.Create(command.VolunnteerId), cancellationToken);
+                .GetById(VolunteerId.Create(command.VolunteerId), cancellationToken);
 
             if (volunteerResult.IsFailure)
-                return volunteerResult.Error;
+                return volunteerResult.Error.ToErrorList();
 
             var petId = PetId.NewPetId();
             var description = Description.Create(command.Description).Value;
@@ -58,13 +69,13 @@ public class AddPetHandler
                 command.Address.Country).Value;
 
             List<FileData> filesData = [];
-            foreach (var file in command.Files)
+            foreach (var file in command.FileCommands)
             {
                 var extension = Path.GetExtension(file.FileName);
 
                 var filePath = FilePath.Create(Guid.NewGuid(), extension);
                 if (filePath.IsFailure)
-                    return filePath.Error;
+                    return filePath.Error.ToErrorList();
 
                 var fileContent = new FileData(file.Content, filePath.Value, BUCKET_NAME);
 
@@ -105,7 +116,7 @@ public class AddPetHandler
             var uploadResult = await _fileProvider.UploadFiles(filesData, cancellationToken);
 
             if (uploadResult.IsFailure)
-                return uploadResult.Error;
+                return uploadResult.Error.ToErrorList();
 
             transaction.Commit();
 
@@ -113,11 +124,12 @@ public class AddPetHandler
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex,"Can not add pet photo to volunteer - {id} in transaction", command.VolunnteerId);
+            _logger.LogError(ex,"Can not add pet photo to volunteer - {id} in transaction", command.VolunteerId);
 
             transaction.Rollback();
 
-            return Error.Failure("module.issue.failure",$"Can not add pet photo to volunteer  - {command.VolunnteerId}");
+            return Error.Failure("module.issue.failure",$"Can not add pet photo to volunteer  - {command.VolunteerId}")
+                .ToErrorList();
         }
     }
 }

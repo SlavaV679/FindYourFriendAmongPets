@@ -95,7 +95,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     {
         return $"{FullName.FirstName} {FullName.LastName} {FullName.Patronymic}";
     }
-    
+
     public void UpdateMainInfo(
         FullName fullName,
         Description description,
@@ -110,16 +110,24 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
     public void Delete()
     {
-        if (_isDeleted == false)
-            _isDeleted = true;
+        _isDeleted = true;
+
+        foreach (var pet in _pets)
+        {
+            pet.Delete();
+        }
     }
 
     public void Restore()
     {
-        if (_isDeleted)
-            _isDeleted = false;
+        _isDeleted = false;
+
+        foreach (var pet in _pets)
+        {
+            pet.Restore();
+        }
     }
-    
+
     public UnitResult<Error> AddPet(Pet pet)
     {
         // валидация + логика

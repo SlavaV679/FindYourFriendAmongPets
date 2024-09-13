@@ -137,18 +137,16 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _petPhotos.AddRange(petPhotos);
     }
-    
+
     public void UpdateFilesList(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
 
     public void Delete()
     {
-        if (_isDeleted == false)
-            _isDeleted = true;
+        _isDeleted = true;
     }
 
     public void Restore()
     {
-        if (_isDeleted)
-            _isDeleted = false;
+        _isDeleted = false;
     }
 }
