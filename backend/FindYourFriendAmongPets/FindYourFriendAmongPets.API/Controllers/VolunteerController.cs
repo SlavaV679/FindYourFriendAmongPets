@@ -6,7 +6,6 @@ using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Delete;
 using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
 using FindYourFriendAmongPets.Infrastructure.Options;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
