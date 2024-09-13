@@ -5,9 +5,9 @@ using FluentValidation;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Create;
 
-public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteerRequest>
+public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteerCommand>
 {
-    public CreateVolunteerRequestValidator()
+    public CreateVolunteerCommandValidator()
     {
         RuleFor(r => r.FullName)
             .MustBeValueObject(f => FullName.Create(f.FirstName,f.LastName,f.Patronymic));

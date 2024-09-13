@@ -3,7 +3,7 @@
 namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
 
 public record AddPetCommand(
-    Guid VolunnteerId,
+    Guid VolunteerId,
     string Name,
     PetSpeciesDto PetSpecies,
     string Description,
@@ -18,4 +18,4 @@ public record AddPetCommand(
     bool IsVaccinated,
     Status HelpStatus,
     //PetRequisiteDetails RequisiteDetails,
-    IEnumerable<CreateFileDto> Files);
+    IEnumerable<CreateFileCommand> FileCommands);

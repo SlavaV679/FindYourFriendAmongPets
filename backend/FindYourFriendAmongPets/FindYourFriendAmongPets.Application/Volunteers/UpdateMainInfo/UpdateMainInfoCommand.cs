@@ -2,7 +2,8 @@
 
 namespace FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
 
-public record UpdateMainInfoDto(
+public record UpdateMainInfoCommand(
+    Guid VolunteerId,
     FullNameDto FullName,
     string Description,
     string PhoneNumber,
