@@ -5,6 +5,7 @@ using FindYourFriendAmongPets.Application.Volunteers.AddPet;
 using FindYourFriendAmongPets.Application.Volunteers.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Delete;
 using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
 using FindYourFriendAmongPets.Infrastructure.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -64,18 +65,32 @@ public class VolunteerController : ControllerBase
     [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult> AddPet(
         [FromRoute] Guid id,
-        [FromForm] AddPetRequest request,
+        [FromBody] AddPetRequest request,
         [FromServices] AddPetHandler handler,
-        //нужен валидатор, который вручную проверит входные данные, так как автовалидатор не работает
-        // с атрибутом [FromForm]
-        // [FromServices] IValidator<AddPetRequest> validator,
+        CancellationToken cancellationToken)
+    {
+        var command = request.ToCommand(id);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Ok(result.Value);
+    }
+
+    [HttpPost("{id:guid}/issue/{petId:guid}/files")]
+    public async Task<ActionResult> UploadFilesToPet(
+        [FromRoute] Guid id,
+        [FromRoute] Guid petId,
+        [FromForm] IFormFileCollection files,
+        [FromServices] UploadFilesToPetHandler handler,
         CancellationToken cancellationToken)
     {
         await using var fileProcessor = new FormFileProcessor();
+        var fileDtos = fileProcessor.Process(files);
 
-        var fileCommands = fileProcessor.Process(request.Files);
-
-        var command = request.ToCommand(id, fileCommands);
+        var command = new UploadFilesToPetCommand(id, petId, fileDtos);
 
         var result = await handler.Handle(command, cancellationToken);
 

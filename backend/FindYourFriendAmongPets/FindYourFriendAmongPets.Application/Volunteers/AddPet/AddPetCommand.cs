@@ -16,6 +16,6 @@ public record AddPetCommand(
     bool IsNeutered,
     DateTime DateOfBirth,
     bool IsVaccinated,
-    Status HelpStatus,
+    Status HelpStatus
     //PetRequisiteDetails RequisiteDetails,
-    IEnumerable<CreateFileCommand> FileCommands);
+    );

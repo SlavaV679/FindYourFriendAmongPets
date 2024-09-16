@@ -16,11 +16,11 @@ public record AddPetRequest(
     bool IsNeutered,
     DateTime DateOfBirth,
     bool IsVaccinated,
-    Status HelpStatus,
+    Status HelpStatus
     //PetRequisiteDetails RequisiteDetails,
-    IFormFileCollection Files)
+)
 {
-    public AddPetCommand ToCommand(Guid volunteerId, IEnumerable<CreateFileCommand> fileContents) =>
+    public AddPetCommand ToCommand(Guid volunteerId) =>
         new(
             volunteerId,
             Name,
@@ -35,6 +35,5 @@ public record AddPetRequest(
             IsNeutered,
             DateOfBirth,
             IsVaccinated,
-            HelpStatus,
-            fileContents);
+            HelpStatus);
 }

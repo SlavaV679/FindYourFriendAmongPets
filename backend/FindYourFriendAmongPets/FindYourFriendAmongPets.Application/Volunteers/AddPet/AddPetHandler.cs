@@ -45,91 +45,59 @@ public class AddPetHandler
         {
             return validationResult.ToList();
         }
+
+        var volunteerResult = await _volunteerRepository.GetById(
+            VolunteerId.Create(command.VolunteerId), cancellationToken);
+
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
         
-        var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
+        var pet = InitPet(command);
+        volunteerResult.Value.AddPet(pet);
 
-        try
-        {
-            var volunteerResult = await _volunteerRepository
-                .GetById(VolunteerId.Create(command.VolunteerId), cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
 
-            if (volunteerResult.IsFailure)
-                return volunteerResult.Error.ToErrorList();
+        _logger.LogInformation("Pet added to volunteer. PetId - {id}", pet.Id.Value);
+        
+        return pet.Id.Value;
+    }
 
-            var petId = PetId.NewPetId();
-            var description = Description.Create(command.Description).Value;
-            var petSpecies = PetSpecies
-                .Create(SpeciesId.Create(command.PetSpecies.SpeciesId), command.PetSpecies.BreedId)
-                .Value;
-            var address = Address.Create(
-                command.Address.City,
-                command.Address.Street,
-                command.Address.Building,
-                command.Address.Description,
-                command.Address.Country).Value;
+    private Pet InitPet(AddPetCommand command)
+    {
+        var description = Description.Create(command.Description).Value;
+        
+        var petSpecies = PetSpecies
+            .Create(SpeciesId.Create(command.PetSpecies.SpeciesId), command.PetSpecies.BreedId)
+            .Value;
+        
+        var address = Address.Create(
+            command.Address.City,
+            command.Address.Street,
+            command.Address.Building,
+            command.Address.Description,
+            command.Address.Country).Value;
 
-            List<FileData> filesData = [];
-            foreach (var file in command.FileCommands)
-            {
-                var extension = Path.GetExtension(file.FileName);
+        var requisite = Requisite.Create("name of Requisite", "description");
+        
+        var requisiteList = new PetRequisiteDetails([requisite.Value]);
 
-                var filePath = FilePath.Create(Guid.NewGuid(), extension);
-                if (filePath.IsFailure)
-                    return filePath.Error.ToErrorList();
+        var pet = Pet.Create(PetId.NewPetId(),
+            command.Name,
+            petSpecies,
+            description,
+            command.Color,
+            command.HealthInfo,
+            address,
+            command.Weight,
+            command.Height,
+            PhoneNumber.Create(command.OwnersPhoneNumber).Value,
+            command.IsNeutered,
+            command.DateOfBirth.ToUniversalTime(),
+            command.IsVaccinated,
+            command.HelpStatus,
+            requisiteList,
+            null);
 
-                var fileContent = new FileData(file.Content, filePath.Value, BUCKET_NAME);
-
-                filesData.Add(fileContent);
-            }
-
-            var filePaths = filesData
-                .Select(f => f.FilePath)
-                .Select(f => FilePath.Create(f.Path).Value)
-                .ToList();
-
-            var petPhotos = filePaths.Select(f => new PetPhoto(f, false));
-
-            var requisite = Requisite.Create("name of Requisite", "description");
-            var requisiteList = new PetRequisiteDetails([requisite.Value]);
-
-            var pet = Pet.Create(PetId.NewPetId(),
-                command.Name,
-                petSpecies,
-                description,
-                command.Color,
-                command.HealthInfo,
-                address,
-                command.Weight,
-                command.Height,
-                PhoneNumber.Create(command.OwnersPhoneNumber).Value,
-                command.IsNeutered,
-                command.DateOfBirth.ToUniversalTime(),
-                command.IsVaccinated,
-                command.HelpStatus,
-                requisiteList,
-                new ValueObjectList<PetPhoto>(petPhotos));
-
-            volunteerResult.Value.AddPet(pet.Value);
-
-            await _unitOfWork.SaveChanges(cancellationToken);
-
-            var uploadResult = await _fileProvider.UploadFiles(filesData, cancellationToken);
-
-            if (uploadResult.IsFailure)
-                return uploadResult.Error.ToErrorList();
-
-            transaction.Commit();
-
-            return pet.Value.Id.Value;
-        }
-        catch(Exception ex)
-        {
-            _logger.LogError(ex,"Can not add pet photo to volunteer - {id} in transaction", command.VolunteerId);
-
-            transaction.Rollback();
-
-            return Error.Failure("module.issue.failure",$"Can not add pet photo to volunteer  - {command.VolunteerId}")
-                .ToErrorList();
-        }
+        return pet.Value;
     }
 }

@@ -7,7 +7,7 @@ public class PetPhoto
     {
     }
 
-    public PetPhoto(FilePath pathToStorage, bool isMain)
+    public PetPhoto(FilePath pathToStorage, bool isMain = false)
     {
         PathToStorage = pathToStorage;
         IsMain = isMain;

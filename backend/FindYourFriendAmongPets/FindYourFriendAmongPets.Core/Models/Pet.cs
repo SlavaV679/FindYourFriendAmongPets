@@ -31,7 +31,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         Status helpStatus,
         DateTime dateCreated,
         PetRequisiteDetails requisiteDetails,
-        ValueObjectList<PetPhoto> petPhotos)
+        ValueObjectList<PetPhoto>? petPhotos)
         : base(id)
     {
         Name = name;
@@ -49,7 +49,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         HelpStatus = helpStatus;
         DateCreated = dateCreated;
         RequisiteDetails = requisiteDetails;
-        PetPhotos = petPhotos;
+        PetPhotos = petPhotos ?? new ValueObjectList<PetPhoto>([]);
     }
 
     public string Name { get; private set; }
@@ -99,7 +99,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         bool isVaccinated,
         Status helpStatus,
         PetRequisiteDetails requisiteDetails,
-        ValueObjectList<PetPhoto> petPhotos
+        ValueObjectList<PetPhoto>? petPhotos
     )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
@@ -112,7 +112,8 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
         if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length > Constants.MAX_HIGH_TEXT_LENGHT)
             return Errors.General.ValueIsInvalid(
-                nameof(HealthInfo), $"{nameof(HealthInfo)} can not be empty or bigger then {Constants.MAX_HIGH_TEXT_LENGHT}");
+                nameof(HealthInfo),
+                $"{nameof(HealthInfo)} can not be empty or bigger then {Constants.MAX_HIGH_TEXT_LENGHT}");
 
         return new Pet(id,
             name,
@@ -138,7 +139,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         _petPhotos.AddRange(petPhotos);
     }
 
-    public void UpdateFilesList(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
+    public void UpdateFiles(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
 
     public void Delete()
     {

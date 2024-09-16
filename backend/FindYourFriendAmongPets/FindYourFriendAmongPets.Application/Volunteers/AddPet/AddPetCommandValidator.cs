@@ -17,15 +17,5 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
 
         RuleFor(c => c.Address).MustBeValueObject(
             a => Address.Create(a.City, a.Street, a.Building, a.Description, a.Country));
-
-        RuleForEach(c => c.FileCommands).SetValidator(new CreateFileCommandValidator());
-    }
-}
-
-public class CreateFileCommandValidator : AbstractValidator<CreateFileCommand>
-{
-    public CreateFileCommandValidator()
-    {
-        RuleFor(c => c.FileName).MustBeValueObject(FilePath.Create);
     }
 }

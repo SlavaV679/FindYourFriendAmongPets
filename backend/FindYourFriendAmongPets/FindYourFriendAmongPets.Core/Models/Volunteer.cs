@@ -134,4 +134,13 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         _pets.Add(pet);
         return Result.Success<Error>();
     }
+
+    public Result<Pet, Error> GetPetById(PetId petId)
+    {
+        var issue = _pets.FirstOrDefault(i => i.Id == petId);
+        if (issue is null)
+            return Errors.General.NotFound(petId.Value);
+
+        return issue;
+    }
 }
