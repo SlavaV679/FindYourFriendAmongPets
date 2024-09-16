@@ -39,8 +39,8 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_created");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date")
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
                     b.Property<string>("HealthInfo")
@@ -275,32 +275,6 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
-                    b.OwnsMany("FindYourFriendAmongPets.Core.Models.PetPhoto", "PetPhotos", b1 =>
-                        {
-                            b1.Property<Guid>("PetId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("pet_id");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
-
-                            b1.Property<string>("PathToStorage")
-                                .IsRequired()
-                                .HasMaxLength(75)
-                                .HasColumnType("character varying(75)")
-                                .HasColumnName("path_to_storage");
-
-                            b1.HasKey("PetId", "Id")
-                                .HasName("pk_pet_photo");
-
-                            b1.ToTable("pet_photo", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("PetId")
-                                .HasConstraintName("fk_pet_photo_pets_pet_id");
-                        });
-
                     b.OwnsOne("FindYourFriendAmongPets.Core.Models.PetRequisiteDetails", "RequisiteDetails", b1 =>
                         {
                             b1.Property<Guid>("PetId")
@@ -349,7 +323,51 @@ namespace FindYourFriendAmongPets.DataAccess.Migrations
                             b1.Navigation("Requisites");
                         });
 
-                    b.Navigation("PetPhotos");
+                    b.OwnsOne("FindYourFriendAmongPets.Core.Shared.ValueObject.ValueObjectList<FindYourFriendAmongPets.Core.Models.PetPhoto>", "PetPhotos", b1 =>
+                        {
+                            b1.Property<Guid>("PetId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("PetId");
+
+                            b1.ToTable("pets");
+
+                            b1.ToJson("pet_photos");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PetId")
+                                .HasConstraintName("fk_pets_pets_id");
+
+                            b1.OwnsMany("FindYourFriendAmongPets.Core.Models.PetPhoto", "Values", b2 =>
+                                {
+                                    b2.Property<Guid>("ValueObjectListPetId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("PathToStorage")
+                                        .IsRequired()
+                                        .HasMaxLength(75)
+                                        .HasColumnType("character varying(75)");
+
+                                    b2.HasKey("ValueObjectListPetId", "Id");
+
+                                    b2.ToTable("pets");
+
+                                    b2.ToJson("pet_photos");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ValueObjectListPetId")
+                                        .HasConstraintName("fk_pets_pets_value_object_list_pet_id");
+                                });
+
+                            b1.Navigation("Values");
+                        });
+
+                    b.Navigation("PetPhotos")
+                        .IsRequired();
 
                     b.Navigation("RequisiteDetails")
                         .IsRequired();

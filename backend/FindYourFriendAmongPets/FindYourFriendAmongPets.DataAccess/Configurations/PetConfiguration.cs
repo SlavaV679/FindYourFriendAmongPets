@@ -37,7 +37,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                     value => SpeciesId.Create(value))
                 .HasColumnName("pet_species");
         });
-        
+
         builder.Property(p => p.HealthInfo)
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
@@ -74,16 +74,20 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasConversion(
                 v => v.ToString(),
                 v => (Status)Enum.Parse(typeof(Status), v));
-        
-        builder.OwnsMany(d => d.PetPhotos, photoBuilder =>
+
+        builder.OwnsOne(d => d.PetPhotos, photoBuilder =>
         {
-            photoBuilder.Property(pp => pp.Id)
-                .HasConversion(id => id.Value,
-                    value => PetPhotoId.Create(value));
-            
-            photoBuilder.Property(pp => pp.PathToStorage)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
+            photoBuilder.ToJson("pet_photos");
+
+            photoBuilder.OwnsMany(phl => phl.Values, photoListBuilder =>
+            {
+                photoListBuilder.Property(pp => pp.PathToStorage)
+                    .HasConversion(
+                        p => p.Path,
+                        value => FilePath.Create(value).Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
+            });
         });
 
         builder.OwnsOne(p => p.RequisiteDetails, petBuilder =>
@@ -100,7 +104,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                     .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGHT);
             });
         });
-        
+
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");

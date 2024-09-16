@@ -1,10 +1,9 @@
 using FindYourFriendAmongPets.API.Extensions;
-using FindYourFriendAmongPets.API.Validation;
 using FindYourFriendAmongPets.Application;
 using FindYourFriendAmongPets.DataAccess;
+using FindYourFriendAmongPets.Infrastructure;
 using Serilog;
 using Serilog.Events;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,15 +23,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddFluentValidationAutoValidation(configuration =>
-{
-    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-});
+// builder.Services.AddFluentValidationAutoValidation(configuration =>
+// {
+//     configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+// });
 
 builder.Services.AddSerilog();
 
 builder.Services
-    .AddInfrastructure()
+    .AddDataAccess()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 var app = builder.Build();
@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     await app.ApplyMigration();
 }
 

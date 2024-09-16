@@ -26,11 +26,12 @@ public static class Errors
         }
     }
 
-    public static class Volunteer
+    public static class Model
     {
-        public static Error AlreadyExist()
+        public static Error AlreadyExist(string? name = null)
         {
-            return Error.Validation("record.already.exist", "Volunteer already exist");
+            var label = name ?? "entity";
+            return Error.Validation($"{label}.already.exist", $"{label} already exist");
         }
     }
 }

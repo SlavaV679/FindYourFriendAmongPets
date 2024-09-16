@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Core.Abstractions;
 using FindYourFriendAmongPets.Core.Shared;
+using FindYourFriendAmongPets.Core.Shared.ValueObject;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
@@ -25,11 +26,12 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         double height,
         PhoneNumber ownersPhoneNumber,
         bool isNeutered,
-        DateOnly dateOfBirth,
+        DateTime dateOfBirth,
         bool isVaccinated,
         Status helpStatus,
         DateTime dateCreated,
-        PetRequisiteDetails requisiteDetails)
+        PetRequisiteDetails requisiteDetails,
+        ValueObjectList<PetPhoto>? petPhotos)
         : base(id)
     {
         Name = name;
@@ -47,6 +49,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         HelpStatus = helpStatus;
         DateCreated = dateCreated;
         RequisiteDetails = requisiteDetails;
+        PetPhotos = petPhotos ?? new ValueObjectList<PetPhoto>([]);
     }
 
     public string Name { get; private set; }
@@ -69,7 +72,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public bool IsNeutered { get; private set; }
 
-    public DateOnly DateOfBirth { get; private set; }
+    public DateTime DateOfBirth { get; private set; }
 
     public bool IsVaccinated { get; private set; }
 
@@ -77,7 +80,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public DateTime DateCreated { get; private set; }
 
-    public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
+    public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
 
     public PetRequisiteDetails RequisiteDetails { get; private set; }
 
@@ -92,10 +95,11 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         double height,
         PhoneNumber ownersPhoneNumber,
         bool isNeutered,
-        DateOnly dateOfBirth,
+        DateTime dateOfBirth,
         bool isVaccinated,
         Status helpStatus,
-        PetRequisiteDetails requisiteDetails
+        PetRequisiteDetails requisiteDetails,
+        ValueObjectList<PetPhoto>? petPhotos
     )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
@@ -108,7 +112,8 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
         if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length > Constants.MAX_HIGH_TEXT_LENGHT)
             return Errors.General.ValueIsInvalid(
-                nameof(HealthInfo), $"{nameof(HealthInfo)} can not be empty or bigger then {Constants.MAX_HIGH_TEXT_LENGHT}");
+                nameof(HealthInfo),
+                $"{nameof(HealthInfo)} can not be empty or bigger then {Constants.MAX_HIGH_TEXT_LENGHT}");
 
         return new Pet(id,
             name,
@@ -124,8 +129,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             dateOfBirth,
             isVaccinated,
             helpStatus,
-            DateTime.Now,
-            requisiteDetails);
+            DateTime.Now.ToUniversalTime(),
+            requisiteDetails,
+            petPhotos);
     }
 
     public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos)
@@ -133,16 +139,15 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         _petPhotos.AddRange(petPhotos);
     }
 
+    public void UpdateFiles(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
 
     public void Delete()
     {
-        if (_isDeleted == false)
-            _isDeleted = true;
+        _isDeleted = true;
     }
 
     public void Restore()
     {
-        if (_isDeleted)
-            _isDeleted = false;
+        _isDeleted = false;
     }
 }

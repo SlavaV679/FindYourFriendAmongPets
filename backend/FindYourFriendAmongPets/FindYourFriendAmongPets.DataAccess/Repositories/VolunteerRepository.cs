@@ -19,7 +19,7 @@ public class VolunteerRepository : IVolunteerRepository
     {
         await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        // await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }
@@ -31,24 +31,35 @@ public class VolunteerRepository : IVolunteerRepository
             .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
 
         if (volunteer is null)
-            return Errors.General.NotFound(id.Value);// "Volunteer not found";
+            return Errors.General.NotFound(id.Value); // "Volunteer not found";
 
         return volunteer;
     }
-    
-    public async Task<VolunteerId> Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
+
+    public async Task<Result<Volunteer, Error>> GetByPhoneNumber(
+        PhoneNumber phoneNumber,
+        CancellationToken cancellationToken = default)
+    {
+        var volunteer = await _dbContext.Volunteers
+            .Include(v => v.Pets)
+            .FirstOrDefaultAsync(v => v.PhoneNumber == phoneNumber, cancellationToken);
+
+        if (volunteer == null)
+            return Errors.General.NotFound();
+
+        return volunteer;
+    }
+
+    public VolunteerId Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Remove(volunteer);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
         return volunteer.Id;
     }
-    
-    public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken = default)
+
+    public Guid Save(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Attach(volunteer);
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id.Value;
     }

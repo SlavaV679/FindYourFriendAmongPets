@@ -5,9 +5,9 @@ using FluentValidation;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
 
-public class UpdateMainInfoRequestValidator : AbstractValidator<UpdateMainInfoRequest>
+public class UpdateMainInfoCommandValidator : AbstractValidator<UpdateMainInfoCommand>
 {
-    public UpdateMainInfoRequestValidator()
+    public UpdateMainInfoCommandValidator()
     {
         RuleFor(r => r.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());
     }
