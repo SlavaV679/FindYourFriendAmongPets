@@ -23,7 +23,6 @@ public class VolunteerController : ControllerBase
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var v = options.Value.Endpoint;
         var response = await handler.Handle(request.ToCommand(), cancellationToken);
 
         return response.Error.ToResponse();
