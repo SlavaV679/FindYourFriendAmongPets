@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4411FD7C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourFriendAmongPets.UnitTests", "FindYourFriendAmongPets.UnitTests\FindYourFriendAmongPets.UnitTests.csproj", "{4A25624D-FB9C-41F3-894A-7672EAB7D67F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourFriendAmongPets.Domain.UnitTests", "FindYourFriendAmongPets.Domain.UnitTests\FindYourFriendAmongPets.Domain.UnitTests.csproj", "{75679A4F-D1A9-4117-85E4-570DF03379AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{4A25624D-FB9C-41F3-894A-7672EAB7D67F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A25624D-FB9C-41F3-894A-7672EAB7D67F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A25624D-FB9C-41F3-894A-7672EAB7D67F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +67,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4A25624D-FB9C-41F3-894A-7672EAB7D67F} = {4411FD7C-20BF-4E23-A8C1-6522E5AA3CC7}
+		{75679A4F-D1A9-4117-85E4-570DF03379AA} = {4411FD7C-20BF-4E23-A8C1-6522E5AA3CC7}
 	EndGlobalSection
 EndGlobal
