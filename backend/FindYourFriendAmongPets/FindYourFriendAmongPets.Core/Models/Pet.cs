@@ -79,6 +79,8 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public Status HelpStatus { get; private set; }
 
     public DateTime DateCreated { get; private set; }
+    
+    public Position Position { get; private set; }
 
     public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
 
@@ -150,4 +152,31 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _isDeleted = false;
     }
+    
+    internal void SetPosition(Position position) => Position = position;
+    
+    public UnitResult<Error> MoveForward()
+    {
+        var newPosition = Position.Forward();
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> MoveBack()
+    {
+        var newPosition = Position.Back();
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public void Move(Position newPosition) =>
+        Position = newPosition;
 }
