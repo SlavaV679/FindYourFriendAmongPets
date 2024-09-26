@@ -17,9 +17,9 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
         
         RuleFor(c => c.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);
-        
+
         RuleFor(c => c.ExperienceInYears)
-            .GreaterThan(0)
-            .WithError(Errors.General.ValueIsInvalid("ExperienceInYears", "ExperienceInYears cannot be less than 0"));
+            .GreaterThan(0);
+            //.WithError(Errors.General.ValueIsInvalid("ExperienceInYears", "ExperienceInYears cannot be less than 0"));
     }
 }

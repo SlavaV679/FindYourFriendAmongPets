@@ -23,9 +23,12 @@ public class VolunteerController : ControllerBase
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await handler.Handle(request.ToCommand(), cancellationToken);
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
 
-        return response.Error.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Ok(result.Value);
     }
 
     [HttpDelete("{id:guid}")]
@@ -78,7 +81,7 @@ public class VolunteerController : ControllerBase
         return Ok(result.Value);
     }
 
-    [HttpPost("{id:guid}/issue/{petId:guid}/files")]
+    [HttpPost("{id:guid}/pet/{petId:guid}/files")]
     public async Task<ActionResult> UploadFilesToPet(
         [FromRoute] Guid id,
         [FromRoute] Guid petId,

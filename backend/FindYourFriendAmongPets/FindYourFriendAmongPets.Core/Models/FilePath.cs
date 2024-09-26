@@ -15,6 +15,8 @@ public record FilePath
     public static Result<FilePath, Error> Create(Guid path, string extension)
     {
         // валидация на доступные расширения файлов
+        if (extension != ".jpg" && extension != ".png")
+            return Errors.General.ValueIsInvalid("extension", "extension may be only 'jpg' or 'png'");
 
         var fullPath = path + extension;
 

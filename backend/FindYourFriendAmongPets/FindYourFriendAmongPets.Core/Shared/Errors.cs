@@ -4,13 +4,15 @@ public static class Errors
 {
     public static class General
     {
+        public const string VALIDATION_ERROR_CODE = "value.is.invalid";
+        
         public static Error ValueIsInvalid(string? propertyName = null, string? detailedMessage = null)
         {
             var label = propertyName ?? "value";
 
             var message = detailedMessage == null ? string.Empty : $": {detailedMessage}";
             
-            return Error.Validation("value.is.invalid", $"{label} is invalid{message}");
+            return Error.Validation(VALIDATION_ERROR_CODE, $"{label} is invalid{message}");
         }
 
         public static Error NotFound(Guid? id = null)

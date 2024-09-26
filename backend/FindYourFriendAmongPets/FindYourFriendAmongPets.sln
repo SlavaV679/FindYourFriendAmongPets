@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourFriendAmongPets.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourFriendAmongPets.Domain.UnitTests", "FindYourFriendAmongPets.Domain.UnitTests\FindYourFriendAmongPets.Domain.UnitTests.csproj", "{75679A4F-D1A9-4117-85E4-570DF03379AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourFriendAmongPets.Application.UnitTests", "FindYourFriendAmongPets.Application.UnitTests\FindYourFriendAmongPets.Application.UnitTests.csproj", "{A087F08D-CFDF-402E-AE78-561722BBF6B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75679A4F-D1A9-4117-85E4-570DF03379AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A087F08D-CFDF-402E-AE78-561722BBF6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A087F08D-CFDF-402E-AE78-561722BBF6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A087F08D-CFDF-402E-AE78-561722BBF6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A087F08D-CFDF-402E-AE78-561722BBF6B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,5 +74,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4A25624D-FB9C-41F3-894A-7672EAB7D67F} = {4411FD7C-20BF-4E23-A8C1-6522E5AA3CC7}
 		{75679A4F-D1A9-4117-85E4-570DF03379AA} = {4411FD7C-20BF-4E23-A8C1-6522E5AA3CC7}
+		{A087F08D-CFDF-402E-AE78-561722BBF6B3} = {4411FD7C-20BF-4E23-A8C1-6522E5AA3CC7}
 	EndGlobalSection
 EndGlobal

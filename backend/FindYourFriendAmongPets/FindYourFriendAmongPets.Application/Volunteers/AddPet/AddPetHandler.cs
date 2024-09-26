@@ -14,22 +14,17 @@ namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
 
 public class AddPetHandler
 {
-    private const string BUCKET_NAME = "files";
-
-    private readonly IFileProvider _fileProvider;
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
 
     public AddPetHandler(
-        IFileProvider fileProvider,
         IVolunteerRepository volunteerRepository,
         IUnitOfWork unitOfWork,
         IValidator<AddPetCommand> validator,
         ILogger<AddPetHandler> logger)
     {
-        _fileProvider = fileProvider;
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;

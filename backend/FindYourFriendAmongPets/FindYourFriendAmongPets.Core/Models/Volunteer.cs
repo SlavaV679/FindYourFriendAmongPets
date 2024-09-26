@@ -144,11 +144,11 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
     public Result<Pet, Error> GetPetById(PetId petId)
     {
-        var issue = _pets.FirstOrDefault(i => i.Id == petId);
-        if (issue is null)
+        var pet = _pets.FirstOrDefault(i => i.Id.Value == petId.Value);
+        if (pet is null)
             return Errors.General.NotFound(petId.Value);
 
-        return issue;
+        return pet;
     }
 
     public UnitResult<Error> MovePet(Pet pet, Position newPosition)
@@ -164,7 +164,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
         newPosition = adjustedPosition.Value;
 
-        var moveResult = MoveIssuesBetweenPositions(currentPosition, newPosition);
+        var moveResult = MovePetsBetweenPositions(currentPosition, newPosition);
         if (moveResult.IsFailure)
             return moveResult.Error;
 
@@ -173,7 +173,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
-    private UnitResult<Error> MoveIssuesBetweenPositions(Position currentPosition, Position newPosition)
+    private UnitResult<Error> MovePetsBetweenPositions(Position currentPosition, Position newPosition)
     {
         if (currentPosition > newPosition)
         {

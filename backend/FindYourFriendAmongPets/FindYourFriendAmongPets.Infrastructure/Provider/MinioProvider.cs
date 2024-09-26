@@ -51,7 +51,7 @@ public class MinioProvider : IFileProvider
         {
             _logger.LogError(ex, "Fail to upload files in minio, files amount: {amount}", filesList.Count);
 
-            return Error.Failure("file.upload", "Fail to upload files in minio");
+            return Error.Failure("fail.file.upload", "Fail to upload files in minio");
         }
     }
 

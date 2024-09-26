@@ -13,7 +13,7 @@ namespace FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
 
 public class UploadFilesToPetHandler
 {
-        private const string BUCKET_NAME = "files";
+    private const string BUCKET_NAME = "files";
 
     private readonly IFileProvider _fileProvider;
     private readonly IVolunteerRepository _volunteerRepository;
@@ -40,6 +40,7 @@ public class UploadFilesToPetHandler
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+
         if (validationResult.IsValid == false)
         {
             return validationResult.ToList();
@@ -56,8 +57,11 @@ public class UploadFilesToPetHandler
         var petId = PetId.Create(command.PetId);
 
         var petResult = volunteerResult.Value.GetPetById(petId);
-        if(petResult.IsFailure)
+
+        if (petResult.IsFailure)
+        {
             return petResult.Error.ToErrorList();
+        }
 
         List<FileData> filesData = [];
         foreach (var file in command.Files)
