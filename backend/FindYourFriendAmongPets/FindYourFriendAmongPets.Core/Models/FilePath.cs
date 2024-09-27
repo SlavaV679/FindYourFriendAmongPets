@@ -25,6 +25,12 @@ public record FilePath
 
     public static Result<FilePath, Error> Create(string fullPath)
     {
+        var extension = System.IO.Path.GetExtension(fullPath);
+
+        // валидация на доступные расширения файлов
+        if (extension != ".jpg" && extension != ".png")
+            return Errors.General.ValueIsInvalid("extension", "extension may be only 'jpg' or 'png'");
+
         if (string.IsNullOrWhiteSpace(fullPath))
             return Errors.General.ValueIsInvalid("file path");
 
