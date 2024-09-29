@@ -1,9 +1,14 @@
-﻿using FindYourFriendAmongPets.Application.Providers;
+﻿using FindYourFriendAmongPets.Application.Files;
+using FindYourFriendAmongPets.Application.Messaging;
+using FindYourFriendAmongPets.Infrastructure.BackgroundServices;
+using FindYourFriendAmongPets.Infrastructure.Files;
+using FindYourFriendAmongPets.Infrastructure.MessageQueues;
 using FindYourFriendAmongPets.Infrastructure.Options;
 using FindYourFriendAmongPets.Infrastructure.Provider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
 
 namespace FindYourFriendAmongPets.Infrastructure;
 
@@ -14,6 +19,12 @@ public static class Inject
     {
         services.AddMinio(configuration);
 
+        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+
+        services.AddHostedService<FilesCleanerBackgroundService>();
+        
+        services.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>, InMemoryMessageQueue<IEnumerable<FileInfo>>>();
+        
         return services;
     }
 

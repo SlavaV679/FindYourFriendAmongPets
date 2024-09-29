@@ -1,13 +1,15 @@
 using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
-using FindYourFriendAmongPets.Application.FileProvider;
-using FindYourFriendAmongPets.Application.Providers;
+using FindYourFriendAmongPets.Application.Files;
+using FindYourFriendAmongPets.Application.Files;
+using FindYourFriendAmongPets.Application.Messaging;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.Core.Shared.ValueObject;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
 
@@ -19,6 +21,7 @@ public class UploadFilesToPetHandler
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UploadFilesToPetCommand> _validator;
+    private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
     private readonly ILogger<UploadFilesToPetHandler> _logger;
 
     public UploadFilesToPetHandler(
@@ -26,12 +29,14 @@ public class UploadFilesToPetHandler
         IVolunteerRepository volunteerRepository,
         IUnitOfWork unitOfWork,
         IValidator<UploadFilesToPetCommand> validator,
+        IMessageQueue<IEnumerable<FileInfo>> messageQueue,
         ILogger<UploadFilesToPetHandler> logger)
     {
         _fileProvider = fileProvider;
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _messageQueue = messageQueue;
         _logger = logger;
     }
 
@@ -72,14 +77,17 @@ public class UploadFilesToPetHandler
             if (filePath.IsFailure)
                 return filePath.Error.ToErrorList();
 
-            var fileData = new FileData(file.Content, filePath.Value, BUCKET_NAME);
+            var fileData = new FileData(file.Content, new FileInfo(filePath.Value, BUCKET_NAME));
 
             filesData.Add(fileData);
         }
 
         var filePathsResult = await _fileProvider.UploadFiles(filesData, cancellationToken);
         if (filePathsResult.IsFailure)
+        {
+            await _messageQueue.WriteAsync(filesData.Select(f => f.Info), cancellationToken);
             return filePathsResult.Error.ToErrorList();
+        }
 
         var petFiles = filePathsResult.Value
             .Select(f => new PetPhoto(f));

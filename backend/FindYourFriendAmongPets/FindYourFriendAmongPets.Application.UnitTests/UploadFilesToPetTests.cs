@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Dtos;
-using FindYourFriendAmongPets.Application.FileProvider;
-using FindYourFriendAmongPets.Application.Providers;
+using FindYourFriendAmongPets.Application.Files;
+using FindYourFriendAmongPets.Application.Messaging;
 using FindYourFriendAmongPets.Application.Volunteers;
 using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
 using FindYourFriendAmongPets.Core.Models;
@@ -14,23 +14,17 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
+using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
 
 namespace FindYourFriendAmongPets.Application.UnitTests;
 
 public class UploadFilesToPetTests
 {
-    private readonly Mock<IFileProvider> _fileProviderMock;
-    private readonly Mock<IVolunteerRepository> _volunteerRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<IValidator<UploadFilesToPetCommand>> _validatorMock;
-
-    public UploadFilesToPetTests()
-    {
-        _fileProviderMock = new Mock<IFileProvider>();
-        _volunteerRepositoryMock = new Mock<IVolunteerRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _validatorMock = new Mock<IValidator<UploadFilesToPetCommand>>();
-    }
+    private readonly Mock<IFileProvider> _fileProviderMock = new();
+    private readonly Mock<IVolunteerRepository> _volunteerRepositoryMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IValidator<UploadFilesToPetCommand>> _validatorMock = new();
+    private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
 
     [Fact]
     public async Task Handle_Should_Upload_Files_To_Pet()
@@ -41,7 +35,7 @@ public class UploadFilesToPetTests
         var filePath = FilePath.Create("test.jpg").Value;
         List<FilePath> filePathList = [filePath, filePath];
         var bucketName = "bucketName";
-        var fileData = new FileData(stream, filePath, bucketName);
+        var fileData = new FileData(stream, new FileInfo(filePath, bucketName));
         List<FileData> fileDataList = [fileData, fileData];
         var volunteer = BaseUnitTest.CreateVolunteer();
         var petId = PetId.NewPetId();
@@ -68,6 +62,9 @@ public class UploadFilesToPetTests
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<UploadFilesToPetCommand>(), token))
             .ReturnsAsync(new ValidationResult());
 
+        _messageQueueMock.Setup(m => m.WriteAsync(It.IsAny<IEnumerable<FileInfo>>(), token))
+            .Returns(Task.CompletedTask);
+        
         var loggerMock = new Mock<ILogger<UploadFilesToPetHandler>>();
 
         var uploadFilesToPetHandler = new UploadFilesToPetHandler(
@@ -75,6 +72,7 @@ public class UploadFilesToPetTests
             volunteerRepositoryMock.Object,
             unitOfWorkMock.Object,
             validatorMock.Object,
+            _messageQueueMock.Object,
             loggerMock.Object);
 
         // act
@@ -118,6 +116,9 @@ public class UploadFilesToPetTests
         _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<UploadFilesToPetCommand>(), token))
             .ReturnsAsync(new ValidationResult());
 
+        _messageQueueMock.Setup(m => m.WriteAsync(It.IsAny<IEnumerable<FileInfo>>(), token))
+            .Returns(Task.CompletedTask);
+
         var loggerMock = new Mock<ILogger<UploadFilesToPetHandler>>();
 
         var uploadFilesToPetHandler = new UploadFilesToPetHandler(
@@ -125,6 +126,7 @@ public class UploadFilesToPetTests
             _volunteerRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
+            _messageQueueMock.Object,
             loggerMock.Object);
 
         // act
@@ -168,7 +170,10 @@ public class UploadFilesToPetTests
 
         _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<UploadFilesToPetCommand>(), token))
             .ReturnsAsync(new ValidationResult());
-
+        
+        _messageQueueMock.Setup(m => m.WriteAsync(It.IsAny<IEnumerable<FileInfo>>(), token))
+            .Returns(Task.CompletedTask);
+        
         var loggerMock = new Mock<ILogger<UploadFilesToPetHandler>>();
 
         var uploadFilesToPetHandler = new UploadFilesToPetHandler(
@@ -176,6 +181,7 @@ public class UploadFilesToPetTests
             _volunteerRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
+            _messageQueueMock.Object,
             loggerMock.Object);
 
         // act
@@ -217,6 +223,9 @@ public class UploadFilesToPetTests
         _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<UploadFilesToPetCommand>(), token))
             .ReturnsAsync(new ValidationResult());
 
+        _messageQueueMock.Setup(m => m.WriteAsync(It.IsAny<IEnumerable<FileInfo>>(), token))
+            .Returns(Task.CompletedTask);
+        
         var loggerMock = new Mock<ILogger<UploadFilesToPetHandler>>();
 
         var uploadFilesToPetHandler = new UploadFilesToPetHandler(
@@ -224,6 +233,7 @@ public class UploadFilesToPetTests
             _volunteerRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
+            _messageQueueMock.Object,
             loggerMock.Object);
         
         // act
