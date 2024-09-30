@@ -5,7 +5,7 @@ using FindYourFriendAmongPets.Core.Shared.ValueObject;
 
 namespace FindYourFriendAmongPets.Core.Models;
 
-public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
+public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>, ISoftDeletable
 {
     private bool _isDeleted = false;
 

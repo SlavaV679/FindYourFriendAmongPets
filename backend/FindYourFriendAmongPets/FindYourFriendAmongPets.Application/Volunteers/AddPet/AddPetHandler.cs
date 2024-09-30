@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
-using FindYourFriendAmongPets.Application.FileProvider;
-using FindYourFriendAmongPets.Application.Providers;
+using FindYourFriendAmongPets.Application.Files;
+using FindYourFriendAmongPets.Application.Files;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.Core.Shared;

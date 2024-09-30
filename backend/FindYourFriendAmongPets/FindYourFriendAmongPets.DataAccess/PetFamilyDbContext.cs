@@ -35,8 +35,7 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
-        LoggerFactory.Create(builder => { builder.AddConsole(); });
+    private ILoggerFactory CreateLoggerFactory() => LoggerFactory.Create(builder => { builder.AddConsole(); });
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

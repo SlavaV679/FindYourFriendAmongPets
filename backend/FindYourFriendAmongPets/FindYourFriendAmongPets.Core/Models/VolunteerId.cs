@@ -1,6 +1,8 @@
-﻿namespace FindYourFriendAmongPets.Core.Models;
+﻿using CSharpFunctionalExtensions;
 
-public record VolunteerId
+namespace FindYourFriendAmongPets.Core.Models;
+
+public class VolunteerId : ValueObject
 {
     public VolunteerId(Guid value)
     {
@@ -14,4 +16,9 @@ public record VolunteerId
     public static VolunteerId NewVolunteerId() => new(Guid.NewGuid());
 
     public static VolunteerId Empty() => new(Guid.Empty);
+   
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }
