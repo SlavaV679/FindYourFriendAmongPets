@@ -99,15 +99,20 @@ public class MinioProvider : IFileProvider
         try
         {
             await IfBucketsNotExistCreateBucket([fileInfo.BucketName], cancellationToken);
+            
             var statArgs = new StatObjectArgs()
                 .WithBucket(fileInfo.BucketName)
                 .WithObject(fileInfo.FilePath.Path);
+            
             var objectStat = await _minioClient.StatObjectAsync(statArgs, cancellationToken);
+            
             if (objectStat is null)
                 return Result.Success<Error>();
+            
             var removeArgs = new RemoveObjectArgs()
                 .WithBucket(fileInfo.BucketName)
                 .WithObject(fileInfo.FilePath.Path);
+            
             await _minioClient.RemoveObjectAsync(removeArgs, cancellationToken);
         }
         catch (Exception ex)
@@ -116,6 +121,7 @@ public class MinioProvider : IFileProvider
                 "Fail to remove file in minio with path {path} in bucket {bucket}",
                 fileInfo.FilePath.Path,
                 fileInfo.BucketName);
+            
             return Error.Failure("file.upload", "Fail to upload file in minio");
         }
         return Result.Success<Error>();
