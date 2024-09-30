@@ -6,7 +6,7 @@ using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
 
 public class UpdateMainInfoHandler
 {

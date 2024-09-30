@@ -1,4 +1,4 @@
-﻿namespace FindYourFriendAmongPets.Application.Volunteers.Create;
+﻿namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 
 public record RequisiteForHelpDto(
     string Name,

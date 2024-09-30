@@ -1,6 +1,6 @@
 ﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
 
 public record UpdateMainInfoCommand(
     Guid VolunteerId,

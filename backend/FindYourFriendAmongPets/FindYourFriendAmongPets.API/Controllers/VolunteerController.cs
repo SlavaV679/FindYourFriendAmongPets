@@ -1,11 +1,11 @@
 ﻿using FindYourFriendAmongPets.API.Controllers.Requests;
 using FindYourFriendAmongPets.API.Extensions;
 using FindYourFriendAmongPets.API.Processors;
-using FindYourFriendAmongPets.Application.Volunteers.AddPet;
-using FindYourFriendAmongPets.Application.Volunteers.Create;
-using FindYourFriendAmongPets.Application.Volunteers.Delete;
-using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
-using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 using FindYourFriendAmongPets.Infrastructure.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

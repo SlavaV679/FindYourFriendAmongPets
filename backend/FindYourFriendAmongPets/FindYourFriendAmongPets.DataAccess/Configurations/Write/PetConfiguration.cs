@@ -1,10 +1,10 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
-using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using CoreConstants = FindYourFriendAmongPets.Core.Shared.Constants;
 
-namespace FindYourFriendAmongPets.DataAccess.Configurations;
+namespace FindYourFriendAmongPets.DataAccess.Configurations.Write;
 
 public class PetConfiguration : IEntityTypeConfiguration<Pet>
 {
@@ -21,13 +21,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ComplexProperty(p => p.Description, val =>
         {
             val.Property(v => v.Value)
-                .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_DESCRIPTION_LENGHT)
                 .IsRequired()
                 .HasColumnName("description");
         });
 
         builder.Property(p => p.Color)
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
 
         builder.ComplexProperty(p => p.PetSpecies, ps =>
@@ -39,34 +39,34 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         });
 
         builder.Property(p => p.HealthInfo)
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
 
         builder.ComplexProperty(v => v.Address, address =>
         {
             address.Property(f => f.City)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("city")
                 .IsRequired();
             address.Property(f => f.Street)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("street")
                 .IsRequired();
             address.Property(f => f.Building)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("building");
             address.Property(f => f.Description)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("address_description");
             address.Property(f => f.Country)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("country");
         });
 
         builder.ComplexProperty(p => p.OwnersPhoneNumber, phone =>
         {
             phone.Property(p => p.Number)
-                .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_PHONENUMBER_LENGHT)
                 .HasColumnName("owners_phone_number");
         });
 
@@ -86,7 +86,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                         p => p.Path,
                         value => FilePath.Create(value).Value)
                     .IsRequired()
-                    .HasMaxLength(Constants.MAX_PATH_TO_STORAGE_LENGHT);
+                    .HasMaxLength(CoreConstants.MAX_PATH_TO_STORAGE_LENGHT);
             });
         });
 
@@ -98,10 +98,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             {
                 requisitesBuilder.Property(r => r.Name)
                     .IsRequired()
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
+                    .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT);
                 requisitesBuilder.Property(r => r.Description)
                     .IsRequired()
-                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGHT);
+                    .HasMaxLength(CoreConstants.MAX_HIGH_TEXT_LENGHT);
             });
         });
 

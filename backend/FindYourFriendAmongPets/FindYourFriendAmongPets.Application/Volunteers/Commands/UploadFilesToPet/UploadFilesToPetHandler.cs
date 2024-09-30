@@ -2,7 +2,6 @@ using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Application.Files;
-using FindYourFriendAmongPets.Application.Files;
 using FindYourFriendAmongPets.Application.Messaging;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
@@ -11,7 +10,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 
 public class UploadFilesToPetHandler
 {
@@ -86,6 +85,7 @@ public class UploadFilesToPetHandler
         if (filePathsResult.IsFailure)
         {
             await _messageQueue.WriteAsync(filesData.Select(f => f.Info), cancellationToken);
+            
             return filePathsResult.Error.ToErrorList();
         }
 

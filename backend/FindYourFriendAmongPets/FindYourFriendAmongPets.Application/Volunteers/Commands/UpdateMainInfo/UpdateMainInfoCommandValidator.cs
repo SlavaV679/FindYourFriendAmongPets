@@ -1,9 +1,8 @@
 ﻿using FindYourFriendAmongPets.Application.Validation;
-using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
 
 public class UpdateMainInfoCommandValidator : AbstractValidator<UpdateMainInfoCommand>
 {

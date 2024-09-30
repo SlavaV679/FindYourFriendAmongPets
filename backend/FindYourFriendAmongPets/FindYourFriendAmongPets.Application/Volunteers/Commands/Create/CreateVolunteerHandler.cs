@@ -6,7 +6,7 @@ using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.Create;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 
 public class CreateVolunteerHandler
 {
@@ -52,7 +52,6 @@ public class CreateVolunteerHandler
             command.FullName.Patronymic).Value;
 
         var description = Description.Create(command.Description).Value;
-
 
         var requisitesForHelp = command.RequisitesForHelpDto?
             .Select(r => new RequisiteForHelp(Guid.NewGuid(), r.Name, r.Description)) ?? [];

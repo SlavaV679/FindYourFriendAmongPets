@@ -1,16 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
-using FindYourFriendAmongPets.Application.Files;
-using FindYourFriendAmongPets.Application.Files;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using FindYourFriendAmongPets.Core.Shared;
-using FindYourFriendAmongPets.Core.Shared.ValueObject;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
 
 public class AddPetHandler
 {

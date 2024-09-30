@@ -4,7 +4,7 @@ using FindYourFriendAmongPets.Application.Dtos;
 using FindYourFriendAmongPets.Application.Files;
 using FindYourFriendAmongPets.Application.Messaging;
 using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;

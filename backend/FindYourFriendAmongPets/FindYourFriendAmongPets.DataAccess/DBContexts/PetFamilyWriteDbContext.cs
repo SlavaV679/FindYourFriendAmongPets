@@ -1,17 +1,14 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
-using FindYourFriendAmongPets.DataAccess.Configurations;
 using FindYourFriendAmongPets.DataAccess.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace FindYourFriendAmongPets.DataAccess;
+namespace FindYourFriendAmongPets.DataAccess.DBContexts;
 
-public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
+public class PetFamilyWriteDbContext(IConfiguration _configuration) : DbContext
 {
-    private const string PET_FAMILY_DATABASE = "PetFamilyDb";
-
     //TODO разобраться почему с этим конструктором не работает
     // public readonly IConfiguration _configuration;
     //
@@ -27,7 +24,7 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_configuration.GetConnectionString(PET_FAMILY_DATABASE));
+        optionsBuilder.UseNpgsql(_configuration.GetConnectionString(Constants.PET_FAMILY_DATABASE));
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
@@ -39,9 +36,12 @@ public class PetFamilyDbContext(IConfiguration _configuration) : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new VolunteerConfiguration());
-        modelBuilder.ApplyConfiguration(new PetConfiguration());
-        modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(PetFamilyWriteDbContext).Assembly,
+            type => type.FullName?.Contains("Configurations.Write") ?? false);
+        // modelBuilder.ApplyConfiguration(new VolunteerConfiguration());
+        // modelBuilder.ApplyConfiguration(new PetConfiguration());
+        // modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

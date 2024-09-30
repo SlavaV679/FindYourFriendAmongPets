@@ -1,9 +1,9 @@
 ﻿using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
-using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using CoreConstants = FindYourFriendAmongPets.Core.Shared.Constants;
 
-namespace FindYourFriendAmongPets.DataAccess.Configurations;
+namespace FindYourFriendAmongPets.DataAccess.Configurations.Write;
 
 public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
 {
@@ -19,7 +19,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
                 value => SpeciesId.Create(value));
 
         builder.Property(s => s.Name)
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+            .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
             .IsRequired();
 
         builder.OwnsMany(s => s.Breeds,
@@ -30,7 +30,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
                 value => BreedId.Create(value));
         
             breed.Property(br => br.Name)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .IsRequired();
         });
     }

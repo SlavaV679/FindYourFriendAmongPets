@@ -6,7 +6,7 @@ using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.Delete;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
 
 public class DeleteVolunteerHandler
 {

@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.AddPet;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;

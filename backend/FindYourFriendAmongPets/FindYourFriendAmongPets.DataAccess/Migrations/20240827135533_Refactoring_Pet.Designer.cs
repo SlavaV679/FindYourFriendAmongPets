@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using FindYourFriendAmongPets.DataAccess;
+using FindYourFriendAmongPets.DataAccess.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -12,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FindYourFriendAmongPets.DataAccess.Migrations
 {
-    [DbContext(typeof(PetFamilyDbContext))]
+    [DbContext(typeof(PetFamilyWriteDbContext))]
     [Migration("20240827135533_Refactoring_Pet")]
     partial class Refactoring_Pet
     {

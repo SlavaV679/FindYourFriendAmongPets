@@ -1,4 +1,4 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Create;
+﻿using FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
 namespace FindYourFriendAmongPets.API.Controllers.Requests;

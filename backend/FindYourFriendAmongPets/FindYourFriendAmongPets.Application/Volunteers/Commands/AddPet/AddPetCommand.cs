@@ -1,6 +1,6 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
 
 public record AddPetCommand(
     Guid VolunteerId,

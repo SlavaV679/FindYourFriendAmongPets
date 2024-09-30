@@ -1,6 +1,6 @@
 ﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.Create;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 
 public record CreateVolunteerCommand(
     FullNameDto FullName,

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.Delete;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
 
 public class DeleteVolunteerCommandValidator : AbstractValidator<DeleteVolunteerCommand>
 {

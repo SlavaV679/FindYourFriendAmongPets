@@ -2,7 +2,7 @@ using FindYourFriendAmongPets.Application.Validation;
 using FindYourFriendAmongPets.Core.Shared;
 using FluentValidation;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 
 public class UploadFilesToPetCommandValidator: AbstractValidator<UploadFilesToPetCommand>
 {

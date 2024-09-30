@@ -2,7 +2,7 @@
 using FindYourFriendAmongPets.Core.Models;
 using FluentValidation;
 
-namespace FindYourFriendAmongPets.Application.Volunteers.AddPet;
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
 
 public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
 {

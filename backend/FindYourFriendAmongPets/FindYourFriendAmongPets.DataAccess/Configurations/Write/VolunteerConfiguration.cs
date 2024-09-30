@@ -1,9 +1,9 @@
 ﻿using FindYourFriendAmongPets.Core.Models;
-using FindYourFriendAmongPets.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using CoreConstants = FindYourFriendAmongPets.Core.Shared.Constants;
 
-namespace FindYourFriendAmongPets.DataAccess.Configurations;
+namespace FindYourFriendAmongPets.DataAccess.Configurations.Write;
 
 public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
@@ -20,13 +20,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.FullName, fullName =>
         {
             fullName.Property(f => f.FirstName)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("first_name");
             fullName.Property(f => f.LastName)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("last_name");
             fullName.Property(f => f.Patronymic)
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT)
                 .HasColumnName("patronymic");
         });
 
@@ -34,14 +34,14 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             d.Property(v => v.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_DESCRIPTION_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_DESCRIPTION_LENGHT)
                 .HasColumnName("description");
         });
 
         builder.ComplexProperty(v => v.PhoneNumber, phone =>
         {
             phone.Property(p => p.Number)
-                .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                .HasMaxLength(CoreConstants.MAX_PHONENUMBER_LENGHT)
                 .HasColumnName("phone_number");
         });
 
@@ -54,8 +54,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             v => v.SocialNetworks,
             s =>
             {
-                s.Property(x => x.Link).HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
-                s.Property(x => x.Title).HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
+                s.Property(x => x.Link).HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT);
+                s.Property(x => x.Title).HasMaxLength(CoreConstants.MAX_LOW_TEXT_LENGHT);
             }); //TODO научиться управлять onDelete: ReferentialAction.Cascade
 
         builder.HasMany(v => v.RequisitesForHelp)
