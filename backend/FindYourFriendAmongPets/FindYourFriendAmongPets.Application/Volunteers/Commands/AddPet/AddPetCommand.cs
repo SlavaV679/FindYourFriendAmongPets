@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Core.Models;
+﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
+using FindYourFriendAmongPets.Core.Models;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
 
