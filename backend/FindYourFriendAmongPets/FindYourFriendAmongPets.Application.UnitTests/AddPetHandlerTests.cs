@@ -2,6 +2,7 @@
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Volunteers;
 using FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
+using FindYourFriendAmongPets.Application.Volunteers.Shared;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;

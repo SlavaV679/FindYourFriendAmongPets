@@ -19,7 +19,6 @@ public class VolunteerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromServices] IOptions<MinioOptions> options,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
