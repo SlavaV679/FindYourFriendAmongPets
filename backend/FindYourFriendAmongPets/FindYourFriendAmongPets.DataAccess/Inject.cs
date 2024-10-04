@@ -10,12 +10,31 @@ public static class Inject
 {
     public static IServiceCollection AddDataAccess(this IServiceCollection services)
     {
+        services
+            .AddDbContexts()
+            .AddRepositories()
+            .AddDatabase();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddDbContexts(this IServiceCollection services)
+    {
         services.AddScoped<PetFamilyWriteDbContext>();
+        services.AddScoped<IReadDbContext, ReadDbContext>();
 
-        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
-        
+        return services;
+    }
+    
+    private static IServiceCollection AddDatabase(this IServiceCollection services)
+    {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         return services;
     }
 }
