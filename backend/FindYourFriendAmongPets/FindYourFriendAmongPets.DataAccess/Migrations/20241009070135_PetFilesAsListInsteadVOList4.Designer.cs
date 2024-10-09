@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FindYourFriendAmongPets.DataAccess.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourFriendAmongPets.DataAccess.Migrations
 {
     [DbContext(typeof(PetFamilyWriteDbContext))]
-    partial class PetFamilyWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009070135_PetFilesAsListInsteadVOList4")]
+    partial class PetFilesAsListInsteadVOList4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

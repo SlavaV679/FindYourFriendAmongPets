@@ -8,9 +8,9 @@ namespace FindYourFriendAmongPets.DataAccess.DBContexts;
 
 public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbContext
 {
-    public DbSet<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
     
-    public DbSet<PetDto> Pets => Set<PetDto>();
+    public IQueryable<PetDto> Pets => Set<PetDto>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

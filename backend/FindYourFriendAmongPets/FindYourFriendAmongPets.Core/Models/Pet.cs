@@ -9,7 +9,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
     private bool _isDeleted = false;
 
-    private readonly List<PetPhoto> _petPhotos = [];
+    private readonly List<PetFile> _petFiles = [];
 
     private Pet(PetId id) : base(id)
     {
@@ -31,7 +31,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         Status helpStatus,
         DateTime dateCreated,
         PetRequisiteDetails requisiteDetails,
-        ValueObjectList<PetPhoto>? petPhotos)
+        ValueObjectList<PetFile>? petFiles)
         : base(id)
     {
         Name = name;
@@ -49,7 +49,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         HelpStatus = helpStatus;
         DateCreated = dateCreated;
         RequisiteDetails = requisiteDetails;
-        PetPhotos = petPhotos ?? new ValueObjectList<PetPhoto>([]);
+        PetFiles = petFiles ?? new ValueObjectList<PetFile>([]);
     }
 
     public string Name { get; private set; }
@@ -82,7 +82,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     
     public Position Position { get; private set; }
 
-    public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
+    public IReadOnlyList<PetFile> PetFiles { get; private set; }
 
     public PetRequisiteDetails RequisiteDetails { get; private set; }
 
@@ -101,7 +101,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         bool isVaccinated,
         Status helpStatus,
         PetRequisiteDetails requisiteDetails,
-        ValueObjectList<PetPhoto>? petPhotos
+        ValueObjectList<PetFile>? petFiles
     )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.MAX_LOW_TEXT_LENGHT)
@@ -133,15 +133,15 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             helpStatus,
             DateTime.Now.ToUniversalTime(),
             requisiteDetails,
-            petPhotos);
+            petFiles);
     }
 
-    public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos)
+    public void AddPetFiles(IEnumerable<PetFile> petFiles)
     {
-        _petPhotos.AddRange(petPhotos);
+        _petFiles.AddRange(petFiles);
     }
 
-    public void UpdateFiles(ValueObjectList<PetPhoto> petPhotos) => PetPhotos = petPhotos;
+    public void UpdateFiles(ValueObjectList<PetFile> petFiles) => PetFiles = petFiles;
 
     public void Delete()
     {

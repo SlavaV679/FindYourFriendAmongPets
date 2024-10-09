@@ -1,7 +1,4 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
-using FindYourFriendAmongPets.Core.Models;
-
-namespace FindYourFriendAmongPets.Application.Dtos;
+﻿namespace FindYourFriendAmongPets.Application.Dtos;
 
 public class PetDto
 {
@@ -12,11 +9,11 @@ public class PetDto
     public string Description { get; init; } = string.Empty;
     public string Color { get; init; } = string.Empty;
     public string HealthInfo { get; init; } = string.Empty;
-    public string City{ get; init; }
+    public string City { get; init; }
     public string Street { get; init; }
-    public string Building { get; init; } 
-    public string? AddressDescription { get; init; } 
-    public string? Country  { get; init; }
+    public string Building { get; init; }
+    public string? AddressDescription { get; init; }
+    public string? Country { get; init; }
     public double Weight { get; init; }
     public double Height { get; init; }
     public string OwnersPhoneNumber { get; init; } = string.Empty;
@@ -24,5 +21,5 @@ public class PetDto
     public DateTime DateOfBirth { get; init; }
     public bool IsVaccinated { get; init; }
     public string HelpStatus { get; init; }
-    //public string Files { get; private set; } = string.Empty;
+    public PetFileDto[] PetFiles { get; init; } = null!;
 }

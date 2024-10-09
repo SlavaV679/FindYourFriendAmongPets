@@ -1,13 +1,13 @@
 ﻿namespace FindYourFriendAmongPets.Core.Models;
 
-public class PetPhoto
+public class PetFile
 {
     // ef core
-    private PetPhoto()
+    private PetFile()
     {
     }
 
-    public PetPhoto(FilePath pathToStorage, bool isMain = false)
+    public PetFile(FilePath pathToStorage, bool isMain = false)
     {
         PathToStorage = pathToStorage;
         IsMain = isMain;

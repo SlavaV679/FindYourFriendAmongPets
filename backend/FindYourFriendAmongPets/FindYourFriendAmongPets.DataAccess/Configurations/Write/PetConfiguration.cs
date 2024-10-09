@@ -1,6 +1,9 @@
-﻿using FindYourFriendAmongPets.Core.Models;
+﻿using System.Text.Json;
+using FindYourFriendAmongPets.Application.Dtos;
+using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CoreConstants = FindYourFriendAmongPets.Core.Shared.Constants;
 
@@ -75,20 +78,24 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 v => v.ToString(),
                 v => (Status)Enum.Parse(typeof(Status), v));
 
-        builder.OwnsOne(d => d.PetPhotos, photoBuilder =>
-        {
-            photoBuilder.ToJson("pet_photos");
-
-            photoBuilder.OwnsMany(phl => phl.Values, photoListBuilder =>
-            {
-                photoListBuilder.Property(pp => pp.PathToStorage)
-                    .HasConversion(
-                        p => p.Path,
-                        value => FilePath.Create(value).Value)
-                    .IsRequired()
-                    .HasMaxLength(CoreConstants.MAX_PATH_TO_STORAGE_LENGHT);
-            });
-        });
+        builder.Property(i => i.PetFiles)
+            .HasConversion(
+                petFiles => JsonSerializer.Serialize(
+                    petFiles.Select(f => new PetFileDto
+                    {
+                        PathToStorage = f.PathToStorage.Path,
+                        IsMain = f.IsMain
+                    }),
+                    JsonSerializerOptions.Default),
+                json => JsonSerializer.Deserialize<List<PetFileDto>>(json, JsonSerializerOptions.Default)!
+                    .Select(dto => new PetFile(FilePath.Create(dto.PathToStorage).Value, dto.IsMain))
+                    .ToList(),
+                new ValueComparer<IReadOnlyList<PetFile>>(
+                    (c1, c2) => c1!.SequenceEqual(c2!),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => (IReadOnlyList<PetFile>)c.ToList()))
+            .HasColumnType("jsonb")
+            .HasColumnName("pet_files");
 
         builder.OwnsOne(p => p.RequisiteDetails, petBuilder =>
         {
@@ -108,7 +115,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");
-        
+
         builder.ComplexProperty(pet => pet.Position,
             pb =>
             {

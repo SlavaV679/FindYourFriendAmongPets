@@ -89,10 +89,9 @@ public class UploadFilesToPetHandler
             return filePathsResult.Error.ToErrorList();
         }
 
-        var petFiles = filePathsResult.Value
-            .Select(f => new PetPhoto(f));
+        var petFiles = filePathsResult.Value.Select(f => new PetFile(f));
 
-        petResult.Value.UpdateFiles(new ValueObjectList<PetPhoto>(petFiles));
+        petResult.Value.UpdateFiles(new ValueObjectList<PetFile>(petFiles));
 
         await _unitOfWork.SaveChanges(cancellationToken);
 
