@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Application.Abstraction;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Application.Files;
@@ -12,7 +13,7 @@ using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 
-public class UploadFilesToPetHandler
+public class UploadFilesToPetHandler: ICommandHandler<Guid, UploadFilesToPetCommand>
 {
     private const string BUCKET_NAME = "files";
 

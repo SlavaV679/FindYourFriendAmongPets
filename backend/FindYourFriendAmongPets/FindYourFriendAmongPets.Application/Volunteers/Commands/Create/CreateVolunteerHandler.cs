@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Application.Abstraction;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Core.Models;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 
-public class CreateVolunteerHandler
+public class CreateVolunteerHandler: ICommandHandler<Guid, CreateVolunteerCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

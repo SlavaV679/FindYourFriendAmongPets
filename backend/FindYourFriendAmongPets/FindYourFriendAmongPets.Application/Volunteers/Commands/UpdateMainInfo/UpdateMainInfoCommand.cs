@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
+using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
 
@@ -7,4 +8,4 @@ public record UpdateMainInfoCommand(
     FullNameDto FullName,
     string Description,
     string PhoneNumber,
-    int ExperienceInYears);
+    int ExperienceInYears): ICommand;

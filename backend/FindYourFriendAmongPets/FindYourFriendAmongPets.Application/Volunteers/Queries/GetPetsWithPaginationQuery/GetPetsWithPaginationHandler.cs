@@ -1,11 +1,12 @@
-﻿using FindYourFriendAmongPets.Application.Database;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
+using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Dtos;
 using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Application.Models;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Queries.GetPetsWithPaginationQuery;
 
-public class GetPetsWithPaginationHandler
+public class GetPetsWithPaginationHandler: IQueryHandler<PagedList<PetDto>, GetFilteredPetsWithPaginationQuery>
 {
     private readonly IReadDbContext _readDbContext;
     
@@ -15,7 +16,7 @@ public class GetPetsWithPaginationHandler
     }
     
     public async Task<PagedList<PetDto>> Handle(
-        GetPetsWithPaginationQuery query,
+        GetFilteredPetsWithPaginationQuery query,
         CancellationToken cancellationToken)
     {
         var petsQuery = _readDbContext.Pets;//.AsQueryable();

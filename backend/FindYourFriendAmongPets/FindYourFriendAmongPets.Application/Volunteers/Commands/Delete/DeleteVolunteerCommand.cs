@@ -1,3 +1,5 @@
-﻿namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
 
-public record DeleteVolunteerCommand(Guid VolunteerId);
+namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
+
+public record DeleteVolunteerCommand(Guid VolunteerId): ICommand;

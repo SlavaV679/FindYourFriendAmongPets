@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
+using FindYourFriendAmongPets.Application.Volunteers.Shared;
 using FindYourFriendAmongPets.Core.Models;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
@@ -19,4 +20,4 @@ public record AddPetCommand(
     bool IsVaccinated,
     Status HelpStatus
     //PetRequisiteDetails RequisiteDetails,
-    );
+    ): ICommand;

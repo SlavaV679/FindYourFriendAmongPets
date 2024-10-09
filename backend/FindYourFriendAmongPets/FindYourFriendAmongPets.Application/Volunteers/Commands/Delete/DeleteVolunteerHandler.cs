@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using FindYourFriendAmongPets.Application.Abstraction;
 using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Extensions;
 using FindYourFriendAmongPets.Core.Models;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Delete;
 
-public class DeleteVolunteerHandler
+public class DeleteVolunteerHandler: ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<DeleteVolunteerCommand> _validator;

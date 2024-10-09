@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
+using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
 namespace FindYourFriendAmongPets.Application.Volunteers.Commands.Create;
 
@@ -8,4 +9,4 @@ public record CreateVolunteerCommand(
     string PhoneNumber,
     int ExperienceInYears,
     IEnumerable<RequisiteForHelpDto>? RequisitesForHelpDto,
-    IEnumerable<SocialNetworkDto>? SocialNetworksDto);
+    IEnumerable<SocialNetworkDto>? SocialNetworksDto): ICommand;
