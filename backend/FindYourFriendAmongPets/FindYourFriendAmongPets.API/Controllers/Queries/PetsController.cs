@@ -8,7 +8,7 @@ public class PetsController: ApplicationController
 {
     [HttpGet]
     public async Task<ActionResult> Get(
-        [FromQuery] GetPetsWithPaginationRequest request,
+        [FromQuery] GetFilteredPetsWithPaginationRequest request,
         [FromServices] GetPetsWithPaginationHandler handler,
         CancellationToken cancellationToken)
     {

@@ -1,4 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Models;
+﻿using System.Linq.Expressions;
+using FindYourFriendAmongPets.Application.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindYourFriendAmongPets.Application.Extensions;
@@ -25,5 +26,13 @@ public static class QueriesExtensions
             Page = page,
             TotalCount = totalCount
         };
+    }
+    
+    public static IQueryable<T> WhereIf<T>(
+        this IQueryable<T> source,
+        bool condition,
+        Expression<Func<T, bool>> predicate)
+    {
+        return condition ? source.Where(predicate) : source;
     }
 }

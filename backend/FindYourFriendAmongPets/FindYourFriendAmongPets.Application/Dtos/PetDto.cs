@@ -21,5 +21,7 @@ public class PetDto
     public DateTime DateOfBirth { get; init; }
     public bool IsVaccinated { get; init; }
     public string HelpStatus { get; init; }
+    public int Position { get; set; }
+
     public PetFileDto[] PetFiles { get; init; } = null!;
 }
