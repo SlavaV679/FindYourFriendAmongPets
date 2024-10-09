@@ -2,31 +2,32 @@
 using FindYourFriendAmongPets.Application.Volunteers;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
+using FindYourFriendAmongPets.DataAccess.DBContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindYourFriendAmongPets.DataAccess.Repositories;
 
 public class VolunteerRepository : IVolunteerRepository
 {
-    private readonly PetFamilyDbContext _dbContext;
+    private readonly PetFamilyWriteDbContext _writeDbContext;
 
-    public VolunteerRepository(PetFamilyDbContext dbContext)
+    public VolunteerRepository(PetFamilyWriteDbContext writeDbContext)
     {
-        _dbContext = dbContext;
+        _writeDbContext = writeDbContext;
     }
 
     public async Task<VolunteerId> Add(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
+        await _writeDbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-        // await _dbContext.SaveChangesAsync(cancellationToken);
+        // await _writeDbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }
 
     public async Task<Result<Volunteer, Error>> GetById(VolunteerId id, CancellationToken cancellationToken = default) //VolunteerId volunteerId)
     {
-        var volunteer = await _dbContext.Volunteers
+        var volunteer = await _writeDbContext.Volunteers
             .Include(m => m.Pets)
             .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
 
@@ -40,7 +41,7 @@ public class VolunteerRepository : IVolunteerRepository
         PhoneNumber phoneNumber,
         CancellationToken cancellationToken = default)
     {
-        var volunteer = await _dbContext.Volunteers
+        var volunteer = await _writeDbContext.Volunteers
             .Include(v => v.Pets)
             .FirstOrDefaultAsync(v => v.PhoneNumber == phoneNumber, cancellationToken);
 
@@ -52,14 +53,14 @@ public class VolunteerRepository : IVolunteerRepository
 
     public VolunteerId Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        _dbContext.Volunteers.Remove(volunteer);
+        _writeDbContext.Volunteers.Remove(volunteer);
 
         return volunteer.Id;
     }
 
     public Guid Save(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        _dbContext.Volunteers.Attach(volunteer);
+        _writeDbContext.Volunteers.Attach(volunteer);
 
         return volunteer.Id.Value;
     }

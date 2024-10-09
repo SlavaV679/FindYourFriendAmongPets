@@ -1,5 +1,5 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.Shared;
-using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
+﻿using FindYourFriendAmongPets.Application.Volunteers.Commands.UpdateMainInfo;
+using FindYourFriendAmongPets.Application.Volunteers.Shared;
 
 namespace FindYourFriendAmongPets.API.Controllers.Requests;
 

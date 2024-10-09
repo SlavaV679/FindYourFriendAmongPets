@@ -17,14 +17,33 @@ public static class Inject
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMinio(configuration);
+        services
+            .AddMinio(configuration)
+            .AddHostedServices()
+            .AddMessageQueues()
+            .AddServices();
 
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
         services.AddScoped<IFilesCleanerService, FilesCleanerService>();
 
-        services.AddHostedService<FilesCleanerBackgroundService>();
-        
+        return services;
+    }
+
+    private static IServiceCollection AddMessageQueues(this IServiceCollection services)
+    {
         services.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>, InMemoryMessageQueue<IEnumerable<FileInfo>>>();
-        
+
+        return services;
+    }
+
+    private static IServiceCollection AddHostedServices(this IServiceCollection services)
+    {
+        services.AddHostedService<FilesCleanerBackgroundService>();
+
         return services;
     }
 
@@ -41,9 +60,9 @@ public static class Inject
             options.WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
             options.WithSSL(minioOptions.WithSsl);
         });
-        
+
         services.AddScoped<IFileProvider, MinioProvider>();
-        
+
         return services;
     }
 }

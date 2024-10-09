@@ -252,8 +252,8 @@ public class VolunteerTests
         var requisite = Requisite.Create($"Requisite name", $"description");
         var requisiteDetails = new PetRequisiteDetails([requisite.Value]);
 
-        PetPhoto petPhoto = new PetPhoto(FilePath.Create("fullPath.jpg").Value, false);
-        var petPhotos = new ValueObjectList<PetPhoto>([petPhoto]);
+        PetFile petFile = new PetFile(FilePath.Create("fullPath.jpg").Value, false);
+        var petPhotos = new ValueObjectList<PetFile>([petFile]);
 
         var pet = Pet.Create(
             petId,
@@ -286,8 +286,8 @@ public class VolunteerTests
             var requisite = Requisite.Create($"Requisite name-{i}", $"description-{i}");
             var requisiteDetails = new PetRequisiteDetails([requisite.Value]);
 
-            PetPhoto petPhoto = new PetPhoto(FilePath.Create("fullPath.jpg").Value, false);
-            var petPhotos = new ValueObjectList<PetPhoto>([petPhoto]);
+            PetFile petFile = new PetFile(FilePath.Create("fullPath.jpg").Value, false);
+            var petPhotos = new ValueObjectList<PetFile>([petFile]);
 
             var pet = Pet.Create(
                 PetId.NewPetId(),

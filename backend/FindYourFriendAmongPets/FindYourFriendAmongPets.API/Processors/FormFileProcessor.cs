@@ -1,5 +1,4 @@
 ﻿using FindYourFriendAmongPets.Application.Dtos;
-using FindYourFriendAmongPets.Application.Volunteers.AddPet;
 
 namespace FindYourFriendAmongPets.API.Processors;
 

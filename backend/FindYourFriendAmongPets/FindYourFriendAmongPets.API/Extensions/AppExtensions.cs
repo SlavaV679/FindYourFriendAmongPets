@@ -1,4 +1,5 @@
 ﻿using FindYourFriendAmongPets.DataAccess;
+using FindYourFriendAmongPets.DataAccess.DBContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindYourFriendAmongPets.API.Extensions;
@@ -8,8 +9,8 @@ public static class AppExtensions
     public static async Task ApplyMigration(this WebApplication app)
     {
         await using var scope = app.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<PetFamilyDbContext>();
+        var writeDbContext = scope.ServiceProvider.GetRequiredService<PetFamilyWriteDbContext>();
 
-        await dbContext.Database.MigrateAsync();
+        await writeDbContext.Database.MigrateAsync();
     }
 }

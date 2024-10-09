@@ -1,5 +1,6 @@
 ﻿using FindYourFriendAmongPets.Application.Database;
 using FindYourFriendAmongPets.Application.Volunteers;
+using FindYourFriendAmongPets.DataAccess.DBContexts;
 using FindYourFriendAmongPets.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,12 +10,31 @@ public static class Inject
 {
     public static IServiceCollection AddDataAccess(this IServiceCollection services)
     {
-        services.AddScoped<PetFamilyDbContext>();
+        services
+            .AddDbContexts()
+            .AddRepositories()
+            .AddDatabase();
 
-        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
-        
+        return services;
+    }
+    
+    private static IServiceCollection AddDbContexts(this IServiceCollection services)
+    {
+        services.AddScoped<PetFamilyWriteDbContext>();
+        services.AddScoped<IReadDbContext, ReadDbContext>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddDatabase(this IServiceCollection services)
+    {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         return services;
     }
 }

@@ -4,7 +4,7 @@ using FindYourFriendAmongPets.Application.Dtos;
 using FindYourFriendAmongPets.Application.Files;
 using FindYourFriendAmongPets.Application.Messaging;
 using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+using FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
 using FindYourFriendAmongPets.Core.Models;
 using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;
@@ -81,8 +81,8 @@ public class UploadFilesToPetTests
         // assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(petId.Value);
-        volunteer.Pets[0].PetPhotos.Count.Should().Be(2);
-        volunteer.Pets[0].PetPhotos.Should().HaveCount(2);
+        volunteer.Pets[0].PetFiles.Count.Should().Be(2);
+        volunteer.Pets[0].PetFiles.Should().HaveCount(2);
     }
 
     [Fact]

@@ -1,8 +1,4 @@
-﻿using FindYourFriendAmongPets.Application.Volunteers.AddPet;
-using FindYourFriendAmongPets.Application.Volunteers.Create;
-using FindYourFriendAmongPets.Application.Volunteers.UpdateMainInfo;
-using FindYourFriendAmongPets.Application.Volunteers.Delete;
-using FindYourFriendAmongPets.Application.Volunteers.UploadFilesToPet;
+﻿using FindYourFriendAmongPets.Application.Abstraction;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,18 +8,28 @@ public static class Inject
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<CreateVolunteerHandler>();
-
-        services.AddScoped<UpdateMainInfoHandler>();
-        
-        services.AddScoped<DeleteVolunteerHandler>();
-        
-        services.AddScoped<AddPetHandler>();
-        
-        services.AddScoped<UploadFilesToPetHandler>();
-        
-        services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
+        services            
+            .AddCommands()
+            .AddQueries()
+            .AddValidatorsFromAssembly(typeof(Inject).Assembly);
         
         return services;
+    }
+    
+    private static IServiceCollection AddCommands(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(Inject).Assembly)
+            .AddClasses(classes => classes
+                .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
+    }
+    private static IServiceCollection AddQueries(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(Inject).Assembly)
+            .AddClasses(classes => classes
+                .AssignableTo(typeof(IQueryHandler<,>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
     }
 }
