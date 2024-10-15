@@ -21,6 +21,7 @@ public static class Inject
     private static IServiceCollection AddDbContexts(this IServiceCollection services)
     {
         services.AddScoped<PetFamilyWriteDbContext>();
+        
         services.AddScoped<IReadDbContext, ReadDbContext>();
 
         return services;
@@ -29,12 +30,18 @@ public static class Inject
     private static IServiceCollection AddDatabase(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+        
         return services;
     }
     
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        
         return services;
     }
 }
