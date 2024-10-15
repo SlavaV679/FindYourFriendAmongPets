@@ -23,5 +23,5 @@ public class PetDto
     public string HelpStatus { get; init; }
     public int Position { get; set; }
 
-    public PetFileDto[] PetFiles { get; init; } = null!;
+    public PetFileDto[] PetFiles { get; set; } = null!;
 }

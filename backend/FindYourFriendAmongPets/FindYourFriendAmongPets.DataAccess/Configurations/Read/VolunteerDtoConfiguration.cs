@@ -20,8 +20,8 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
         //     .WithOne()
         //     .HasForeignKey(r => r.VolunteerId);
 
-        builder.HasMany(v => v.Pets)
-            .WithOne()
-            .HasForeignKey(p => p.VolunteerId);
+        // builder.HasMany(v => v.Pets)
+        //     .WithOne()
+        //     .HasForeignKey(p => p.VolunteerId);
     }
 }
