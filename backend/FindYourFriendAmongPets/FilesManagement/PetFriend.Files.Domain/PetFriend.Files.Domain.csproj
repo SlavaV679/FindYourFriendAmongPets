@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CSharpFunctionalExtensions" Version="2.42.5" />
+      <ProjectReference Include="..\..\Shared\PetFriend.SharedKernel\PetFriend.SharedKernel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ValueObjects\" />
     </ItemGroup>
 
 </Project>

@@ -46,6 +46,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFriend.SharedKernel", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFriend.Framework", "Shared\PetFriend.Framework\PetFriend.Framework.csproj", "{844BF0DC-008F-4B4D-AFF8-19E874868C8B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilesManagement", "FilesManagement", "{E5B47E8B-F3C5-47DF-A933-EB86364BBC16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFriend.Files.Domain", "FilesManagement\PetFriend.Files.Domain\PetFriend.Files.Domain.csproj", "{0CAA7041-455B-435E-BB0B-A89198E70AB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +120,10 @@ Global
 		{844BF0DC-008F-4B4D-AFF8-19E874868C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{844BF0DC-008F-4B4D-AFF8-19E874868C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{844BF0DC-008F-4B4D-AFF8-19E874868C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,5 +143,6 @@ Global
 		{BA2611E0-4A65-4E1E-A72A-44ABAE20C7E0} = {25ADFA1A-7135-401E-BCDD-E223182006E2}
 		{916FDD60-5EAE-4F08-AF10-9C6B90C1925E} = {25ADFA1A-7135-401E-BCDD-E223182006E2}
 		{844BF0DC-008F-4B4D-AFF8-19E874868C8B} = {25ADFA1A-7135-401E-BCDD-E223182006E2}
+		{0CAA7041-455B-435E-BB0B-A89198E70AB3} = {E5B47E8B-F3C5-47DF-A933-EB86364BBC16}
 	EndGlobalSection
 EndGlobal
