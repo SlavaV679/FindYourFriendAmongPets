@@ -1,16 +1,17 @@
 ﻿using CSharpFunctionalExtensions;
-using FindYourFriendAmongPets.Application.Database;
-using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.Commands.AddPet;
-using FindYourFriendAmongPets.Application.Volunteers.Shared;
-using FindYourFriendAmongPets.Core.Models;
-using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
+using PetFriend.Core.Dtos;
+using PetFriend.SharedKernel;
+using PetFriend.SharedKernel.ValueObjects.Ids;
+using PetFriend.Volunteers.Application.Commands.AddPet;
+using PetFriend.Volunteers.Application.Database;
+using PetFriend.Volunteers.Domain;
+using PetFriend.Volunteers.Domain.Enums;
 
 namespace FindYourFriendAmongPets.Application.UnitTests;
 

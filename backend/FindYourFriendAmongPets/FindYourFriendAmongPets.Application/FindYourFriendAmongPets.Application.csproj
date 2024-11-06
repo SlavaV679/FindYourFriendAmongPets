@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Volunteers\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FindYourFriendAmongPets.Core\FindYourFriendAmongPets.Core.csproj" />
   </ItemGroup>
 

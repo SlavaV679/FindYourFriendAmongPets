@@ -1,7 +1,10 @@
-﻿using FindYourFriendAmongPets.Core.Models;
-using FindYourFriendAmongPets.Core.Models.SpeciesAggregate;
-using FindYourFriendAmongPets.Core.Shared.ValueObject;
-using FluentAssertions;
+﻿using FluentAssertions;
+using PetFriend.SharedKernel.ValueObjects;
+using PetFriend.SharedKernel.ValueObjects.Ids;
+using PetFriend.Volunteers.Domain;
+using PetFriend.Volunteers.Domain.Entities;
+using PetFriend.Volunteers.Domain.Enums;
+using PetFriend.Volunteers.Domain.ValueObject;
 
 namespace FindYourFriendAmongPets.Domain.UnitTests;
 

@@ -1,12 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using FindYourFriendAmongPets.Application.Database;
-using FindYourFriendAmongPets.Application.Dtos;
-using FindYourFriendAmongPets.Application.Files;
-using FindYourFriendAmongPets.Application.Messaging;
-using FindYourFriendAmongPets.Application.Volunteers;
-using FindYourFriendAmongPets.Application.Volunteers.Commands.UploadFilesToPet;
-using FindYourFriendAmongPets.Core.Models;
-using FindYourFriendAmongPets.Core.Shared;
 using FindYourFriendAmongPets.UnitTests;
 using FluentAssertions;
 using FluentValidation;
@@ -14,7 +6,16 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using FileInfo = FindYourFriendAmongPets.Application.Files.FileInfo;
+using PetFriend.Core.Dtos;
+using PetFriend.Core.Messaging;
+using PetFriend.Core.Providers;
+using PetFriend.SharedKernel;
+using PetFriend.SharedKernel.ValueObjects;
+using PetFriend.SharedKernel.ValueObjects.Ids;
+using PetFriend.Volunteers.Application.Commands.UploadFilesToPet;
+using PetFriend.Volunteers.Application.Database;
+using PetFriend.Volunteers.Domain;
+using FileInfo = PetFriend.Core.Providers.FileInfo;
 
 namespace FindYourFriendAmongPets.Application.UnitTests;
 

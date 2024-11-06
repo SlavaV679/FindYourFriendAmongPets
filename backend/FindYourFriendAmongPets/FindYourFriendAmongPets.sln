@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourFriendAmongPets.API", "FindYourFriendAmongPets.API\FindYourFriendAmongPets.API.csproj", "{308162DC-07A7-45EC-9259-11832993EF9B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourFriendAmongPets.Application", "FindYourFriendAmongPets.Application\FindYourFriendAmongPets.Application.csproj", "{F69DFBA7-6A70-4EB6-9C8E-3693A56CFB08}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourFriendAmongPets.Core", "FindYourFriendAmongPets.Core\FindYourFriendAmongPets.Core.csproj", "{E93A3DE6-3E85-46C2-8946-1114EB72EA11}"
@@ -50,16 +48,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilesManagement", "FilesMan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFriend.Files.Domain", "FilesManagement\PetFriend.Files.Domain\PetFriend.Files.Domain.csproj", "{0CAA7041-455B-435E-BB0B-A89198E70AB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{FA336327-E27E-431F-87D2-80C5470CB592}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{308162DC-07A7-45EC-9259-11832993EF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{308162DC-07A7-45EC-9259-11832993EF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{308162DC-07A7-45EC-9259-11832993EF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{308162DC-07A7-45EC-9259-11832993EF9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F69DFBA7-6A70-4EB6-9C8E-3693A56CFB08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F69DFBA7-6A70-4EB6-9C8E-3693A56CFB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F69DFBA7-6A70-4EB6-9C8E-3693A56CFB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -124,6 +120,10 @@ Global
 		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CAA7041-455B-435E-BB0B-A89198E70AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA336327-E27E-431F-87D2-80C5470CB592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA336327-E27E-431F-87D2-80C5470CB592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA336327-E27E-431F-87D2-80C5470CB592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA336327-E27E-431F-87D2-80C5470CB592}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

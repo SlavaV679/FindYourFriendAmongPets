@@ -11,9 +11,4 @@
       <ProjectReference Include="..\PetFriend.Volunteers.Application\PetFriend.Volunteers.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Pets\Requests\" />
-      <Folder Include="Volunteers\Requests\" />
-    </ItemGroup>
-
 </Project>

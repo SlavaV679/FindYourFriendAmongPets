@@ -22,6 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FindYourFriendAmongPets.Core\FindYourFriendAmongPets.Core.csproj" />
+      <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Domain\PetFriend.Volunteers.Domain.csproj" />
     </ItemGroup>
 
 </Project>
