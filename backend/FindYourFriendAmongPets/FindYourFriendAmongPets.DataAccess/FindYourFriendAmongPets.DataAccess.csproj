@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FindYourFriendAmongPets.Application\FindYourFriendAmongPets.Application.csproj" />
   </ItemGroup>
 

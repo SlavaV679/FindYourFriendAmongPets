@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>c2fc93b1-b3f9-4ceb-9097-da1ad3c1cef1</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+        <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Mvc" Version="1.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\.dockerignore">
+        <DependentUpon>Dockerfile</DependentUpon>
+        <Link>.dockerignore</Link>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Infrastructure\PetFriend.Volunteers.Infrastructure.csproj" />
+      <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Presentation\PetFriend.Volunteers.Presentation.csproj" />
+    </ItemGroup>
+
+</Project>
