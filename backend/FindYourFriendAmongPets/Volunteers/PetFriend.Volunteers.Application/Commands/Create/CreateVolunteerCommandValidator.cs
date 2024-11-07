@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using PetFriend.Core.Validators;
+using PetFriend.SharedKernel.ValueObjects;
 using PetFriend.Volunteers.Domain.ValueObject;
 
 namespace PetFriend.Volunteers.Application.Commands.Create;

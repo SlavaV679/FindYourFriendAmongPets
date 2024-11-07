@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PetFriend.Core.Abstractions;
 using PetFriend.Core.Extensions;
 using PetFriend.SharedKernel;
+using PetFriend.SharedKernel.ValueObjects;
 using PetFriend.SharedKernel.ValueObjects.Ids;
 using PetFriend.Volunteers.Application.Database;
 using PetFriend.Volunteers.Domain;

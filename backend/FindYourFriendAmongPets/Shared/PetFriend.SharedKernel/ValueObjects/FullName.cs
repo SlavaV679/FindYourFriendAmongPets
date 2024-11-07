@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFriend.SharedKernel;
 
-namespace PetFriend.Volunteers.Domain.ValueObject;
+namespace PetFriend.SharedKernel.ValueObjects;
 
 public record FullName
 {
