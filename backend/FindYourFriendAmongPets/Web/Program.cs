@@ -1,3 +1,4 @@
+using PetFriend.Accounts.Infrastructure;
 using PetFriend.Volunteers.Application;
 using PetFriend.Volunteers.Infrastructure;
 using Serilog;
@@ -21,6 +22,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAccountsInfrastructure(builder.Configuration);
 
 // builder.Services.AddFluentValidationAutoValidation(configuration =>
 // {

@@ -16,7 +16,7 @@ public class AccountsWriteDbContext(IConfiguration _configuration) : IdentityDbC
     public DbSet<AdminAccount> Admins => Set<AdminAccount>();
     public DbSet<ParticipantAccount> Participants => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> Volunteers => Set<VolunteerAccount>();
-    // public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
+    public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -31,6 +31,8 @@ public class AccountsWriteDbContext(IConfiguration _configuration) : IdentityDbC
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.HasDefaultSchema("accounts");
         
         modelBuilder.ApplyConfigurationsFromAssembly(
@@ -57,7 +59,5 @@ public class AccountsWriteDbContext(IConfiguration _configuration) : IdentityDbC
 
         modelBuilder.Entity<IdentityUserRole<Guid>>()
             .ToTable("user_roles");
-        
-        base.OnModelCreating(modelBuilder);
     }
 }

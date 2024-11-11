@@ -9,6 +9,7 @@ public static class DependencyInjection
     public static IServiceCollection AddAccountsInfrastructure(
         this IServiceCollection collection, IConfiguration configuration)
     {
+        collection.AddDbContexts();
         return collection;
     }
     

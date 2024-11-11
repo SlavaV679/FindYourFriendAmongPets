@@ -9,6 +9,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
         <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Mvc" Version="1.4.0" />
@@ -23,6 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Accounts\PetFriend.Accounts.Infrastructure\PetFriend.Accounts.Infrastructure.csproj" />
+      <ProjectReference Include="..\Accounts\PetFriend.Accounts.Presentation\PetFriend.Accounts.Presentation.csproj" />
       <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Infrastructure\PetFriend.Volunteers.Infrastructure.csproj" />
       <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Presentation\PetFriend.Volunteers.Presentation.csproj" />
     </ItemGroup>
