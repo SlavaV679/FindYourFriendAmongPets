@@ -48,7 +48,7 @@ public class CreateVolunteerHandler: ICommandHandler<Guid, CreateVolunteerComman
 
         if (volunteerResult.IsSuccess)
         {
-            return Errors.Model.AlreadyExist("Volunteer").ToErrorList();
+            return Errors.General.AlreadyExist("Volunteer").ToErrorList();
         }
 
         var fullName = FullName.Create(

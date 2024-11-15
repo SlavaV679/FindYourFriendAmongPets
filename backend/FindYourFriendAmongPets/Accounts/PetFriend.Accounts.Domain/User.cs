@@ -24,7 +24,7 @@ public class User : IdentityUser<Guid>
         };
     }
     
-    public static User CreateParticipant(FullName fullName, string userName, string email, Role role)
+    public static User CreateParticipant(FullName fullName, string userName, string email)//, Role role)
     {
         return new User
         {
@@ -33,7 +33,7 @@ public class User : IdentityUser<Guid>
             //SocialLinks = [],
             UserName = userName,
             Email = email,
-            Role = role
+            //Role = role
         };
     }
 }

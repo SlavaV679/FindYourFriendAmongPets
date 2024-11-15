@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFriend.Core.Models;
 
-namespace PetFriend.Volunteers.Presentation;
+namespace PetFriend.Framework;
 
 [ApiController]
 [Route("[controller]")]

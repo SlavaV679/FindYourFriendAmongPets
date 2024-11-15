@@ -6,6 +6,12 @@ public static class Errors
     {
         public const string VALIDATION_ERROR_CODE = "value.is.invalid";
         
+        public static Error AlreadyExist(string? name = null)
+        {
+            var label = name ?? "entity";
+            return Error.Validation($"{label}.already.exist", $"{label} already exist");
+        }
+        
         public static Error ValueIsInvalid(string? propertyName = null, string? detailedMessage = null)
         {
             var label = propertyName ?? "value";
@@ -25,15 +31,6 @@ public static class Errors
         {
             var label = name == null ? "" : $"{name} ";
             return Error.Validation("length.is.invalid", $"invalid {label}length)");
-        }
-    }
-
-    public static class Model
-    {
-        public static Error AlreadyExist(string? name = null)
-        {
-            var label = name ?? "entity";
-            return Error.Validation($"{label}.already.exist", $"{label} already exist");
         }
     }
 }

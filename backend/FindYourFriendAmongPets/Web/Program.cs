@@ -1,4 +1,4 @@
-using PetFriend.Accounts.Infrastructure;
+using PetFriend.Accounts.Presentation;
 using PetFriend.Volunteers.Application;
 using PetFriend.Volunteers.Infrastructure;
 using Serilog;
@@ -23,7 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAccountsInfrastructure(builder.Configuration);
+builder.Services.AddAccountsModule(builder.Configuration);
 
 // builder.Services.AddFluentValidationAutoValidation(configuration =>
 // {
@@ -54,6 +54,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
