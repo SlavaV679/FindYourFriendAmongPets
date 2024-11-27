@@ -9,7 +9,7 @@ public class User : IdentityUser<Guid>
     public FullName FullName { get; set; }
     //public List<SocialLink> SocialLinks { get; set; } = [];
     public Guid RoleId { get; init; }
-    public Role Role { get; init; } = default!;
+    public Role Role { get; init; }
     
     public static User CreateAdmin(FullName fullName, string userName, string email, Role role)
     {
@@ -20,7 +20,8 @@ public class User : IdentityUser<Guid>
             //SocialLinks = [],
             UserName = userName,
             Email = email,
-            Role = role
+            NormalizedEmail = email.ToUpper(),
+            Role = role,
         };
     }
     

@@ -1,0 +1,51 @@
+{
+  "Roles": {
+    "Volunteer": [
+      "volunteer.update",
+      "volunteer.delete",
+      "volunteer.update.requisites",
+      "user.update.sociallinks",
+      "volunteer.pet.delete",
+      "volunteer.pet.create",
+      "volunteer.pet.update",
+      "user.update.fullname"
+    ],
+    "Participant": [
+      "volunteer.create",
+      "user.update.sociallinks",
+      "user.update.fullname"
+    ],
+    "Admin": [
+      "species.create",
+      "species.update",
+      "species.delete",
+      "user.update.fullname"
+    ]
+  },
+  "Permissions": {
+    "Volunteer": [
+      "volunteer.create",
+      "volunteer.update",
+      "volunteer.delete",
+      "volunteer.update.requisites",
+      "volunteer.pet.delete",
+      "volunteer.pet.create",
+      "volunteer.pet.update"
+    ],
+    "Participant": [
+      "user.update.sociallinks",
+      "user.update.fullname"
+    ],
+    "Species": [
+      "species.create",
+      "species.update",
+      "species.delete"
+    ],
+    "Pet": [
+      "pet.create",
+      "pet.update",
+      "pet.delete",
+      "pet.update.name"
+    ]
+  }
+}

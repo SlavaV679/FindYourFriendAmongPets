@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using PetFriend.Accounts.Domain;
 using PetFriend.Accounts.Infrastructure.DbContexts;
+using PetFriend.Accounts.Infrastructure.IdentityManagers;
+using PetFriend.Accounts.Infrastructure.Seeding;
 
 namespace PetFriend.Accounts.Infrastructure;
 
@@ -12,6 +14,12 @@ public static class DependencyInjection
     {
         services.AddDbContexts()
             .AddIdentityServices();
+        
+        services.AddSingleton<AccountsSeeder>()
+            .AddScoped<AccountsSeederService>();
+        
+        services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
+        
         return services;
     }
     
@@ -42,6 +50,10 @@ public static class DependencyInjection
                 // options.Password.RequiredUniqueChars = 0;
             })
             .AddEntityFrameworkStores<AccountsWriteDbContext>();
+        
+        collection.AddScoped<PermissionManager>()
+        .AddScoped<RolePermissionManager>()
+        .AddScoped<AdminAccountManager>();
 
         return collection;
     }

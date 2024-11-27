@@ -122,13 +122,13 @@ namespace PetFriend.Accounts.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_users", x => x.id);
-                    // table.ForeignKey(
-                    //     name: "fk_users_asp_net_roles_role_id",
-                    //     column: x => x.role_id,
-                    //     principalSchema: "accounts",
-                    //     principalTable: "roles",
-                    //     principalColumn: "id",
-                    //     onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_users_asp_net_roles_role_id",
+                        column: x => x.role_id,
+                        principalSchema: "accounts",
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,20 +251,20 @@ namespace PetFriend.Accounts.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_user_roles", x => new { x.user_id, x.role_id });
-                    // table.ForeignKey(
-                    //     name: "fk_user_roles_roles_role_id",
-                    //     column: x => x.role_id,
-                    //     principalSchema: "accounts",
-                    //     principalTable: "roles",
-                    //     principalColumn: "id",
-                    //     onDelete: ReferentialAction.Cascade);
-                    // table.ForeignKey(
-                    //     name: "fk_user_roles_users_user_id",
-                    //     column: x => x.user_id,
-                    //     principalSchema: "accounts",
-                    //     principalTable: "users",
-                    //     principalColumn: "id",
-                    //     onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_roles_roles_role_id",
+                        column: x => x.role_id,
+                        principalSchema: "accounts",
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_roles_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "accounts",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

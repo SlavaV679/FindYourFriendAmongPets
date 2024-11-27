@@ -1,3 +1,4 @@
+using PetFriend.Accounts.Infrastructure.Seeding;
 using PetFriend.Accounts.Presentation;
 using PetFriend.Volunteers.Application;
 using PetFriend.Volunteers.Infrastructure;
@@ -38,6 +39,10 @@ builder.Services
     .AddApplication();
 
 var app = builder.Build();
+
+var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+
+await accountsSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 
