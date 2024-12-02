@@ -14,7 +14,7 @@ using PetFriend.SharedKernel.ValueObjects;
 namespace PetFriend.Accounts.Application.Register;
 
 public class RegisterUserHandler(
-    // IAccountsUnitOfWork unitOfWork,
+    IAccountsUnitOfWork unitOfWork,
     IParticipantAccountManager accountManager,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
@@ -36,7 +36,7 @@ public class RegisterUserHandler(
         if (role is null)
             return Errors.General.NotFound().ToErrorList();
 
-       // var transaction = await unitOfWork.BeginTransaction(cancellationToken);
+        var transaction = await unitOfWork.BeginTransaction(cancellationToken);
         try
         {
             var user = await CreateUser(command, role);
@@ -46,8 +46,8 @@ public class RegisterUserHandler(
             var participantAccount = new ParticipantAccount(user.Value);
             await accountManager.CreateParticipantAccountAsync(participantAccount, cancellationToken);
 
-            // transaction.Commit();
-            // await unitOfWork.SaveChanges(cancellationToken);
+            transaction.Commit();
+            await unitOfWork.SaveChanges(cancellationToken);
             logger.LogInformation("User {UserName} has created a new account", command.UserName);
             
             //TODO обернуть ответ в Envelope
@@ -55,7 +55,7 @@ public class RegisterUserHandler(
         }
         catch (Exception ex)
         {
-            // transaction.Rollback();
+            transaction.Rollback();
             logger.Log(LogLevel.Critical, "Error during user registration {ex}", ex);
             return Error.Failure("Error.during.user.registration", "Error during user registration").ToErrorList();
         }
