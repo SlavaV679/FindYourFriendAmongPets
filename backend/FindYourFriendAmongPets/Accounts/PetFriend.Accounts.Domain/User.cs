@@ -20,12 +20,12 @@ public class User : IdentityUser<Guid>
             //SocialLinks = [],
             UserName = userName,
             Email = email,
-            NormalizedEmail = email.ToUpper(),
+            NormalizedEmail = email.ToUpper(), // TODO почему то автоматически NormalizedUserName и NormalizedEmail не заполняются. 
             Role = role,
         };
     }
     
-    public static User CreateParticipant(FullName fullName, string userName, string email)//, Role role)
+    public static User CreateParticipant(FullName fullName, string userName, string email, Role role)
     {
         return new User
         {
@@ -34,7 +34,8 @@ public class User : IdentityUser<Guid>
             //SocialLinks = [],
             UserName = userName,
             Email = email,
-            //Role = role
+            //NormalizedEmail = email.ToUpper(),
+            Role = role
         };
     }
 }
