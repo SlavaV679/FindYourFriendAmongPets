@@ -58,6 +58,7 @@ public static class DependencyInjection
             .AddScoped<RolePermissionManager>()
             .AddScoped<AdminAccountManager>()
             .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
+            .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
             ;
 
         return collection;

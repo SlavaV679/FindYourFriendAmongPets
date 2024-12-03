@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFriend.Accounts.Application.Register;
+using PetFriend.Accounts.Application.RegisterVolunteer;
 using PetFriend.Accounts.Presentation.Requests;
 using PetFriend.Framework;
 
@@ -24,7 +25,7 @@ public class AccountsController : ApplicationController
     // }
     //
     [HttpPost("registration")]
-    public async Task<IActionResult> Register(
+    public async Task<ActionResult<Guid>> Register(
         [FromBody] RegisterUserRequest request,
         [FromServices] RegisterUserHandler handler,
         CancellationToken cancellationToken)
@@ -33,7 +34,20 @@ public class AccountsController : ApplicationController
         if (result.IsFailure)
             return result.Error.ToResponse();
     
-        return Ok();
+        return Ok(result.Value);
+    }
+    
+    [HttpPost("registration-volunteer")]
+    public async Task<ActionResult<Guid>> RegisterVolunteer(
+        [FromBody] RegisterVolunteerRequest request,
+        [FromServices] RegisterVolunteerHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+    
+        return Ok(result.Value);
     }
     //
     // [HttpPost("login")]
