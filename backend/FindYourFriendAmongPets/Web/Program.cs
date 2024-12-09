@@ -36,7 +36,9 @@ builder.Services.AddSerilog();
 builder.Services
     .AddDataAccess()
     .AddInfrastructure(builder.Configuration)
-    .AddApplication();
+    .AddApplication()
+    //.AddAuthorization()
+    ;
 
 var app = builder.Build();
 

@@ -10,17 +10,24 @@ using PetFriend.Accounts.Application.Models;
 using PetFriend.Accounts.Domain;
 using PetFriend.Accounts.Infrastructure.Authorization;
 using PetFriend.Accounts.Infrastructure.DbContexts;
+using PetFriend.Accounts.Infrastructure.IdentityManagers;
 using PetFriend.Framework.Authorization;
 using PetFriend.SharedKernel;
 
 namespace PetFriend.Accounts.Infrastructure.Providers;
 
-public class JwtTokenProvider(IOptions<JwtOptions> options, AccountsWriteDbContext context) : ITokenProvider
+public class JwtTokenProvider(
+    IOptions<JwtOptions> options,
+    PermissionManager permissionManager,
+    AccountsWriteDbContext context) : ITokenProvider
 {
-    public JwtTokenResult GenerateAccessToken(User user)
+    public async Task<JwtTokenResult> GenerateAccessToken(User user, CancellationToken cancellationToken)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.Key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var permissions = await permissionManager.GetPermissionsByUserId(user.Id, cancellationToken);
+        var permissionClaims = permissions.Select(p => new Claim(CustomClaims.Permission, p));
 
         var jti = Guid.NewGuid();
 
@@ -32,6 +39,11 @@ public class JwtTokenProvider(IOptions<JwtOptions> options, AccountsWriteDbConte
             new(CustomClaims.UserName, user.UserName ?? "")
         ];
 
+        claims = claims
+            // .Concat(roleClaims)
+            .Concat(permissionClaims)
+            .ToArray();
+        
         var jwtToken = new JwtSecurityToken(issuer: options.Value.Issuer,
             audience: options.Value.Audience,
             expires: DateTime.UtcNow.AddMinutes(int.Parse(options.Value.ExpirationInMinutes)),
@@ -58,7 +70,7 @@ public class JwtTokenProvider(IOptions<JwtOptions> options, AccountsWriteDbConte
     {
         var isUserExists = await context.Users.FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken);
         // if (isUserExists == null)        //TODO обработать если ползьватель не найден
-        
+
         var refreshSession = new RefreshSession()
         {
             RefreshToken = Guid.NewGuid(),

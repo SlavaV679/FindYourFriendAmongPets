@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using PetFriend.Accounts.Application;
 using PetFriend.Accounts.Domain;
 using PetFriend.Accounts.Infrastructure.Authorization;
@@ -16,18 +19,21 @@ public static class DependencyInjection
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContexts()
-            .AddIdentityServices();
+            .AddIdentityServices()
+            .AddJwtAuthentication()
+            .AddAuthServices()
+            ;
 
         services.ConfigureOptions(configuration);
-        
+
         services.AddSingleton<AccountsSeeder>()
             .AddScoped<AccountsSeederService>();
 
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
-        
+
         return services;
     }
-    
+
     private static IServiceCollection ConfigureOptions(
         this IServiceCollection services, IConfiguration configuration)
     {
@@ -74,5 +80,36 @@ public static class DependencyInjection
             ;
 
         return collection;
+    }
+
+    private static IServiceCollection AddAuthServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>()
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    {
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                var jwtOptions = services
+                    .BuildServiceProvider()
+                    .GetRequiredService<IOptions<JwtOptions>>().Value;
+
+                options.TokenValidationParameters = TokenValidationParametersFactory.CreateWithLifetime(jwtOptions);
+            });
+
+        services.AddAuthorization();
+
+        return services;
     }
 }
