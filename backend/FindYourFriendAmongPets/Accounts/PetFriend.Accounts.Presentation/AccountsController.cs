@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFriend.Accounts.Application.Login;
 using PetFriend.Accounts.Application.Register;
 using PetFriend.Accounts.Application.RegisterVolunteer;
 using PetFriend.Accounts.Presentation.Requests;
@@ -49,19 +50,19 @@ public class AccountsController : ApplicationController
     
         return Ok(result.Value);
     }
-    //
-    // [HttpPost("login")]
-    // public async Task<IActionResult> Login(
-    //     [FromBody] LoginUserRequest request,
-    //     [FromServices] LoginHandler handler,
-    //     CancellationToken cancellationToken)
-    // {
-    //     var result = await handler.Execute(request.ToCommand(), cancellationToken);
-    //     if (result.IsFailure)
-    //         return result.Error.ToResponse();
-    //
-    //     return Ok(result.Value);
-    // }
+    
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginUserRequest request,
+        [FromServices] LoginHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+    
+        return Ok(result.Value);
+    }
     //
     // [HttpPost("refresh-token")]
     // public async Task<IActionResult> RefreshToken(

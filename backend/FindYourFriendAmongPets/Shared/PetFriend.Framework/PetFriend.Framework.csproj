@@ -10,10 +10,12 @@
       <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PetFriend.Core\PetFriend.Core.csproj" />
+      <ProjectReference Include="..\PetFriend.SharedKernel\PetFriend.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

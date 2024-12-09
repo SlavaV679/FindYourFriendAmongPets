@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using PetFriend.Accounts.Application;
 using PetFriend.Accounts.Domain;
+using PetFriend.Accounts.Infrastructure.Authorization;
 using PetFriend.Accounts.Infrastructure.DbContexts;
 using PetFriend.Accounts.Infrastructure.IdentityManagers;
+using PetFriend.Accounts.Infrastructure.Providers;
 using PetFriend.Accounts.Infrastructure.Seeding;
 
 namespace PetFriend.Accounts.Infrastructure;
@@ -16,13 +18,22 @@ public static class DependencyInjection
         services.AddDbContexts()
             .AddIdentityServices();
 
+        services.ConfigureOptions(configuration);
+        
         services.AddSingleton<AccountsSeeder>()
             .AddScoped<AccountsSeederService>();
 
-        services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
-
         services.AddScoped<IAccountsUnitOfWork, AccountsUnitOfWork>();
         
+        return services;
+    }
+    
+    private static IServiceCollection ConfigureOptions(
+        this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JWT));
+
         return services;
     }
 
@@ -59,6 +70,7 @@ public static class DependencyInjection
             .AddScoped<AdminAccountManager>()
             .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
             .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
+            .AddTransient<ITokenProvider, JwtTokenProvider>()
             ;
 
         return collection;
