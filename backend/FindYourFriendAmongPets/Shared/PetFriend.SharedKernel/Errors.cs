@@ -6,6 +6,12 @@ public static class Errors
     {
         public const string VALIDATION_ERROR_CODE = "value.is.invalid";
         
+        public static Error AlreadyExist(string? name = null)
+        {
+            var label = name ?? "entity";
+            return Error.Validation($"{label}.already.exist", $"{label} already exist");
+        }
+        
         public static Error ValueIsInvalid(string? propertyName = null, string? detailedMessage = null)
         {
             var label = propertyName ?? "value";
@@ -27,13 +33,25 @@ public static class Errors
             return Error.Validation("length.is.invalid", $"invalid {label}length)");
         }
     }
-
-    public static class Model
+    
+    public static class User
     {
-        public static Error AlreadyExist(string? name = null)
+        public static Error InvalidCredentials()
         {
-            var label = name ?? "entity";
-            return Error.Validation($"{label}.already.exist", $"{label} already exist");
+            return Error.Validation("invalid.user.credentials", "Invalid user credentials");
+        }
+    }
+    
+    public static class Token
+    {
+        public static Error ExpiredToken()
+        {
+            return Error.Validation("token.is.expired", "Your token is expired. Please, login again");
+        }
+
+        public static Error InvalidToken()
+        {
+            return Error.Validation("token.is.invalid", "Your token is invalid. Please, login again");
         }
     }
 }

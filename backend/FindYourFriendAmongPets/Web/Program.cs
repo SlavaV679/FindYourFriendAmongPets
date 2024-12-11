@@ -1,3 +1,5 @@
+using PetFriend.Accounts.Infrastructure.Seeding;
+using PetFriend.Accounts.Presentation;
 using PetFriend.Volunteers.Application;
 using PetFriend.Volunteers.Infrastructure;
 using Serilog;
@@ -22,6 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAccountsModule(builder.Configuration);
+
 // builder.Services.AddFluentValidationAutoValidation(configuration =>
 // {
 //     configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
@@ -35,6 +39,10 @@ builder.Services
     .AddApplication();
 
 var app = builder.Build();
+
+var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+
+await accountsSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 
@@ -51,6 +59,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

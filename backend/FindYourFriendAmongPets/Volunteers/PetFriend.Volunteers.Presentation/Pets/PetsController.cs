@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFriend.Framework;
 using PetFriend.Volunteers.Application.Queries.GetPetsWithPaginationQuery;
 using PetFriend.Volunteers.Presentation.Pets.Requests;
 
