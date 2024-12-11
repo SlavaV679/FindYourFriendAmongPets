@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using PetFriend.Accounts.Domain;
 using PetFriend.Accounts.Domain.TypeAccounts;
 using PetFriend.Accounts.Infrastructure.IdentityManagers;
+using PetFriend.Accounts.Infrastructure.Ooptions;
 using PetFriend.Framework;
 using PetFriend.SharedKernel.ValueObjects;
 

@@ -1,30 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using PetFriend.Accounts.Application.Login;
 using PetFriend.Accounts.Application.Register;
 using PetFriend.Accounts.Application.RegisterVolunteer;
 using PetFriend.Accounts.Presentation.Requests;
 using PetFriend.Framework;
+using PetFriend.Framework.Authorization;
 
 namespace PetFriend.Accounts.Presentation;
 
 public class AccountsController : ApplicationController
 {
-    // //test
-    // [Permission("species.create")]
-    // [HttpPost("admin")]
-    // public IActionResult CreatePet()
-    // {
-    //     return Ok();
-    // }
-    //
-    // //test
-    // [Permission("volunteer.create")]
-    // [HttpPost("user")]
-    // public IActionResult DeletePet()
-    // {
-    //     return Ok();
-    // }
-    //
+    //permissions test
+    [Permission("volunteer.create")]
+    [HttpPost("permissionstest")]
+    public IActionResult TestPermissions()
+    {
+        return Ok("Permissions test completed successfully");
+    }
+    
     [HttpPost("registration")]
     public async Task<ActionResult<Guid>> Register(
         [FromBody] RegisterUserRequest request,

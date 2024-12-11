@@ -8,7 +8,7 @@ namespace PetFriend.Accounts.Application;
 
 public interface ITokenProvider
 {
-    JwtTokenResult GenerateAccessToken(User user);
+    Task<JwtTokenResult> GenerateAccessToken(User user, CancellationToken cancellationToken);
     
     Task<Guid> GenerateRefreshToken(User user, Guid jti, CancellationToken cancellationToken);
     

@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Accounts\PetFriend.Accounts.Contracts\PetFriend.Accounts.Contracts.csproj" />
       <ProjectReference Include="..\PetFriend.Core\PetFriend.Core.csproj" />
       <ProjectReference Include="..\PetFriend.SharedKernel\PetFriend.SharedKernel.csproj" />
     </ItemGroup>

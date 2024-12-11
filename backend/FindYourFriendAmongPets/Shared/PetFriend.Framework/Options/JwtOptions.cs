@@ -1,4 +1,4 @@
-﻿namespace PetFriend.Accounts.Infrastructure.Authorization;
+﻿namespace PetFriend.Framework.Options;
 
 public class JwtOptions
 {

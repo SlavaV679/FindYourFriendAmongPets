@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using PetFriend.Framework.Options;
 
-namespace PetFriend.Accounts.Infrastructure.Authorization;
+namespace PetFriend.Framework.Authorization;
 
 public static class TokenValidationParametersFactory
 {

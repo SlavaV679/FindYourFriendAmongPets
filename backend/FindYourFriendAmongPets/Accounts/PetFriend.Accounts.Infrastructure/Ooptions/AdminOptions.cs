@@ -1,4 +1,4 @@
-﻿namespace PetFriend.Accounts.Infrastructure.Seeding;
+﻿namespace PetFriend.Accounts.Infrastructure.Ooptions;
 
 public class AdminOptions
 {
