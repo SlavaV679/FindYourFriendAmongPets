@@ -79,6 +79,7 @@ public static class DependencyInjection
             .AddScoped<IParticipantAccountManager, ParticipantAccountManager>()
             .AddScoped<IVolunteerAccountManager, VolunteerAccountManager>()
             .AddTransient<ITokenProvider, JwtTokenProvider>()
+            .AddScoped<IRefreshSessionManager, RefreshSessionManager>()
             ;
 
         return collection;

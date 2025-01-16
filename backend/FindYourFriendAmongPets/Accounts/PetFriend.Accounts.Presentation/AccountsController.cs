@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using PetFriend.Accounts.Application.Login;
+using PetFriend.Accounts.Application.RefreshTokens;
 using PetFriend.Accounts.Application.Register;
 using PetFriend.Accounts.Application.RegisterVolunteer;
 using PetFriend.Accounts.Presentation.Requests;
@@ -57,21 +58,35 @@ public class AccountsController : ApplicationController
     
         return Ok(result.Value);
     }
-    //
-    // [HttpPost("refresh-token")]
-    // public async Task<IActionResult> RefreshToken(
-    //     [FromBody] RefreshTokenRequest request,
-    //     [FromServices] RefreshTokenHandler handler,
-    //     CancellationToken cancellationToken)
-    // {
-    //     var result = await handler.Execute(new RefreshTokenCommand(request.AccessToken, request.RefreshToken),
-    //         cancellationToken);
-    //     
-    //     if (result.IsFailure)
-    //         return result.Error.ToResponse();
-    //
-    //     return Ok(result.Value);
-    // }
+    
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(
+        [FromServices] RefreshTokensHandler handler,
+        CancellationToken cancellationToken)
+    {
+        if (!HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+        {
+            return Unauthorized();
+        }
+        
+        var result = await handler.Handle(new RefreshTokensCommand(Guid.Parse(refreshToken)),
+            cancellationToken);
+        
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+    
+        HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken.ToString());
+        
+        return Ok(result.Value);
+    }
+    
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        HttpContext.Response.Cookies.Delete("refreshToken");
+        //TODO почистить рефреш токен из базы данных
+        return Ok("");
+    }
     //
     // [Permission(Permissions.User.UpdateSocialLinks)]
     // [HttpPatch("{userId:guid}/social-links")]

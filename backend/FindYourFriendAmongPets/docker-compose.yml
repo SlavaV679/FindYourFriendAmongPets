@@ -1,6 +1,7 @@
 ﻿services:
   postgres:
     container_name: postgres
+    restart: always
     image: postgres:latest
     environment:
       POSTGRES_DB: "PetFamilyDb"
@@ -10,7 +11,7 @@
       - ./postgres-data:/var/lib/postgersql/data
     ports:
       - "5438:5432"
-    
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -19,7 +20,7 @@
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
-        
+
   seq:
     image: datalust/seq:latest
     container_name: seq
@@ -29,7 +30,7 @@
     ports:
       - 5341:5341
       - 8081:80
-      
+
   minio:
     container_name: minio
     image: minio/minio
@@ -40,5 +41,3 @@
       - ./minio:/var/lib/minio/data
     command: server --console-address ":9001" /data
     restart: always
-    
-    

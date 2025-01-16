@@ -15,7 +15,7 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 
         RuleFor(l => l.Password)
             .NotEmpty().WithError(Errors.General.ValueIsRequired("password"))
-            .MinimumLength(6)
+            .MinimumLength(4)
             .WithError(Errors.General.ValueIsInvalid("password"));
     }
 }

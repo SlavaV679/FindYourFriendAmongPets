@@ -31,6 +31,6 @@ public class LoginHandler(
 
         var accessToken = await tokenProvider.GenerateAccessToken(existsUser, cancellationToken);
         var refreshToken = await tokenProvider.GenerateRefreshToken(existsUser, accessToken.Jti, cancellationToken);
-        return new LoginResponse(accessToken.AccessToken, refreshToken);
+        return new LoginResponse(accessToken.AccessToken, refreshToken, existsUser.Id,existsUser.Email);
     }
 }

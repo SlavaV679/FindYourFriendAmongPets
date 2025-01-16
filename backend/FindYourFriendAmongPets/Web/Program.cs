@@ -57,6 +57,14 @@ if (app.Environment.IsDevelopment())
     await app.ApplyMigration();
 }
 
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173")
+        .AllowCredentials()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
