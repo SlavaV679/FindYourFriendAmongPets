@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>c2fc93b1-b3f9-4ceb-9097-da1ad3c1cef1</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,17 +21,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\.dockerignore">
-        <DependentUpon>Dockerfile</DependentUpon>
-        <Link>.dockerignore</Link>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Accounts\PetFriend.Accounts.Infrastructure\PetFriend.Accounts.Infrastructure.csproj" />
       <ProjectReference Include="..\Accounts\PetFriend.Accounts.Presentation\PetFriend.Accounts.Presentation.csproj" />
       <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Infrastructure\PetFriend.Volunteers.Infrastructure.csproj" />
       <ProjectReference Include="..\Volunteers\PetFriend.Volunteers.Presentation\PetFriend.Volunteers.Presentation.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

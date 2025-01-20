@@ -1,4 +1,13 @@
 ﻿services:
+  web:
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    ports:
+      - "8181:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+        
   postgres:
     container_name: postgres
     restart: always
@@ -8,7 +17,7 @@
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     volumes:
-      - ./postgres-data:/var/lib/postgersql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5438:5432"
 
@@ -41,3 +50,8 @@
       - ./minio:/var/lib/minio/data
     command: server --console-address ":9001" /data
     restart: always
+
+volumes:
+  pgadmin:
+  postgres-data:
+  minio_data:
