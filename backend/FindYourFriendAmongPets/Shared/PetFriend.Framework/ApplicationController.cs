@@ -4,7 +4,7 @@ using PetFriend.Core.Models;
 namespace PetFriend.Framework;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public abstract class ApplicationController : ControllerBase
 {
     public override OkObjectResult Ok(object? value)
