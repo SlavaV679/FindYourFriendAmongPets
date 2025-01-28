@@ -1,4 +1,15 @@
 ﻿services:
+  web:
+    image: slavav679/pet-family:v1.3
+    ports:
+      - "8181:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - postgres
+      - minio
+      - seq
+      
   postgres:
     container_name: postgres
     restart: always
@@ -8,7 +19,7 @@
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     volumes:
-      - ./postgres-data:/var/lib/postgersql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5438:5432"
 
@@ -19,7 +30,7 @@
       PGADMIN_DEFAULT_EMAIL: admin@mail.ru
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "5050:80"
+      - "5050:8050"
 
   seq:
     image: datalust/seq:latest
@@ -29,7 +40,7 @@
       - ACCEPT_EULA=Y
     ports:
       - 5341:5341
-      - 8081:80
+      - 8081:81
 
   minio:
     container_name: minio
@@ -41,3 +52,18 @@
       - ./minio:/var/lib/minio/data
     command: server --console-address ":9001" /data
     restart: always
+  
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8282:8282"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+    restart: always
+
+volumes:
+  pgadmin:
+  postgres-data:
+  minio_data:

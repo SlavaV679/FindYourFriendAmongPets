@@ -648,4 +648,6 @@ MigrationBackup/
 
 /.vs/*
 
+postgres-data/
+
 
