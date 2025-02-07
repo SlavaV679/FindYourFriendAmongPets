@@ -1,6 +1,6 @@
 ﻿services:
   web:
-    image: slavav679/pet-family:v1.3
+    image: slavav679/pet-family:v1.5
     ports:
       - "8181:8080"
     environment:
