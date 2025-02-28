@@ -32,6 +32,17 @@
     ports:
       - "5050:8050"
 
+  mongodb:
+    container_name: 'pet_mongodb'
+    image: 'mongo:latest'
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=mongopassword
+    volumes:
+      - mongo_data:/data/db
+  
   seq:
     image: datalust/seq:latest
     container_name: seq
@@ -66,4 +77,5 @@
 volumes:
   pgadmin:
   postgres-data:
+  mongo_data:
   minio_data:

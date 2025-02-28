@@ -7,7 +7,7 @@ namespace FileService.Features;
 public static class UploadPresignedUrl
 {
     private record UploadPresignedUrlRequest(string FileName, string ContentType, long Size);
-    
+
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
@@ -37,9 +37,9 @@ public static class UploadPresignedUrl
                     ["file-name"] = request.FileName
                 }
             };
- 
+
             var url = await s3Client.GetPreSignedURLAsync(presignedRequest);
-            
+
             return Results.Ok(new
             {
                 key,

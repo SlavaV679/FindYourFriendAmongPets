@@ -1,5 +1,9 @@
 using Amazon.S3;
 using FileService.Endpoints;
+using FileService.Extensions;
+using FileService.MongoDataAccess;
+using Hangfire;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpoints();
 
 builder.Services.AddCors();
+
+builder.Services.AddSingleton<IMongoClient>(
+    new MongoClient(builder.Configuration.GetConnectionString("MongoDb")));
+
+builder.Services.AddScoped<FileMongoDbContext>();
+
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+
+builder.Services.AddHangfirePostgres(builder.Configuration);
 
 builder.Services.AddSingleton<IAmazonS3>(_ =>
 {
@@ -34,6 +47,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+app.UseHangfireServer();
+app.UseHangfireDashboard();
 
 app.MapEndpoints();
 

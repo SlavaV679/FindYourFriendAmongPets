@@ -7,18 +7,18 @@ namespace FileService.Features;
 public static class UploadPresignedPartUrl
 {
     private record UploadPresignedPartUrlRequest(string UploadId, int PartNumber);
-    
+
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/{key:guid}/presigned-part", Handler);
+            app.MapPost("files/{key}/presigned-part", Handler);
         }
     }
 
     private static async Task<IResult> Handler(
         UploadPresignedPartUrlRequest request,
-        Guid key,
+        string key,
         IAmazonS3 s3Client,
         CancellationToken cancellationToken)
     {
@@ -27,16 +27,16 @@ public static class UploadPresignedPartUrl
             var presignedRequest = new GetPreSignedUrlRequest
             {
                 BucketName = "files",
-                Key = $"files/{key}",
+                Key = key,
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.UtcNow.AddHours(24),
                 Protocol = Protocol.HTTP,
                 UploadId = request.UploadId,
                 PartNumber = request.PartNumber
             };
- 
+
             var url = await s3Client.GetPreSignedURLAsync(presignedRequest);
-            
+
             return Results.Ok(new
             {
                 key,
