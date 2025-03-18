@@ -5,14 +5,14 @@ namespace FileService.Core.Models;
 public class ErrorList : IEnumerable<Error>
 {
     private readonly List<Error> _errors;
-    
+
     public IReadOnlyCollection<Error> Errors => _errors.AsReadOnly();
 
     public ErrorList(IEnumerable<Error> errors)
     {
         _errors = errors.ToList();
     }
-    
+
     public IEnumerator<Error> GetEnumerator()
     {
         return _errors.GetEnumerator();

@@ -1,21 +1,51 @@
-﻿using Amazon.S3;
-using FileService.MongoDataAccess;
+﻿using FileService.Infrastructure.Providers;
+using FileService.Infrastructure.Repositories;
+using Hangfire;
 
 namespace FileService.Jobs;
 
 public class ConsistencyConfirmJob(
-    IFileRepository fileRepository, 
-    IAmazonS3 s3Client,
+    IFilesRepository filesRepository,
+    IFileProvider fileProvider,
     ILogger<ConsistencyConfirmJob> logger)
 {
-    public async Task Execute(Guid fileId, string key)
+    [AutomaticRetry(Attempts = 3, DelaysInSeconds = [5, 10, 15])]
+    public async Task Execute(Guid fileId, string bucketName, string key)
     {
-        logger.LogInformation("Starting consistency confirm job with fileId {FileId} and key {Key}.", fileId, key);
-        // TODO сходить в MinIO, проверить что файл с fileId есть в папке с key
-        // сходить MongoDB и проверить, что данные файла с fileId есть в MongoDB
-        // и если где то данных нет (система не консистентна), тогда удалить существующие неконсистентные данные.
-        await Task.Delay(3000);
+        try
+        {
+            logger.LogInformation("Start ConsistencyConfirmJob with {fileId} and {key}", fileId, key);
 
-        logger.LogInformation("Consistency confirm job finished.");
+            var metadataResult = await fileProvider.GetObjectMetadata(bucketName, key);
+            if (metadataResult.IsFailure)
+            {
+                logger.LogWarning("Metadata not found for fileId: {fileId}.", fileId);
+            }
+
+            var mongoData = await filesRepository.GetById(fileId);
+
+            if (mongoData is null)
+            {
+                logger.LogWarning("MongoDB record not found for fileId: {fileId}." +
+                                  " Deleting file from cloud storage.", fileId);
+                await fileProvider.DeleteFile(metadataResult.Value);
+                return;
+            }
+
+            if (metadataResult.Value.Key != mongoData.Key)
+            {
+                logger.LogWarning("Metadata key does not match MongoDB data." +
+                                  " Deleting file from cloud storage and MongoDB record.");
+
+                await fileProvider.DeleteFile(metadataResult.Value);
+                await filesRepository.DeleteRangeAsync([fileId]);
+            }
+
+            logger.LogInformation("End ConfirmConsistencyJob");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("Cannot check consistency, because " + ex.Message);
+        }
     }
 }

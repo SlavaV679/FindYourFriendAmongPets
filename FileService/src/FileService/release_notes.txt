@@ -1,0 +1,11 @@
+2025.03.13 / ID-B-37 / https://github.com/SachkovTech/pet-project/issues/37 
+Создано отдельное asp net core web api приложение FilesService в репозитории FindYourFriendAmongPets.
+В этом микросервесе использована Vertical Slice Architecture. Сделано через minimalApi: endpoint, request, response одной фичи прописаны в одном файле.
+В проекте настроено логирование. 
+Добавлены базовые классы с envelope, error, erorrlist.
+Имеется IFileProvider, который будет загружать, удалять и получать файлы из minio. Реализация сделана через MinioPrvider с использованием AmazonS3 sdk. Загрузка, получение и удаление файлов реализована через presignedurl. Так же реализованы методы для multi-part upload загрузки файлов.
+В проект добавлена MongoDb, в эту базу добавлен один документ - FileData, в нём хранится вся информация о файле(id, название, расширение, где хранится, размер. По необходимости можно расширить).
+Реализован FilesRepository, который добавляет, получает и удаляет файлы в MongoDb.
+В общий docker-compose (в solution-e FindYourFriendAmongPets) добавлена mongodb.
+Когда завершается multi-part загрузка для файла, информация о файле сохраняется в MongoDb.
+Реализованы запросы GetFilesByIdsRequest, UploadPresignedPartUrlRequest, DownloadPresignedUrlRequest, DeletePresignedUrl. Так же для multi-part upload загрузки реализованы методы StartMultipartUploadRequest, UploadPresignedUrlRequest, CompleteMultipartUpload.
