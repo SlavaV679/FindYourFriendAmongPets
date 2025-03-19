@@ -1,14 +1,18 @@
 using Amazon.S3;
 using FileService.Endpoints;
 using FileService.Extensions;
-using FileService.MongoDataAccess;
+using FileService.Middlewares;
 using Hangfire;
-using MongoDB.Driver;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddLogger(builder.Configuration);
+builder.Services.AddHttpLogging(options => { options.CombineLogs = true; });
+builder.Services.AddSerilog();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,14 +20,13 @@ builder.Services.AddEndpoints();
 
 builder.Services.AddCors();
 
-builder.Services.AddSingleton<IMongoClient>(
-    new MongoClient(builder.Configuration.GetConnectionString("MongoDb")));
+builder.Services.AddRepositories();
 
-builder.Services.AddScoped<FileMongoDbContext>();
-
-builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddMongoDb(builder.Configuration);
 
 builder.Services.AddHangfirePostgres(builder.Configuration);
+
+builder.Services.AddMinio(builder.Configuration);
 
 builder.Services.AddSingleton<IAmazonS3>(_ =>
 {
@@ -38,6 +41,9 @@ builder.Services.AddSingleton<IAmazonS3>(_ =>
 });
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
+app.UseExceptionHandling();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

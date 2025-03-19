@@ -14,7 +14,9 @@ public static class Errors
             return Error.Failure("file.remove.failed", "Fail to remove file");
         }
 
+        public static Error NotFound()
+        {
+            return Error.NotFound("file.not.found", "File not found");
+        }
     }
-
-   
 }

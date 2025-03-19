@@ -1,7 +1,7 @@
 ﻿using FileService.Core;
 using FileService.Endpoints;
+using FileService.Infrastructure.Repositories;
 using FileService.Jobs;
-using FileService.MongoDataAccess;
 using Hangfire;
 
 namespace FileService.Features;
@@ -17,23 +17,25 @@ public static class TestHangFire
     }
 
     private static async Task<IResult> Handler(
-        IFileRepository fileRepository,
+        IFilesRepository filesRepository,
         CancellationToken cancellationToken)
     {
-        var fileData = new FileData
+        //throw new Exception("Checking Middleware of exception handle.");
+
+        var fileMetadata = new FileMetadata
         {
-            Id = Guid.NewGuid(),
-            StoragePath = "key",
-            UploadDate = DateTime.UtcNow,
-            Size = 100,
-            ContentType = "metadata.Headers.ContentType"
+            BucketName = "files",
+            ContentType = "mpg4",
+            Name = "FileName",
+            Prefix = "Prefix",
+            Key = "key_Extension"
         };
 
         // Test of inserting info about file into mongo db 
-        await fileRepository.AddFileAsync(fileData, cancellationToken);
+        await filesRepository.AddRangeAsync([fileMetadata], cancellationToken);
 
         var jobId = BackgroundJob.Schedule<ConsistencyConfirmJob>(j =>
-            j.Execute(Guid.NewGuid(), "key"), TimeSpan.FromSeconds(5));
+            j.Execute(Guid.NewGuid(), fileMetadata.BucketName, "key"), TimeSpan.FromSeconds(5));
 
         return Results.Ok(jobId);
     }

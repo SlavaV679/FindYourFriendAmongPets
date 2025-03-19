@@ -1,43 +1,43 @@
 ﻿using FileService.Core;
 using FileService.Endpoints;
 using FileService.Infrastructure.Providers;
+using FileService.Infrastructure.Repositories;
 
 namespace FileService.Features;
 
-public static class UploadPresignedUrl
+public static class DeletePresignedUrl
 {
-    private record UploadPresignedUrlRequest(
+    private record DeletePresignedUrlRequest(
         string BucketName,
         string FileName,
-        string ContentType,
         string Prefix,
-        string Extension);
+        string ContentType);
 
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/presigned", Handler);
+            app.MapPost("files/{key:guid}/presigned-for-deletion", Handler);
         }
     }
 
     private static async Task<IResult> Handler(
-        UploadPresignedUrlRequest request,
-        IFileProvider fileProvider,
-        CancellationToken cancellationToken)
+        DeletePresignedUrlRequest request,
+        Guid key,
+        IFilesRepository filesRepository,
+        IFileProvider provider,
+        CancellationToken cancellationToken = default)
     {
-        var key = Guid.NewGuid();
-
         var fileMetadata = new FileMetadata
         {
             BucketName = request.BucketName,
-            ContentType = request.ContentType,
             Name = request.FileName,
-            Prefix = request.Prefix,
-            Key = $"{key}.{request.Extension}"
+            Key = $"{request.Prefix}/{key}",
+            ContentType = request.ContentType
         };
 
-        var result = await fileProvider.GetPreSignedUrlForUpload(fileMetadata, cancellationToken);
+        var result = await provider.GetPreSignedUrlForDelete(fileMetadata, cancellationToken);
+
         return Results.Ok(new
         {
             key,

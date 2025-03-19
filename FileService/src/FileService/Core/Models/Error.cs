@@ -25,7 +25,7 @@ public record Error
 
     public static Error Conflict(string code, string message) =>
         new(code, message, ErrorType.Conflict);
-    
+
     public static Error Null(string errorCode, string errorMessage) =>
         new(errorCode, errorMessage, ErrorType.Null);
 
