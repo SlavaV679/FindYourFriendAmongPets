@@ -39,7 +39,6 @@ public static class UploadPresignedPartUrl
             PartNumber = request.PartNumber
         };
 
-
         var response = await fileProvider
             .GetPreSignedUrlPart(fileMetadata, cancellationToken);
 

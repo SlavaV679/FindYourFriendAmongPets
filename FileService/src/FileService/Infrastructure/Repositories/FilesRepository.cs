@@ -6,7 +6,7 @@ namespace FileService.Infrastructure.Repositories;
 public class FilesRepository : IFilesRepository
 {
     private readonly FileMongoDbContext _mongoDbContext;
-private readonly ILogger<FilesRepository> _logger;
+    private readonly ILogger<FilesRepository> _logger;
 
     public FilesRepository(FileMongoDbContext mongoDbContext, ILogger<FilesRepository> logger)
     {
@@ -14,9 +14,21 @@ private readonly ILogger<FilesRepository> _logger;
         _logger = logger;
     }
 
-    public async Task<List<FileMetadata>> Get(IEnumerable<Guid> fileDataIds, CancellationToken cancellationToken = default)
+    public async Task<List<FileMetadata>> GetByIds(IEnumerable<Guid> fileDataIds, CancellationToken cancellationToken = default)
     {
         return await _mongoDbContext.Files.Find(file => fileDataIds.Contains(file.Id)).ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<FileMetadata>> GetByDate(DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken = default)
+    {
+        if (dateFrom == DateTime.MinValue)
+            dateFrom = DateTime.UtcNow.AddDays(-7);
+
+        if (dateTo == DateTime.MinValue)
+            dateTo = DateTime.UtcNow;
+        return await _mongoDbContext.Files
+            .Find(file => file.CreatedDate >= dateFrom && file.CreatedDate <= dateTo)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<FileMetadata?> GetById(Guid id, CancellationToken cancellationToken = default)
