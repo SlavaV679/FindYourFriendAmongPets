@@ -32,6 +32,7 @@ public static class DownloadPresignedUrl
         };
 
         var result = await provider.GetPreSignedUrlForDownload(fileMetadata, cancellationToken);
+        
         return Results.Ok(new
         {
             key,

@@ -4,26 +4,25 @@ using FileService.Infrastructure.Repositories;
 
 namespace FileService.Features;
 
-public static class GetFilesByIds
+public static class GetFilesByDate
 {
-    private record GetFilesByIdsRequest(
-        IEnumerable<Guid> FileIds);
+    private record GetFilesByDateRequest(DateTime DateFrom, DateTime DateTo);
 
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/files-by-ids", Handler);
+            app.MapPost("files/files-by-date", Handler);
         }
     }
 
     private static async Task<IResult> Handler(
-        GetFilesByIdsRequest request,
+        GetFilesByDateRequest request,
         IFileProvider fileProvider,
         IFilesRepository filesRepository,
         CancellationToken cancellationToken = default)
     {
-        var files = await filesRepository.GetByIds(request.FileIds, cancellationToken);
+        var files = await filesRepository.GetByDate(request.DateFrom, request.DateTo, cancellationToken);
 
         var result = await fileProvider.DownloadFiles(files, cancellationToken);
         if (result.IsFailure)

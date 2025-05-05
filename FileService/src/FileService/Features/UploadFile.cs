@@ -1,4 +1,6 @@
-﻿using Amazon.S3;
+﻿using System.Net;
+using Amazon.S3;
+using Amazon.S3.Model;
 using FileService.Core;
 using FileService.Endpoints;
 using FileService.Infrastructure.Providers;
@@ -8,54 +10,65 @@ using Hangfire;
 
 namespace FileService.Features;
 
-public static class CompleteMultipartUpload
+public static class UploadFile
 {
-    private record PartETagInfo(int PartNumber, string ETag);
-
-    private record CompleteMultipartUploadRequest(
-        string UploadId,
-        string BucketName,
-        string ContentType,
-        string Prefix,
-        string FileName,
-        List<PartETagInfo> Parts);
-
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/{key}/complete-multipart", Handler);
+            app.MapPost("/uploadfile", Handler).DisableAntiforgery();
         }
     }
 
     private static async Task<IResult> Handler(
-        CompleteMultipartUploadRequest request,
-        string key,
+        IFormFile file,
+        IAmazonS3 s3Client,
         IFileProvider fileProvider,
         IFilesRepository filesRepository,
         CancellationToken cancellationToken)
     {
         try
         {
+            var bucketName = "files";
+            var key = Guid.NewGuid();
+            var prefix = "testFolder";
             var fileId = Guid.NewGuid();
 
             var jobId = BackgroundJob
                 .Schedule<ConsistencyConfirmJob>(
-                    j => j.Execute(fileId, request.BucketName, key),
-                    TimeSpan.FromSeconds(5));
+                    j => j.Execute(fileId, bucketName, key.ToString()),
+                    TimeSpan.FromMinutes(15));
 
             var fileMetadata = new FileMetadata
             {
-                BucketName = request.BucketName,
-                ContentType = request.ContentType,
-                Name = request.FileName,
-                Prefix = request.Prefix,
-                Key = $"{request.Prefix}/{key}",
-                UploadId = request.UploadId,
-                ETags = request.Parts.Select(e => new ETagInfo { PartNumber = e.PartNumber, ETag = e.ETag })
+                BucketName = bucketName,
+                ContentType = file.ContentType,
+                Name = file.FileName,
+                Prefix = prefix,
+                Key = $"{prefix}/{key}",
+                Size = file.Length
             };
 
-            var response = await fileProvider.CompleteMultipartUpload(fileMetadata, cancellationToken);
+            using var stream = file.OpenReadStream();
+
+            var request = new PutObjectRequest
+            {
+                BucketName = fileMetadata.BucketName,
+                Key = fileMetadata.Key,
+                InputStream = stream,
+                ContentType = fileMetadata.ContentType
+            };
+
+            try
+            {
+                var response = await s3Client.PutObjectAsync(request);
+                if (response.HttpStatusCode != HttpStatusCode.OK)
+                    return Results.StatusCode(500);
+            }
+            catch (Exception ex)
+            {
+                return Results.StatusCode(500);
+            }
 
             var downloadUrl = await fileProvider.GetPreSignedUrlForDownload(
                 fileMetadata, cancellationToken);
@@ -64,7 +77,7 @@ public static class CompleteMultipartUpload
 
             fileMetadata.Id = fileId;
             fileMetadata.DownloadUrl = downloadUrl.Value;
-            fileMetadata.Size = response.ContentLength;
+            fileMetadata.Size = fileMetadata.Size;
             fileMetadata.CreatedDate = DateTime.UtcNow;
 
             await filesRepository.AddRangeAsync([fileMetadata], cancellationToken);
@@ -74,7 +87,7 @@ public static class CompleteMultipartUpload
             return Results.Ok(new
             {
                 key = key,
-                location = response.Location
+                // location = response.Location
             });
         }
         catch (AmazonS3Exception ex)

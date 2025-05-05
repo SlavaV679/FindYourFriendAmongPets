@@ -7,24 +7,17 @@ using FileService.Infrastructure.Repositories;
 
 namespace FileService.Features;
 
-public static class DeletePresignedUrl
+public static class DeleteFile
 {
-    private record DeletePresignedUrlRequest(
-        string BucketName,
-        string FileName,
-        string Prefix,
-        string ContentType);
-
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/{key:guid}/presigned-for-deletion", Handler);
+            app.MapGet("files/{key:guid}/delete", Handler);
         }
     }
 
     private static async Task<IResult> Handler(
-        DeletePresignedUrlRequest request,
         Guid key,
         IFilesRepository filesRepository,
         IFileProvider provider,
@@ -33,16 +26,19 @@ public static class DeletePresignedUrl
         var fileMetadata = await filesRepository.GetById(key, cancellationToken);
 
         if (fileMetadata == null)
-            return Results.Problem("File not founded");
-        
-        var result = await provider.GetPreSignedUrlForDelete(fileMetadata, cancellationToken);
+            return Results.BadRequest("File not founded");
+
+        var result = await provider.DeleteFile(fileMetadata, cancellationToken);
+
+        if (result.IsFailure)
+            return Results.BadRequest(result.Error.Errors);
 
         await filesRepository.DeleteRangeAsync([key], cancellationToken);
-        
+
         return Results.Ok(new
         {
             key,
-            url = result.Value
+            resultMessage = "Entity successfully deleted"
         });
     }
 }

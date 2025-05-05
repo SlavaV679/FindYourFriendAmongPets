@@ -30,6 +30,8 @@ public class FileMetadata
     [BsonElement("download_url")] public string DownloadUrl { get; set; } = string.Empty;
 
     public int PartNumber { get; set; }
+    
+    public DateTime CreatedDate { get; set; }
 
     public IEnumerable<ETagInfo>? ETags;
 }
